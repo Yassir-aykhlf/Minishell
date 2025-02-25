@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/02/22 14:19:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/02/25 08:11:14 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		cmnd = take_command();
+		if (!cmnd)
+			break ;
 		parse_command(cmnd, envp);
 		free(cmnd);
 	}
