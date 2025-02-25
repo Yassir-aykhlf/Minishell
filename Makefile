@@ -16,7 +16,10 @@ $(LIBFT):
 bonus:
 
 clean:
-
-fclean:
+	rm $(SRC:.c=.o)
+	make -C $(LIBFT_PATH) clean
+fclean: clean
+	rm -f $(NAME)
+	make -C $(LIBFT_PATH) fclean
 
 re: fclean all
