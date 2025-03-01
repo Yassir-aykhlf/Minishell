@@ -3,8 +3,8 @@
 ## Phase 1: Basic Shell
 - Implement the REPL loop. ✅
 - Read user input and print it back (basic prompt). ✅
-- Exit when `exit` is typed.
-- Handle basic built-in commands without arguments.
+- Exit when `exit` is typed. ✅
+- Handle basic built-in commands without arguments. ✅
 
 ## Phase 2: Tokenization & Parsing
 - Tokenize commands (`ls -l`, `echo hello`, etc.).
