@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/02/22 13:58:34 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/01 21:11:08 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,22 @@
 # include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
+
+typedef struct ASTnode
+{
+	int				type;
+	union{
+		{
+			char		*cmd;
+			char		**args;
+		} binary_node,
+		{
+			[] childs
+			[] redirection;
+		} unary_node;
+		
+	}
+
+}				t_ast;
 
 #endif
