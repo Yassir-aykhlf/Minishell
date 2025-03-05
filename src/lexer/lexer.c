@@ -6,43 +6,56 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 19:28:49 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 14:06:04 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/05 15:49:09 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-bool	valid_operator(const char *input, int pos)
+bool	dual_operator(const char *input, int pos)
 {
 	if (input[pos] == '<')
 	{
 		if (input[pos + 1] == '<'
-			&& input[pos + 2] == '<')
+			&& ft_strchr("<>|&", input[pos + 2]))
 			return (false);
 		return (true);
 	}
 	else if (input[pos] == '>')
 	{
 		if (input[pos + 1] == '>'
-			&& input[pos + 2] == '>')
+			&& ft_strchr("<>|&", input[pos + 2]))
 			return (false);
 		return (true);
 	}
 	else if (input[pos] == '|')
 	{
 		if (input[pos + 1] == '|'
-			&& input[pos + 2] == '|')
+			&& ft_strchr("<>|&", input[pos + 2]))
 			return (false);
 		return (true);
 	}
 	else if (input[pos] == '&')
 	{
 		if (input[pos + 1] == '&'
-			&& input[pos + 2] == '&')
+			&& ft_strchr("<>|&", input[pos + 2]))
 			return (false);
 		return (true);
 	}
 	return (true);
+}
+
+bool	valid_operator(const char *input, int pos)
+{
+	if (input[pos] == '<' && ft_strchr(">|&", input[pos + 1]))
+		return (false);
+	else if (input[pos] == '>' && ft_strchr("<|&", input[pos + 1]))
+		return (false);
+	else if (input[pos] == '|' && ft_strchr("<>&", input[pos + 1]))
+		return (false);
+	else if (input[pos] == '&' && ft_strchr("<>|", input[pos + 1]))
+		return (false);
+	return (dual_operator(input, pos));
 }
 
 void	handle_quotes(char c, bool *in_single, bool *in_double)
@@ -105,7 +118,7 @@ t_scan_status	ft_scanner(const char *input)
 	return (SCAN_SUCCESS);
 }
 
-const char	*scan_status_message(t_scan_status status)
+const char	*translate_message(t_scan_status status)
 {
 	if (status == SCAN_SUCCESS)
 		return ("Syntax OK");

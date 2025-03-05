@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 12:10:39 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:50:40 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,24 @@ int	ft_strcmp(const char *s1, const char *s2)
 bool	is_operator_char(char c)
 {
 	return (c == '<' || c == '>' || c == '|');
+}
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*str;
+	size_t	i;
+
+	if (!s)
+		return (NULL);
+	str = malloc(n + 1);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < n && s[i] != '\0')
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:55:37 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 13:34:20 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:40:20 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*extract_quoted_string(const char *input, int *pos, char quote)
 	end = start;
 	while (input[end] && input[end] != quote)
 		end++;
-	str = strndup(input + start, end - start);
+	str = ft_strndup(input + start, end - start);
 	if (input[end] == quote)
 		*pos = end + 1;
 	else
@@ -136,7 +136,7 @@ t_token	*ft_tokenize(const char *input)
 			while (pos < len && !is_whitespace(input[pos])
 				&& !ft_strchr("<>|&'\"", input[pos]))
 				pos++;
-			value = strndup(input + start, pos - start);
+			value = ft_strndup(input + start, pos - start);
 			add_token(&tokens, create_token(TOKEN_WORD, value));
 		}
 	}

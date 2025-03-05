@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 12:20:53 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:35:38 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	process_command(const char *cmnd, char *envp[])
 	status = ft_scanner(cmnd);
 	if (status != SCAN_SUCCESS)
 	{
-		printf("Error: %s\n", scan_status_message(status));
+		printf("Error: %s\n", translate_message(status));
 		return (-1);
 	}
 	tokens = ft_tokenize(cmnd); // handle here_doc failure
