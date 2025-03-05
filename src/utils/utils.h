@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/03 16:59:11 by yaykhlf          ###   ########.fr       */
+/*   Created: 2025/03/05 12:10:57 by yaykhlf           #+#    #+#             */
+/*   Updated: 2025/03/05 12:11:55 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-bool	is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
+bool	is_whitespace(char c);
+int		ft_strcmp(const char *s1, const char *s2);
+bool	is_operator_char(char c);
+
+#endif
