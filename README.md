@@ -3,13 +3,13 @@
 ## Phase 1: Basic Shell
 - Implement the REPL loop. ✅
 - Read user input and print it back (basic prompt). ✅
-- Exit when `exit` is typed.
+- Exit when `exit` is typed. ✅
 - Handle basic built-in commands without arguments.
 
 ## Phase 2: Tokenization & Parsing
-- Tokenize commands (`ls -l`, `echo hello`, etc.).
-- Handle quotes (`" "` and `' '`).
-- Identify operators (`|`, `<`, `>`, `;`, `&&`, `||`, `*`).
+- Tokenize commands (`ls -l`, `echo hello`, etc.). ✅
+- Handle quotes (`" "` and `' '`). ✅
+- Identify operators (`|`, `<`, `>`, `&&`, `||`, `*`). 
 - Construct a syntax tree (or a structured command array).
 - Implement error detection for unmatched quotes and syntax errors.
 
