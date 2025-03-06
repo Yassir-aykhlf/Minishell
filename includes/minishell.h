@@ -45,6 +45,20 @@ typedef enum e_node_type
 	HERE_DOC
 }	t_node_type;
 
+typedef enum e_op
+{
+	OR,
+	AND
+}	t_op;
+
+typedef enum t_ast_type
+{
+	SIMPLE_COMMAND,
+	PIPELINE,
+	LOG_OP,
+	REDIRECTIONS
+}	t_ast_type;
+
 typedef struct s_redir
 {
 	int		type;
@@ -55,19 +69,26 @@ typedef struct s_ast	t_ast;
 
 typedef struct s_ast
 {
-	t_node_type type;
+	t_ast_type type;
 	union
 	{
 		struct
 		{
-			char *cmd;
-			char **args;
-		} binary_node;
+			t_op ;
+			t_ast *left;
+			t_ast *right;
+		} op;
 		struct
 		{
 			t_ast **childs;
-			t_redir **redirection;
-		} unary_node;
+			int	counter;
+		} pipline;
+		struct
+		{
+			t_ast *cmd;
+			t_redir		*redirects;
+			size_t		redirect_count;
+		} cmd;
 	};
 }	t_ast;
 
