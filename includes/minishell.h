@@ -32,26 +32,13 @@ char	*take_command(void);
 char	*search_path(char *cmnd, char *envp[]);
 int		process_command(const char *cmnd, char *envp[]);
 
-typedef enum e_node_type
-{
-	SIMPLE_COMMAND,
-	PIPELINE,
-	AND_NODE,
-	OR_NODE,
-	COMPOUND_COMMAND,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	REDIRECT_APPEND,
-	HERE_DOC
-}	t_node_type;
-
 typedef enum e_op
 {
-	OR,
-	AND
+	AND,
+	OR
 }	t_op;
 
-typedef enum t_ast_type
+typedef enum e_ast_type
 {
 	SIMPLE_COMMAND,
 	PIPELINE,
@@ -63,6 +50,7 @@ typedef struct s_redir
 {
 	int		type;
 	char	*file;
+	bool	append; //for >> redirection
 }	t_redir;
 
 typedef struct s_ast	t_ast;
@@ -74,21 +62,21 @@ typedef struct s_ast
 	{
 		struct
 		{
-			t_op ;
-			t_ast *left;
-			t_ast *right;
-		} op;
+			t_op	operat;
+			t_ast	*left;
+			t_ast	*right;
+		}		op;
 		struct
 		{
-			t_ast **childs;
-			int	counter;
-		} pipline;
+			t_ast	**commands;
+			int	count;
+		}		pipline;
 		struct
 		{
-			t_ast *cmd;
-			t_redir		*redirects;
-			size_t		redirect_count;
-		} cmd;
+			t_ast	*cmd;
+			t_redir	*redirects;
+			size_t	redirect_count;
+		}		cmd;
 	};
 }	t_ast;
 
