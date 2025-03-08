@@ -6,11 +6,11 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 14:50:40 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 15:33:16 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../../includes/minishell.h"
 
 bool	is_whitespace(char c)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 04:37:47 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/08 15:27:01 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../src/lexer/lexer.h"
 # include "../src/ast/ast.h"
 # include "../src/utils/utils.h"
+# include "../src/memory/memory.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "lib/libft/libft.h"
