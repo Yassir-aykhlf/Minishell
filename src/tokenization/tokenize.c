@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 17:37:22 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 18:19:14 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 18:23:18 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ bool	is_standalone_quoted(const char *input, int pos, int len)
 	while (next_pos < len && input[next_pos] != quote)
 		next_pos++;
 	
-	if (next_pos < len) // Found closing quote
+	if (next_pos < len) //Found closing quote
 		next_pos++;
 	
 	// Skip whitespace after the closing quote
