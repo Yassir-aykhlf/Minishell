@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 09:10:58 by yaykhlf           #+#    #+#             */
-/*   Updated: 2024/11/07 17:07:27 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*return_empty(void)
 {
 	char	*empty;
 
-	empty = (char *)malloc(sizeof(char));
+	empty = (char *)ft_malloc(sizeof(char));
 	if (!empty)
 		return (NULL);
 	empty[0] = '\0';
@@ -37,7 +37,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (return_empty());
 	if (start + len > s_len)
 		len = s_len - start;
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)ft_malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	while (i < len)

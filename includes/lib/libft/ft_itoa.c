@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:07:44 by yaykhlf           #+#    #+#             */
-/*   Updated: 2024/11/05 15:13:17 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*ft_itoa(int n)
 		l = -l;
 	}
 	size += sizeofnum(l);
-	str = (char *)malloc((size + 1) * sizeof(char));
+	str = (char *)ft_malloc((size + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	fill_number(str, l, &i);

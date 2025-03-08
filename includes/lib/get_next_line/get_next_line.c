@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:34:46 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/01/29 14:46:14 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*allocate_line(char **line, char *buffer)
 	buffer_len = 0;
 	while (buffer[buffer_len] && buffer[buffer_len] != '\n')
 		buffer_len++;
-	memory = (char *)malloc(sizeof(char) * (buffer_len + line_len + 1));
+	memory = (char *)ft_malloc(sizeof(char) * (buffer_len + line_len + 1));
 	if (!memory)
 		return (NULL);
 	return (memory);

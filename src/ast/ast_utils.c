@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 05:21:13 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	add_redirect(t_ast *cmd_node, t_token_type type, char *file)
 	t_redir	*new_redirects;
 
 	new_size = cmd_node->data.cmd.redirect_count + 1;
-	new_redirects = malloc(sizeof(t_redir) * new_size);
+	new_redirects = ft_malloc(sizeof(t_redir) * new_size);
 	ft_memmove(new_redirects, cmd_node->data.cmd.redirects,
 		sizeof(t_redir) * (new_size - 1));
 	cmd_node->data.cmd.redirects = new_redirects;
@@ -39,7 +39,7 @@ void	add_argument(t_ast *cmd_node, char *arg)
 	if (cmd_node->data.cmd.cmd)
 		while (cmd_node->data.cmd.cmd[arg_count])
 			arg_count++;
-	new_args = malloc(sizeof(char *) * (arg_count + 2));
+	new_args = ft_malloc(sizeof(char *) * (arg_count + 2));
 	ft_memmove(new_args, cmd_node->data.cmd.cmd, sizeof(char *) * arg_count);
 	cmd_node->data.cmd.cmd = new_args;
 	cmd_node->data.cmd.cmd[arg_count] = ft_strdup(arg);
@@ -53,7 +53,7 @@ void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node)
 	t_ast	**new_commands;
 
 	new_size = pipeline_node->data.pipeline.count + 1;
-	new_commands = malloc(sizeof(t_ast *) * new_size);
+	new_commands = ft_malloc(sizeof(t_ast *) * new_size);
 	ft_memmove(new_commands, pipeline_node->data
 		.pipeline.commands, sizeof(t_ast *) * (new_size - 1));
 	pipeline_node->data.pipeline.commands = new_commands;

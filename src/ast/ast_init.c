@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 05:19:41 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_ast	*create_subshell_node(void)
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
+	node = ft_malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
 	node->type = NODE_SUBSHELL;
@@ -30,7 +30,7 @@ t_ast	*create_command_node(void)
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
+	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
 	node->data.cmd.cmd = NULL;
 	node->data.cmd.redirects = NULL;
@@ -43,7 +43,7 @@ t_ast	*create_pipeline_node(void)
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
+	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_PIPELINE;
 	node->data.pipeline.commands = NULL;
 	node->data.pipeline.count = 0;
@@ -55,7 +55,7 @@ t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right)
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
+	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_LOGICAL;
 	node->data.op.operat = op;
 	node->data.op.left = left;

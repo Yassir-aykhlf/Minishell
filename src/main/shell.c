@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 15:33:10 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 17:52:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*search_path(char *cmnd, char *envp[])
 	{
 		tmp_slash = ft_strjoin(path[i], "/");
 		tmp = ft_strjoin(tmp_slash, cmnd);
-		free(tmp_slash);
 		if (!access(tmp, X_OK))
 			return (tmp);
 		i++;
@@ -84,13 +83,8 @@ int	process_command(const char *cmnd, char *envp[])
 		return (-1);
 	ast = ft_parse(tokens);
 	if (!ast)
-	{
-		free_tokens(tokens);
 		return (-2);
-	}
 	ret_status = ft_execute(ast, envp);
-	free_tokens(tokens);
-	free_ast(ast);
 	return (ret_status);
 }
 
@@ -106,7 +100,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!cmnd || !ft_strcmp(cmnd, "exit"))
 			break ;
 		process_command(cmnd, envp);
-		free(cmnd);
+		free_all();
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:57:46 by yaykhlf           #+#    #+#             */
-/*   Updated: 2024/11/09 16:52:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 18:04:37 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,6 @@ static size_t	word_len(const char *s, char c)
 	return (len);
 }
 
-static void	free_array(char **array, size_t	len)
-{
-	size_t	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (i < len)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
 static char	**split(const char *s, char c, size_t words, char **result)
 {
 	size_t	i;
@@ -75,12 +60,9 @@ static char	**split(const char *s, char c, size_t words, char **result)
 		while (*s && *s == c)
 			s++;
 		len = word_len(s, c);
-		result[i] = (char *)malloc(sizeof(char) * (len + 1));
+		result[i] = (char *)ft_malloc(sizeof(char) * (len + 1));
 		if (!result[i])
-		{
-			free_array(result, i);
 			return (NULL);
-		}
 		ft_strlcpy(result[i], s, len + 1);
 		s += len;
 		i++;
@@ -97,7 +79,7 @@ char	**ft_split(const char *s, char c)
 	if (!s)
 		return (NULL);
 	words = count_words(s, c);
-	result = (char **)malloc(sizeof(char *) * (words + 1));
+	result = (char **)ft_malloc(sizeof(char *) * (words + 1));
 	if (!result)
 		return (NULL);
 	return (split(s, c, words, result));

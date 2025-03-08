@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 15:33:16 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strndup(const char *s, size_t n)
 
 	if (!s)
 		return (NULL);
-	str = malloc(n + 1);
+	str = ft_malloc(n + 1);
 	if (!str)
 		return (NULL);
 	i = 0;

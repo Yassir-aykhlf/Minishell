@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:12:07 by yaykhlf           #+#    #+#             */
-/*   Updated: 2024/11/09 16:51:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_strtrim(const char *s1, const char *set)
 	end = get_end(s1, set);
 	if (end <= start)
 		return (ft_strdup(""));
-	result = (char *)malloc(sizeof(char) * (end - start + 1));
+	result = (char *)ft_malloc(sizeof(char) * (end - start + 1));
 	if (!result)
 		return (NULL);
 	ft_memcpy(result, s1 + start, end - start);

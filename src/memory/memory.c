@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:21:12 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 15:42:42 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 18:12:21 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ void	*ft_malloc(size_t size)
 	alloc_list_ptr = get_alloc_list();
 	if (size == 0)
 		return (NULL);
-	new_alloc = ft_calloc(1, sizeof(t_allocation));
+	new_alloc = malloc(sizeof(t_allocation));
 	if (!new_alloc)
 	{
 		write(2, "Allocation failed\n", 18);
 		free_all();
 		exit(EXIT_FAILURE);
 	}
-	new_alloc->ptr = ft_calloc(1, size);
+	new_alloc->ptr = malloc(size);
 	if (!new_alloc->ptr)
 	{
 		free(new_alloc);
