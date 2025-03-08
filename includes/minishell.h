@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 12:26:48 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 04:37:47 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../src/tokenization/tokenize.h"
 # include "../src/lexer/lexer.h"
+# include "../src/ast/ast.h"
 # include "../src/utils/utils.h"
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -32,52 +33,56 @@ char	*take_command(void);
 char	*search_path(char *cmnd, char *envp[]);
 int		process_command(const char *cmnd, char *envp[]);
 
-typedef enum e_op
+typedef enum e_logical_op
 {
-	AND,
-	OR
-}	t_op;
+	LOGICAL_AND,
+	LOGICAL_OR
+}	t_logical_op;
 
-typedef enum e_ast_type
-{
-	SIMPLE_COMMAND,
-	PIPELINE,
-	LOG_OP,
-	REDIRECTIONS
+typedef enum e_ast_type {
+	NODE_LOGICAL,
+	NODE_PIPELINE,
+	NODE_COMMAND,
+	NODE_SUBSHELL
 }	t_ast_type;
 
 typedef struct s_redir
 {
-	int		type;
-	char	*file;
-	bool	append; //for >> redirection
+	t_token_type	type;
+	char			*file;
+	bool			append; //for >> redirection
 }	t_redir;
 
-typedef struct s_ast	t_ast;
+typedef struct	s_ast t_ast;
 
-typedef struct s_ast
+typedef struct	s_ast
 {
 	t_ast_type type;
 	union
 	{
 		struct
 		{
-			t_op	operat;
-			t_ast	*left;
-			t_ast	*right;
+			t_logical_op	operat;
+			t_ast			*left;
+			t_ast			*right;
 		}		op;
 		struct
 		{
 			t_ast	**commands;
-			int	count;
-		}		pipline;
+			int		count;
+		}		pipeline;
 		struct
 		{
-			t_ast	*cmd;
+			char	**cmd;
 			t_redir	*redirects;
 			size_t	redirect_count;
 		}		cmd;
-	};
+		struct
+		{
+			t_ast	*command;
+		}		subshell;
+	}	data;
 }	t_ast;
+
 
 #endif

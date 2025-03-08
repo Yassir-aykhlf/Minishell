@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:55:37 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/05 14:40:20 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 04:46:49 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,16 @@ void	handle_operator(const char *input, int *pos, t_token **tokens)
 		add_token(tokens, create_token(TOKEN_PIPE, strdup("|")));
 		(*pos)++;
 	}
+	else if (input[*pos] == '(')
+	{
+		add_token(tokens, create_token(TOKEN_PAREN_OPEN, strdup("(")));
+		(*pos)++;
+	}
+	else if (input[*pos] == ')')
+	{
+		add_token(tokens, create_token(TOKEN_PAREN_OPEN, strdup(")")));
+		(*pos)++;
+	}
 }
 
 t_token	*ft_tokenize(const char *input)
@@ -126,7 +136,7 @@ t_token	*ft_tokenize(const char *input)
 			value = extract_quoted_string(input, &pos, '"');
 			add_token(&tokens, create_token(TOKEN_DOUBLE_QUOTED, value));
 		}
-		else if (ft_strchr("<>|&", input[pos]))
+		else if (ft_strchr("<>|&()", input[pos]))
 		{
 			handle_operator(input, &pos, &tokens);
 		}
@@ -134,7 +144,7 @@ t_token	*ft_tokenize(const char *input)
 		{
 			start = pos;
 			while (pos < len && !is_whitespace(input[pos])
-				&& !ft_strchr("<>|&'\"", input[pos]))
+				&& !ft_strchr("<>|&()'\"", input[pos]))
 				pos++;
 			value = ft_strndup(input + start, pos - start);
 			add_token(&tokens, create_token(TOKEN_WORD, value));

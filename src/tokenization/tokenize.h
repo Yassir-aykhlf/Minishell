@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:58:00 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/04 15:11:56 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/08 04:18:24 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_AND,
 	TOKEN_OR,
+	TOKEN_PAREN_OPEN,
+	TOKEN_PAREN_CLOSE,
 	TOKEN_SINGLE_QUOTED,
-	TOKEN_DOUBLE_QUOTED,
+	TOKEN_DOUBLE_QUOTED
 }	t_token_type;
 
 typedef struct s_token
