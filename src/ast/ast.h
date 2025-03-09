@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 04:52:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/09 13:17:46 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,57 @@
 # define AST_H
 
 # include "../../includes/minishell.h"
+
+typedef enum e_logical_op
+{
+	LOGICAL_AND,
+	LOGICAL_OR
+}	t_logical_op;
+
+typedef enum e_ast_type {
+	NODE_LOGICAL,
+	NODE_PIPELINE,
+	NODE_COMMAND,
+	NODE_SUBSHELL
+}	t_ast_type;
+
+typedef struct s_redir
+{
+	t_token_type	type;
+	char			*file;
+	bool			append;
+}	t_redir;
+
+typedef struct	s_ast t_ast;
+
+typedef struct	s_ast
+{
+	t_ast_type type;
+	union
+	{
+		struct
+		{
+			t_logical_op	operat;
+			t_ast			*left;
+			t_ast			*right;
+		}		op;
+		struct
+		{
+			t_ast	**commands;
+			int		count;
+		}		pipeline;
+		struct
+		{
+			char	**cmd;
+			t_redir	*redirects;
+			size_t	redirect_count;
+		}		cmd;
+		struct
+		{
+			t_ast	*command;
+		}		subshell;
+	}	data;
+}	t_ast;
 
 // main function to parse input
 

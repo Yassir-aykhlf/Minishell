@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/09 13:18:32 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	add_redirect(t_ast *cmd_node, t_token_type type, char *file)
 	cmd_node->data.cmd.redirects = new_redirects;
 	cmd_node->data.cmd.redirects[cmd_node->data.cmd.redirect_count].type = type;
 	cmd_node->data.cmd.redirects[cmd_node
-		->data.cmd.redirect_count].file = strdup(file);
+		->data.cmd.redirect_count].file = ft_strdup(file);
 	cmd_node->data.cmd.redirect_count++;
 }
 

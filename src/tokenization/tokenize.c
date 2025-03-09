@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 17:37:22 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 18:23:18 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/09 13:48:28 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,8 @@ bool	should_build_word(const char *input, int pos, int len)
 */
 bool	is_standalone_quoted(const char *input, int pos, int len)
 {
-	int	prev_pos;
-	int	next_pos;
+	int		prev_pos;
+	int		next_pos;
 	char	quote;
 
 	quote = input[pos];
@@ -213,14 +213,10 @@ t_token	*ft_tokenize(const char *input)
 	
 	while (pos < len)
 	{
-		// Skip whitespace
 		while (pos < len && is_whitespace(input[pos]))
 			pos++;
-		
 		if (pos >= len)
 			break;
-		
-		// Handle operators
 		if (ft_strchr("<>|&()", input[pos]))
 		{
 			handle_operator(input, &pos, &tokens);
@@ -228,8 +224,8 @@ t_token	*ft_tokenize(const char *input)
 		}
 		
 		// Handle quoted strings (standalone or as part of a word)
-		if ((input[pos] == '\'' || input[pos] == '"') && 
-			is_standalone_quoted(input, pos, len))
+		if ((input[pos] == '\'' || input[pos] == '"')
+			&& is_standalone_quoted(input, pos, len))
 		{
 			char quote = input[pos];
 			quoted_part = extract_quoted_string(input, &pos, quote);
@@ -242,8 +238,8 @@ t_token	*ft_tokenize(const char *input)
 		
 		// Handle words (including those with embedded quotes)
 		word_buffer = NULL;
-		while (pos < len && !is_whitespace(input[pos]) && 
-			   !ft_strchr("<>|&()", input[pos]))
+		while (pos < len && !is_whitespace(input[pos])
+			&& !ft_strchr("<>|&()", input[pos]))
 		{
 			if (input[pos] == '\'' || input[pos] == '"')
 			{
@@ -263,12 +259,10 @@ t_token	*ft_tokenize(const char *input)
 				char *unquoted = ft_strndup(input + start, pos - start);
 				word_buffer = ft_strjoin_free(word_buffer, unquoted);
 			}
-		}
-		
+		}	
 		if (word_buffer)
 			add_token(&tokens, create_token(TOKEN_WORD, word_buffer));
 	}
-	
 	return (tokens);
 }
 
@@ -317,29 +311,27 @@ char	*translate_type(int type)
 		return ("UNKNOWN");
 }
 
-// test the tokenizer
 int main()
 {
 	t_token	*tokens;
 	t_token	*current;
 	char	*inputs[] = {
-		"echo 'hello world' >> file.txt",    // Basic command with redirection
-		"ls -l | grep '.c' && echo Done",    // Pipe and logical AND
-		"cat <<EOF",                         // Heredoc operator
-		"echo \"nested 'quotes' test\"",     // Mixed quotes
-		"echo 'unterminated",                // Unterminated single quote
-		"echo \"unterminated",               // Unterminated double quote
-		"cmd >file1 <file2",                 // Input and output redirection
-		"echo $HOME",                        // Variable expansion (not handled yet)
-		"(echo hello)&&(echo world)",        // Logical AND without spaces and parentheses
-		"echo hello||echo world",            // Logical OR without spaces
-		"echo \"\"",                         // Empty double quotes
-		"echo ''",                           // Empty single quotes
+		"echo 'hello world' >> file.txt",
+		"ls -l | grep '.c' && echo Done",
+		"cat <<EOF",
+		"echo \"nested 'quotes' test\"",
+		"echo 'unterminated",
+		"echo \"unterminated",
+		"cmd >file1 <file2",
+		"echo $HOME",
+		"(echo hello)&&(echo world)",
+		"echo hello||echo world",
+		"echo \"\"",
+		"echo ''",
 		"\"ls\"\"-la\"",
 		"\"\"l\"\"s -l\"\"a",
 		NULL
 	};
-
 	for (int i = 0; inputs[i]; i++)
 	{
 		printf("\nTokenizing the string: %s\n", inputs[i]);
