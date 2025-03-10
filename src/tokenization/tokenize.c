@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 17:37:22 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/09 13:48:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/10 00:00:05 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ void	free_tokens(t_token *tokens)
 		current = next;
 	}
 }
-
+/* 
 char	*translate_type(int type)
 {
 	if (type == TOKEN_WORD)
@@ -346,3 +346,4 @@ int main()
 	free_all();
 	return (0);
 }
+ */

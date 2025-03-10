@@ -1,7 +1,7 @@
 NAME = Enigma
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lreadline
-SRC = src/main/shell.c
+CFLAGS = -lreadline #-Wall -Wextra -Werror 
+SRC = src/main/shell.c src/lexer/*.c src/ast/*.c src/memory/*.c src/tokenization/*.c src/utils/*.c src/heredoc/*.c
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBFT_PATH = includes/lib/libft
 
@@ -16,7 +16,7 @@ $(LIBFT):
 bonus:
 
 clean:
-	rm $(SRC:.c=.o)
+	rm -f $(SRC:.c=.o)
 	make -C $(LIBFT_PATH) clean
 fclean: clean
 	rm -f $(NAME)

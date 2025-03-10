@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/09 13:14:33 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/10 03:22:58 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@
 char	*take_command(void);
 char	*search_path(char *cmnd, char *envp[]);
 int		process_command(const char *cmnd, char *envp[]);
+t_token	*here_doc(t_token *tokens);
+char	*handle_heredoc(char *delim);
 
 #endif

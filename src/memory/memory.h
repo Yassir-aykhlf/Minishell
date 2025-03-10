@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:25:50 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 17:51:30 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/09 23:59:00 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MEMORY_H
 # define MEMORY_H
+
+# include <stdlib.h>
 
 typedef struct s_allocation
 {
