@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/10 03:22:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/10 03:44:22 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ char	*search_path(char *cmnd, char *envp[]);
 int		process_command(const char *cmnd, char *envp[]);
 t_token	*here_doc(t_token *tokens);
 char	*handle_heredoc(char *delim);
+t_ast	*parse(t_token **tokens);
 
 #endif

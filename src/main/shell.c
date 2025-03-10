@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/10 03:23:17 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/10 20:04:30 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,12 @@ int	process_command(const char *cmnd, char *envp[])
  	if (!tokens)
 		return (-1);
 	tokens = here_doc(tokens);
-	print_tkn(tokens);
-/*	ast = ft_parse(tokens);
+	//print_tkn(tokens);
+	/* ast = parse(&tokens);
 	if (!ast)
 		return (-2);
-	ret_status = ft_execute(ast, envp); */
+	print_ast(ast);
+	//ret_status = ft_execute(ast, envp); */
 	return (0/* ret_status */);
 }
 
