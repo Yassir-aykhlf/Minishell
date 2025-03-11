@@ -6,11 +6,28 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 23:11:21 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/10 03:34:01 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/11 02:26:21 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// utility to swap nodes returns 0 in error cases
+int	ft_swap_nodes(t_token *node1, t_token *node2)
+{
+	t_token_type	type;
+	char			*value;
+
+	if (!node1 || !node2)
+		return (0);
+	type = node1->type;
+	node1->type = node2->type;
+	node2->type = type;
+	value = node1->value;
+	node1->value = node2->value;
+	node2->value = value;
+	return (1);
+}
 
 // handeling heredoc utility to change to get multiline string from STDIN
 char	*handle_heredoc(char *delim)
@@ -42,7 +59,9 @@ char	*handle_heredoc(char *delim)
 // handeling heredoc if it exists
 t_token	*here_doc(t_token *tokens)
 {
-	t_token *(temp) = tokens;
+	int (i) = 0;
+	t_token *(prv), (*temp) = tokens;
+	prv = NULL;
 	while (temp)
 	{
 		if (temp->type == TOKEN_HEREDOC)
@@ -54,7 +73,13 @@ t_token	*here_doc(t_token *tokens)
 			temp->next->value = handle_heredoc(temp->next->value);
 			if (temp->next->value == NULL)
 				temp->next->value = ft_strdup("");
+			if (temp->next->next)
+				if (!prv || (prv && prv->type != TOKEN_WORD))
+					(ft_swap_nodes(temp->next, temp->next->next)
+						, ft_swap_nodes(temp, temp->next));
 		}
+		i++;
+		prv = temp;
 		temp = temp->next;
 	}
 	return (tokens);
