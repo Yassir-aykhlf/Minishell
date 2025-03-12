@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/09 23:59:29 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/11 17:07:30 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* bool	is_whitespace(char c)
+bool	is_whitespace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
- */
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	if (!s1 || !s2)
@@ -34,7 +34,7 @@ bool	is_operator_char(char c)
 	return (c == '<' || c == '>' || c == '|');
 }
 
-/* char	*ft_strndup(const char *s, size_t n)
+char	*ft_strndup(const char *s, size_t n)
 {
 	char	*str;
 	size_t	i;
@@ -53,4 +53,3 @@ bool	is_operator_char(char c)
 	str[i] = '\0';
 	return (str);
 }
- */

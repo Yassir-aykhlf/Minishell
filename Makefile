@@ -1,7 +1,7 @@
 NAME = Enigma
 CC = cc
 CFLAGS = -lreadline #-Wall -Wextra -Werror 
-SRC = src/main/shell.c src/lexer/*.c src/ast/*.c src/memory/*.c src/tokenization/*.c src/utils/*.c src/heredoc/*.c
+SRC = src/main/shell.c src/scan/*.c src/ast/*.c src/memory/*.c src/tokenization/*.c src/utils/*.c src/heredoc/*.c
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBFT_PATH = includes/lib/libft
 

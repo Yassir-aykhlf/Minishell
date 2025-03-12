@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/09 13:17:46 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/11 17:09:38 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ typedef enum e_logical_op
 	LOGICAL_OR
 }	t_logical_op;
 
-typedef enum e_ast_type {
+typedef enum e_ast_type
+{
 	NODE_LOGICAL,
 	NODE_PIPELINE,
 	NODE_COMMAND,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/10 21:34:47 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/12 17:11:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,30 @@
 
 const char *get_token_type_str(t_token_type type)
 {
-    switch (type)
-    {
-        case TOKEN_WORD:          return "TOKEN_WORD";
-        case TOKEN_PIPE:          return "TOKEN_PIPE";
-        case TOKEN_REDIRECT_IN:   return "TOKEN_REDIRECT_IN";
-        case TOKEN_REDIRECT_OUT:  return "TOKEN_REDIRECT_OUT";
-        case TOKEN_APPEND:        return "TOKEN_APPEND";
-        case TOKEN_HEREDOC:       return "TOKEN_HEREDOC";
-        case TOKEN_AND:           return "TOKEN_AND";
-        case TOKEN_OR:            return "TOKEN_OR";
-        case TOKEN_PAREN_OPEN:    return "TOKEN_PAREN_OPEN";
-        case TOKEN_PAREN_CLOSE:   return "TOKEN_PAREN_CLOSE";
-        case TOKEN_SINGLE_QUOTED: return "TOKEN_SINGLE_QUOTED";
-        case TOKEN_DOUBLE_QUOTED: return "TOKEN_DOUBLE_QUOTED";
-        default:                  return "UNKNOWN";
-    }
+	switch (type)
+	{
+		case TOKEN_WORD:			return "TOKEN_WORD";
+		case TOKEN_PIPE:			return "TOKEN_PIPE";
+		case TOKEN_REDIRECT_IN:		return "TOKEN_REDIRECT_IN";
+		case TOKEN_REDIRECT_OUT:	return "TOKEN_REDIRECT_OUT";
+		case TOKEN_APPEND:			return "TOKEN_APPEND";
+		case TOKEN_HEREDOC:			return "TOKEN_HEREDOC";
+		case TOKEN_AND:				return "TOKEN_AND";
+		case TOKEN_OR:				return "TOKEN_OR";
+		case TOKEN_PAREN_OPEN:		return "TOKEN_PAREN_OPEN";
+		case TOKEN_PAREN_CLOSE:		return "TOKEN_PAREN_CLOSE";
+		default:					return "UNKNOWN";
+	}
 }
 
 /* Print each token's type and value in the linked list */
 void print_tkn(t_token *tokens)
 {
-    while (tokens)
-    {
-        printf("Type: %s, Value: %s\n",
-               get_token_type_str(tokens->type),
-               tokens->value);
-        tokens = tokens->next;
-    }
+	while (tokens)
+	{
+		printf("Type: %s, Value: %s\n", get_token_type_str(tokens->type), tokens->value);
+		tokens = tokens->next;
+	}
 }
 
 char	*take_command(void)
@@ -114,12 +110,12 @@ int	process_command(const char *cmnd, char *envp[])
  	if (!tokens)
 		return (-1);
 	tokens = here_doc(tokens);
-	print_tkn(tokens);
-	/* ast = parse(&tokens);
+	// print_tkn(tokens);
+	ast = parse(&tokens);
 	if (!ast)
 		return (-2);
 	print_ast(ast);
-	//ret_status = ft_execute(ast, envp); */
+	//ret_status = ft_execute(ast, envp);
 	return (0/* ret_status */);
 }
 
@@ -135,7 +131,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!cmnd || !ft_strcmp(cmnd, "exit"))
 			break ;
 		process_command(cmnd, envp);
-		free_all();
+		// free_all();
 	}
 	return (0);
 }
