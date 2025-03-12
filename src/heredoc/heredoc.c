@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 23:11:21 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/11 02:26:21 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/12 23:40:23 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	ft_swap_nodes(t_token *node1, t_token *node2)
 char	*handle_heredoc(char *delim)
 {
 	int (i) = 0;
-	char *(input), (*result), (*hist) = NULL;
-	result = NULL;
+	char *(input), (*result) = NULL;
 	while (1)
 	{
 		input = readline("> ");
@@ -46,13 +45,6 @@ char	*handle_heredoc(char *delim)
 		free(input);
 		i = 1;
 	}
-	hist = ft_strjoin(hist, "<<");
-	hist = ft_strjoin(hist, delim);
-	hist = ft_strjoin(hist, "\n");
-	if (result)
-		hist = ft_strjoin(hist, result);
-	hist = ft_strjoin(hist, "\n");
-	add_history(hist);
 	return (result);
 }
 
