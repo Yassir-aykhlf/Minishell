@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/12 17:11:53 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/13 16:54:01 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,38 +49,6 @@ char	*take_command(void)
 	return (cmnd);
 }
 
-char	*search_path(char *cmnd, char *envp[])
-{
-	char	*tmp_slash;
-	char	*path_env;
-	char	**path;
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	while (ft_strncmp(envp[i], "PATH=", 5))
-		i++;
-	if (!envp[i])
-		return (NULL);
-	path_env = envp[i] + 5;
-	path = ft_split(path_env, ':');
-	if (!path)
-	{
-		perror("ft_split");
-		exit(EXIT_FAILURE);
-	}
-	i = 0;
-	while (path[i])
-	{
-		tmp_slash = ft_strjoin(path[i], "/");
-		tmp = ft_strjoin(tmp_slash, cmnd);
-		if (!access(tmp, X_OK))
-			return (tmp);
-		i++;
-	}
-	return (NULL);
-}
-
 /**
  * @brief Handles the tokenization, parsing, and execution of a command.
  *
@@ -110,13 +78,12 @@ int	process_command(const char *cmnd, char *envp[])
  	if (!tokens)
 		return (-1);
 	tokens = here_doc(tokens);
-	// print_tkn(tokens);
-	ast = parse(&tokens);
+	ast = ft_parse(&tokens);
 	if (!ast)
 		return (-2);
-	print_ast(ast);
-	//ret_status = ft_execute(ast, envp);
-	return (0/* ret_status */);
+	// print_ast(ast); // disable if errors
+	ret_status = ft_execute(ast, envp);
+	return (ret_status);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -135,3 +102,4 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
+

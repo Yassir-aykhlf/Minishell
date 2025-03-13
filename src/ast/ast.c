@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 04:52:19 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:38:05 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_ast	*parse_command(t_token **tokens)
 		}
 		return (NULL);
 	}
-	if (!cmd_node->data.cmd.cmd || !cmd_node->data.cmd.cmd[0])
+	if (!cmd_node->data.cmd.argv || !cmd_node->data.cmd.argv[0])
 		return (NULL);
 	return (cmd_node);
 }
@@ -107,7 +107,7 @@ t_ast	*parse_logical_expr(t_token **tokens)
 }
 
 /* Main parsing function */
-t_ast	*parse(t_token **tokens)
+t_ast	*ft_parse(t_token **tokens)
 {
 	if (!tokens || !*tokens)
 		return (NULL);

@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/12 23:38:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/13 15:52:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AST_H
 # define AST_H
 
-# include "../../includes/minishell.h"
+# include "../../src/tokenization/tokenize.h"
+# include <stdbool.h>
+# include <stdlib.h>
 
 typedef enum e_logical_op
 {
@@ -55,7 +57,7 @@ typedef struct	s_ast
 		}		pipeline;
 		struct
 		{
-			char	**cmd;
+			char	**argv;
 			t_redir	*redirects;
 			size_t	redirect_count;
 		}		cmd;
@@ -72,7 +74,7 @@ t_ast	*parse_subshell(t_token **tokens);
 t_ast	*parse_command(t_token **tokens);
 t_ast	*parse_pipeline(t_token **tokens);
 t_ast	*parse_logical_expr(t_token **tokens);
-t_ast	*parse(t_token **tokens);
+t_ast	*ft_parse(t_token **tokens);
 
 // init and some utils
 
@@ -89,5 +91,18 @@ void	add_argument(t_ast *cmd_node, char *arg);
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node);
 int		is_redirect(t_token *token);
 int		is_cmd_finished(t_token *token);
+
+// print functions
+
+void	print_ast_recursive(t_ast *node, int level, int is_last);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_realloc(char *ptr, size_t size);
+char	*ft_strcpy(char *dst, const char *src);
+void	print_indent(int level, int is_last);
+void	print_command_node(t_ast *node, int level, int is_last);
+void	print_pipeline_node(t_ast *node, int level, int is_last);
+void	print_logical_node(t_ast *node, int level, int is_last);
+void	print_subshell_node(t_ast *node, int level, int is_last);
+void	print_ast(t_ast *root);
 
 #endif

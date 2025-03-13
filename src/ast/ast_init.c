@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/08 16:20:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/13 14:38:05 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_ast	*create_command_node(void)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
-	node->data.cmd.cmd = NULL;
+	node->data.cmd.argv = NULL;
 	node->data.cmd.redirects = NULL;
 	node->data.cmd.redirect_count = 0;
 	return (node);

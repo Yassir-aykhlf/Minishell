@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_print (experimental).c                         :+:      :+:    :+:   */
+/*   ast_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:04:09 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/12 18:12:14 by yaykhlf          ###   ########.fr       */
+/*   Created: 2025/03/13 15:53:25 by yaykhlf           #+#    #+#             */
+/*   Updated: 2025/03/13 15:53:26 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	size_t	current_len;
 
 	print_indent(level, is_last);
-	if (!node->data.cmd.cmd || !node->data.cmd.cmd[0])
+	if (!node->data.cmd.argv || !node->data.cmd.argv[0])
 	{
 		ft_putstr_fd("CMD: (empty command)\n", STDOUT_FILENO);
 		return ;
@@ -95,9 +95,9 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	
 	total_len = 5;
 	i = 0;
-	while (node->data.cmd.cmd[i])
+	while (node->data.cmd.argv[i])
 	{
-		total_len += ft_strlen(node->data.cmd.cmd[i]) + 1; // +1 for space
+		total_len += ft_strlen(node->data.cmd.argv[i]) + 1; // +1 for space
 		i++;
 	}
 	
@@ -108,11 +108,11 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	ft_strcpy(joined_cmd, "CMD: ");
 	current_len = 5;
 	i = 0;
-	while (node->data.cmd.cmd[i])
+	while (node->data.cmd.argv[i])
 	{
-		ft_strcpy(joined_cmd + current_len, node->data.cmd.cmd[i]);
-		current_len += ft_strlen(node->data.cmd.cmd[i]);
-		if (node->data.cmd.cmd[i + 1])
+		ft_strcpy(joined_cmd + current_len, node->data.cmd.argv[i]);
+		current_len += ft_strlen(node->data.cmd.argv[i]);
+		if (node->data.cmd.argv[i + 1])
 		{
 			joined_cmd[current_len] = ' ';
 			current_len++;

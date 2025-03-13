@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/09 13:18:32 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/13 14:38:05 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ void	add_argument(t_ast *cmd_node, char *arg)
 	size_t	arg_count;
 
 	arg_count = 0;
-	if (cmd_node->data.cmd.cmd)
-		while (cmd_node->data.cmd.cmd[arg_count])
+	if (cmd_node->data.cmd.argv)
+		while (cmd_node->data.cmd.argv[arg_count])
 			arg_count++;
 	new_args = ft_malloc(sizeof(char *) * (arg_count + 2));
-	ft_memmove(new_args, cmd_node->data.cmd.cmd, sizeof(char *) * arg_count);
-	cmd_node->data.cmd.cmd = new_args;
-	cmd_node->data.cmd.cmd[arg_count] = ft_strdup(arg);
-	cmd_node->data.cmd.cmd[arg_count + 1] = NULL;
+	ft_memmove(new_args, cmd_node->data.cmd.argv, sizeof(char *) * arg_count);
+	cmd_node->data.cmd.argv = new_args;
+	cmd_node->data.cmd.argv[arg_count] = ft_strdup(arg);
+	cmd_node->data.cmd.argv[arg_count + 1] = NULL;
 }
 
 /* Helper function to add a command to a pipeline node */

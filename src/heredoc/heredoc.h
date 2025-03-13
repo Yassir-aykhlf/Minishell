@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 12:10:57 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 14:32:12 by yaykhlf          ###   ########.fr       */
+/*   Created: 2025/03/13 14:54:57 by yaykhlf           #+#    #+#             */
+/*   Updated: 2025/03/13 14:56:37 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#ifndef HEREDOC_H
+# define HEREDOC_H
 
-bool	is_whitespace(char c);
-int		ft_strcmp(const char *s1, const char *s2);
-bool	is_operator_char(char c);
-char	*ft_strndup(const char *s, size_t n);
-void	err_exit(int status, char *message);
+# include "../../src/ast/ast.h"
+
+int		ft_swap_nodes(t_token *node1, t_token *node2);
+char	*handle_heredoc(char *delim);
+t_token	*here_doc(t_token *tokens);
 
 #endif
