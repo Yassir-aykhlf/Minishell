@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 17:20:43 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/13 18:06:50 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	redirect(t_redir *redirects, size_t count)
 	}
 }
 
-void	redirect(t_redir *redirects, size_t count)
+/*void	redirect(t_redir *redirects, size_t count)
 {
 	int	fd;
 	int	flags;
@@ -102,7 +102,7 @@ void	redirect(t_redir *redirects, size_t count)
 		close(fd);
 		i++;
 	}
-}
+}*/
 
 int	execute_command(t_ast *cmd, char *envp[])
 {
