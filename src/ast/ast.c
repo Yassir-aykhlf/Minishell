@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/14 21:24:27 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ t_ast	*parse_simple_command(t_token **tokens)
 		}
 		return (NULL);
 	}
-	if (!cmd_node->u_data.s_cmd.argv || !cmd_node->u_data.s_cmd.argv[0])
-		return (NULL);
 	return (cmd_node);
 }
 
