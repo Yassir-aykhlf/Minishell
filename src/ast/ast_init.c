@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/13 14:38:05 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_ast	*create_subshell_node(void)
 	t_ast	*node;
 
 	node = ft_malloc(sizeof(t_ast));
-	if (!node)
-		return (NULL);
 	node->type = NODE_SUBSHELL;
-	node->data.subshell.command = NULL;
+	node->u_data.s_subshell.command = NULL;
+	node->u_data.s_subshell.redirects = NULL;
+	node->u_data.s_subshell.redirect_count = 0;
 	return (node);
 }
 
@@ -32,9 +32,9 @@ t_ast	*create_command_node(void)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
-	node->data.cmd.argv = NULL;
-	node->data.cmd.redirects = NULL;
-	node->data.cmd.redirect_count = 0;
+	node->u_data.s_cmd.argv = NULL;
+	node->u_data.s_cmd.redirects = NULL;
+	node->u_data.s_cmd.redirect_count = 0;
 	return (node);
 }
 
@@ -45,8 +45,8 @@ t_ast	*create_pipeline_node(void)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_PIPELINE;
-	node->data.pipeline.commands = NULL;
-	node->data.pipeline.count = 0;
+	node->u_data.s_pipeline.commands = NULL;
+	node->u_data.s_pipeline.count = 0;
 	return (node);
 }
 
@@ -57,17 +57,8 @@ t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_LOGICAL;
-	node->data.op.operat = op;
-	node->data.op.left = left;
-	node->data.op.right = right;
+	node->u_data.s_op.operat = op;
+	node->u_data.s_op.left = left;
+	node->u_data.s_op.right = right;
 	return (node);
-}
-
-/* Function to handle subshells */
-t_ast	*parse_factor(t_token **tokens)
-{
-	if (*tokens && (*tokens)->type == TOKEN_PAREN_OPEN)
-		return (parse_subshell(tokens));
-	else
-		return (parse_command(tokens));
 }

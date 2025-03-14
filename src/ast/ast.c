@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/13 14:38:05 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,17 @@ t_ast	*parse_subshell(t_token **tokens)
 
 	*tokens = (*tokens)->next;
 	command_node = parse_logical_expr(tokens);
-	if (!*tokens || !(*tokens)->type == TOKEN_PAREN_CLOSE)
+	if (!*tokens || (*tokens)->type != TOKEN_PAREN_CLOSE)
 		return (NULL);
 	*tokens = (*tokens)->next;
 	subshell_node = create_subshell_node();
-	subshell_node->data.subshell.command = command_node;
+	subshell_node->u_data.s_subshell.command = command_node;
 	return (subshell_node);
 }
 
-/* Function to parse a command */
-t_ast	*parse_command(t_token **tokens)
+/* Function to parse a simple command */
+t_ast	*parse_simple_command(t_token **tokens)
 {
-	t_token_type	redirect_type;
 	t_token			*current;
 	t_ast			*cmd_node;
 
@@ -39,18 +38,8 @@ t_ast	*parse_command(t_token **tokens)
 	while (*tokens)
 	{
 		current = *tokens;
-		if (is_cmd_finished(current))
+		if (is_cmd_finished(current) || is_redirect(current))
 			break ;
-		if (is_redirect(current))
-		{
-			redirect_type = current->type;
-			*tokens = current->next;
-			if (!*tokens || ((*tokens)->type != TOKEN_WORD))
-				return (NULL);
-			add_redirect(cmd_node, redirect_type, (*tokens)->value);
-			*tokens = (*tokens)->next;
-			continue ;
-		}
 		if (current->type == TOKEN_WORD)
 		{
 			add_argument(cmd_node, current->value);
@@ -59,9 +48,21 @@ t_ast	*parse_command(t_token **tokens)
 		}
 		return (NULL);
 	}
-	if (!cmd_node->data.cmd.argv || !cmd_node->data.cmd.argv[0])
+	if (!cmd_node->u_data.s_cmd.argv || !cmd_node->u_data.s_cmd.argv[0])
 		return (NULL);
 	return (cmd_node);
+}
+
+/* Parse a command with potential redirections */
+t_ast	*parse_command_with_redirects(t_token **tokens)
+{
+	t_ast	*node;
+
+	if (*tokens && (*tokens)->type == TOKEN_PAREN_OPEN)
+		node = parse_subshell(tokens);
+	else
+		node = parse_simple_command(tokens);
+	return (handle_redirections(node, tokens));
 }
 
 /* Function to parse a pipeline */
@@ -71,17 +72,17 @@ t_ast	*parse_pipeline(t_token **tokens)
 	t_ast	*cmd_node;
 
 	pipeline_node = create_pipeline_node();
-	cmd_node = parse_factor(tokens);
+	cmd_node = parse_command_with_redirects(tokens);
 	add_command_to_pipeline(pipeline_node, cmd_node);
 	while (*tokens && (*tokens)->type == TOKEN_PIPE)
 	{
 		*tokens = (*tokens)->next;
-		cmd_node = parse_factor(tokens);
+		cmd_node = parse_command_with_redirects(tokens);
 		add_command_to_pipeline(pipeline_node, cmd_node);
 	}
-	if (pipeline_node->data.pipeline.count == 1)
+	if (pipeline_node->u_data.s_pipeline.count == 1)
 	{
-		cmd_node = pipeline_node->data.pipeline.commands[0];
+		cmd_node = pipeline_node->u_data.s_pipeline.commands[0];
 		return (cmd_node);
 	}
 	return (pipeline_node);
@@ -104,12 +105,4 @@ t_ast	*parse_logical_expr(t_token **tokens)
 		left = result;
 	}
 	return (left);
-}
-
-/* Main parsing function */
-t_ast	*ft_parse(t_token **tokens)
-{
-	if (!tokens || !*tokens)
-		return (NULL);
-	return (parse_logical_expr(tokens));
 }

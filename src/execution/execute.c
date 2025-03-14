@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 18:06:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/14 21:17:17 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,15 @@ int	execute_command(t_ast *cmd, char *envp[])
 	int		status;
 	pid_t	pid;
 	
-	if (ft_strchr(cmd->data.cmd.argv[0], '/'))
+	if (ft_strchr(cmd->u_data.s_cmd.argv[0], '/'))
 	{
-		path = ft_strdup(cmd->data.cmd.argv[0]);
+		path = ft_strdup(cmd->u_data.s_cmd.argv[0]);
 		if (!path)
 			err_exit(EXIT_FAILURE, "ft_strdup");
 	}
 	else
 	{
-		path = search_path(cmd->data.cmd.argv[0], envp);
+		path = search_path(cmd->u_data.s_cmd.argv[0], envp);
 		if (!path)
 			err_exit(EXIT_FAILURE, "search_path");
 	}
@@ -128,9 +128,9 @@ int	execute_command(t_ast *cmd, char *envp[])
 		err_exit(EXIT_FAILURE, "fork");
 	else if (pid == 0)
 	{
-		if (cmd->data.cmd.redirect_count)
-			redirect(cmd->data.cmd.redirects, cmd->data.cmd.redirect_count);
-		if (execve(path, cmd->data.cmd.argv, envp) == -1)
+		if (cmd->u_data.s_cmd.redirect_count)
+			redirect(cmd->u_data.s_cmd.redirects, cmd->u_data.s_cmd.redirect_count);
+		if (execve(path, cmd->u_data.s_cmd.argv, envp) == -1)
 			perror("execve");
 	}
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/13 15:52:24 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ typedef struct s_redir
 	char			*file;
 }	t_redir;
 
-typedef struct	s_ast t_ast;
+typedef struct s_ast	t_ast;
 
-typedef struct	s_ast
+typedef struct s_ast
 {
-	t_ast_type type;
+	t_ast_type	type;
 	union
 	{
 		struct
@@ -49,29 +49,30 @@ typedef struct	s_ast
 			t_logical_op	operat;
 			t_ast			*left;
 			t_ast			*right;
-		}		op;
+		}		s_op;
 		struct
 		{
 			t_ast	**commands;
 			int		count;
-		}		pipeline;
+		}		s_pipeline;
 		struct
 		{
 			char	**argv;
 			t_redir	*redirects;
 			size_t	redirect_count;
-		}		cmd;
+		}		s_cmd;
 		struct
 		{
 			t_ast	*command;
-		}		subshell;
-	}	data;
+			t_redir	*redirects;
+			size_t	redirect_count;
+		}		s_subshell;
+	}	u_data;
 }	t_ast;
 
 // main function to parse input
 
 t_ast	*parse_subshell(t_token **tokens);
-t_ast	*parse_command(t_token **tokens);
 t_ast	*parse_pipeline(t_token **tokens);
 t_ast	*parse_logical_expr(t_token **tokens);
 t_ast	*ft_parse(t_token **tokens);
@@ -80,6 +81,7 @@ t_ast	*ft_parse(t_token **tokens);
 
 t_ast	*parse_factor(t_token **tokens);
 t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right);
+t_ast	*handle_redirections(t_ast *node, t_token **tokens);
 t_ast	*create_pipeline_node(void);
 t_ast	*create_command_node(void);
 t_ast	*create_subshell_node(void);

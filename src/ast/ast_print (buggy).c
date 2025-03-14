@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_print.c                                        :+:      :+:    :+:   */
+/*   ast_print (buggy).c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:53:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 15:53:26 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	size_t	current_len;
 
 	print_indent(level, is_last);
-	if (!node->data.cmd.argv || !node->data.cmd.argv[0])
+	if (!node->u_data.s_cmd.argv || !node->u_data.s_cmd.argv[0])
 	{
 		ft_putstr_fd("CMD: (empty command)\n", STDOUT_FILENO);
 		return ;
@@ -95,9 +95,9 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	
 	total_len = 5;
 	i = 0;
-	while (node->data.cmd.argv[i])
+	while (node->u_data.s_cmd.argv[i])
 	{
-		total_len += ft_strlen(node->data.cmd.argv[i]) + 1; // +1 for space
+		total_len += ft_strlen(node->u_data.s_cmd.argv[i]) + 1; // +1 for space
 		i++;
 	}
 	
@@ -108,11 +108,11 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	ft_strcpy(joined_cmd, "CMD: ");
 	current_len = 5;
 	i = 0;
-	while (node->data.cmd.argv[i])
+	while (node->u_data.s_cmd.argv[i])
 	{
-		ft_strcpy(joined_cmd + current_len, node->data.cmd.argv[i]);
-		current_len += ft_strlen(node->data.cmd.argv[i]);
-		if (node->data.cmd.argv[i + 1])
+		ft_strcpy(joined_cmd + current_len, node->u_data.s_cmd.argv[i]);
+		current_len += ft_strlen(node->u_data.s_cmd.argv[i]);
+		if (node->u_data.s_cmd.argv[i + 1])
 		{
 			joined_cmd[current_len] = ' ';
 			current_len++;
@@ -122,23 +122,23 @@ void	print_command_node(t_ast *node, int level, int is_last)
 	joined_cmd[current_len] = '\0';
 	
 	i = 0;
-	while (i < node->data.cmd.redirect_count)
+	while (i < node->u_data.s_cmd.redirect_count)
 	{
 		joined_cmd = ft_realloc(joined_cmd, current_len + 3 + 
-			ft_strlen(node->data.cmd.redirects[i].file));
+			ft_strlen(node->u_data.s_cmd.redirects[i].file));
 		if (!joined_cmd)
 			return ;
 			
-		if (node->data.cmd.redirects[i].type == TOKEN_REDIRECT_IN)
+		if (node->u_data.s_cmd.redirects[i].type == TOKEN_REDIRECT_IN)
 			ft_strcat(joined_cmd, " < ");
-		else if (node->data.cmd.redirects[i].type == TOKEN_REDIRECT_OUT)
+		else if (node->u_data.s_cmd.redirects[i].type == TOKEN_REDIRECT_OUT)
 			ft_strcat(joined_cmd, " > ");
-		else if (node->data.cmd.redirects[i].type == TOKEN_APPEND)
+		else if (node->u_data.s_cmd.redirects[i].type == TOKEN_APPEND)
 			ft_strcat(joined_cmd, " >> ");
-		else if (node->data.cmd.redirects[i].type == TOKEN_HEREDOC)
+		else if (node->u_data.s_cmd.redirects[i].type == TOKEN_HEREDOC)
 			ft_strcat(joined_cmd, " << ");
 			
-		ft_strcat(joined_cmd, node->data.cmd.redirects[i].file);
+		ft_strcat(joined_cmd, node->u_data.s_cmd.redirects[i].file);
 		i++;
 	}
 	
@@ -154,30 +154,30 @@ void	print_pipeline_node(t_ast *node, int level, int is_last)
 	print_indent(level, is_last);
 	ft_putstr_fd("NODE_PIPELINE\n", STDOUT_FILENO);
 	
-	for (i = 0; i < node->data.pipeline.count; i++)
+	for (i = 0; i < node->u_data.s_pipeline.count; i++)
 	{
-		print_ast_recursive(node->data.pipeline.commands[i], 
-			level + 1, i == node->data.pipeline.count - 1);
+		print_ast_recursive(node->u_data.s_pipeline.commands[i], 
+			level + 1, i == node->u_data.s_pipeline.count - 1);
 	}
 }
 
 void	print_logical_node(t_ast *node, int level, int is_last)
 {
 	print_indent(level, is_last);
-	if (node->data.op.operat == LOGICAL_AND)
+	if (node->u_data.s_op.operat == LOGICAL_AND)
 		ft_putstr_fd("NODE_LOGICAL (&&)\n", STDOUT_FILENO);
 	else
 		ft_putstr_fd("NODE_LOGICAL (||)\n", STDOUT_FILENO);
 	
-	print_ast_recursive(node->data.op.left, level + 1, 0);
-	print_ast_recursive(node->data.op.right, level + 1, 1);
+	print_ast_recursive(node->u_data.s_op.left, level + 1, 0);
+	print_ast_recursive(node->u_data.s_op.right, level + 1, 1);
 }
 
 void	print_subshell_node(t_ast *node, int level, int is_last)
 {
 	print_indent(level, is_last);
 	ft_putstr_fd("NODE_SUBSHELL\n", STDOUT_FILENO);
-	print_ast_recursive(node->data.subshell.command, level + 1, 1);
+	print_ast_recursive(node->u_data.s_subshell.command, level + 1, 1);
 }
 
 void	print_ast_recursive(t_ast *node, int level, int is_last)
