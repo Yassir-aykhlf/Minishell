@@ -1,6 +1,6 @@
 # Minishell To-Do List
 
-## Phase 1: Core Infrastructure (Foundational Elements)
+## Phase 1: Core Infrastructure
 
 ### Environment Variable System (**yassir is working on this**)
 1. Create a proper environment variable management system
