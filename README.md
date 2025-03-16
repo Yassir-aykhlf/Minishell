@@ -2,7 +2,7 @@
 
 ## Phase 1: Core Infrastructure (Foundational Elements)
 
-### Environment Variable System
+### Environment Variable System (**yassir is working on this**)
 1. Create a proper environment variable management system
 2. Enhance the tokenizer to handle `$VAR` expansion
 3. Implement special variable handling for `$?` (last exit status)
