@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 16:54:01 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/16 10:59:49 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,7 @@ const char *get_token_type_str(t_token_type type)
 	}
 }
 
-/* Print each token's type and value in the linked list */
-void print_tkn(t_token *tokens)
-{
-	while (tokens)
-	{
-		printf("Type: %s, Value: %s\n", get_token_type_str(tokens->type), tokens->value);
-		tokens = tokens->next;
-	}
-}
+
 
 char	*take_command(void)
 {
@@ -81,7 +73,7 @@ int	process_command(const char *cmnd, char *envp[])
 	ast = ft_parse(&tokens);
 	if (!ast)
 		return (-2);
-	// print_ast(ast); // disable if errors
+	print_ast(ast); // disable if errors
 	ret_status = ft_execute(ast, envp);
 	return (ret_status);
 }
@@ -102,4 +94,3 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 21:24:27 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/16 12:21:40 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_ast	*parse_subshell(t_token **tokens)
 
 	*tokens = (*tokens)->next;
 	command_node = parse_logical_expr(tokens);
-	if (!*tokens || (*tokens)->type != TOKEN_PAREN_CLOSE)
+	if (!*tokens || !((*tokens)->type == TOKEN_PAREN_CLOSE))
 		return (NULL);
 	*tokens = (*tokens)->next;
 	subshell_node = create_subshell_node();
@@ -90,8 +90,10 @@ t_ast	*parse_pipeline(t_token **tokens)
 t_ast	*parse_logical_expr(t_token **tokens)
 {
 	t_logical_op	op;
+	t_ast			*result;
+	t_ast			*right;
+	t_ast			*left;
 
-	t_ast *(result), (*right), (*left);
 	left = parse_pipeline(tokens);
 	while (*tokens && ((*tokens)->type == TOKEN_AND
 			|| (*tokens)->type == TOKEN_OR))

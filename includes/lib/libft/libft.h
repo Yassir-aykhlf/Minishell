@@ -6,14 +6,14 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:52:34 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/08 17:50:17 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/16 10:50:58 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "../../../includes/minishell.h"
+# include "../../../src/memory/memory.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>

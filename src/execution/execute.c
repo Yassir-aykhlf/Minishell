@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/14 21:17:17 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/16 12:22:57 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*search_path(char *cmd, char *envp[])
 	return (NULL);
 }
 
-void	redirect(t_redir *redirects, size_t count)
+int	redirect(t_redir *redirects, size_t count)
 {
 	int	fd;
 	int	flags;
@@ -60,49 +60,23 @@ void	redirect(t_redir *redirects, size_t count)
 			flags = O_WRONLY | O_CREAT | O_APPEND;
 		fd = open(redirects[i].file, flags, mode);
 		if (fd == -1)
-			err_exit(EXIT_FAILURE, "open");
+			return (err_exit(EXIT_FAILURE, "open"));
 		if (redirects[i].type == TOKEN_REDIRECT_IN)
 		{
 			if (dup2(fd, STDIN_FILENO) == -1)
-				err_exit(EXIT_FAILURE, "dup2");
+				return (err_exit(EXIT_FAILURE, "dup2"));
 		}
 		else
 		{
 			if (dup2(fd, STDOUT_FILENO) == -1)
-				err_exit(EXIT_FAILURE, "dup2");
+				return (err_exit(EXIT_FAILURE, "dup2"));
 		}
 		if (close(fd) == -1)
-			err_exit(EXIT_FAILURE, "close");
+			return (err_exit(EXIT_FAILURE, "close"));
 		i++;
 	}
+	return (0);
 }
-
-/*void	redirect(t_redir *redirects, size_t count)
-{
-	int	fd;
-	int	flags;
-	int	mode;
-	int	i;
-
-	i = 0;
-	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	while (i < count)
-	{
-		if (redirects[i].type == TOKEN_REDIRECT_IN)
-			flags = O_RDONLY;
-		else if (redirects[i].type == TOKEN_REDIRECT_OUT)
-			flags = O_WRONLY | O_CREAT | O_TRUNC;
-		else if (redirects[i].type == TOKEN_APPEND)
-			flags = O_WRONLY | O_CREAT | O_APPEND;
-		fd = open(redirects[i].file, flags, mode);
-		if (redirects[i].type == TOKEN_REDIRECT_IN)
-			dup2(fd, STDIN_FILENO);
-		else
-			dup2(fd, STDOUT_FILENO);
-		close(fd);
-		i++;
-	}
-}*/
 
 int	execute_command(t_ast *cmd, char *envp[])
 {
@@ -114,30 +88,36 @@ int	execute_command(t_ast *cmd, char *envp[])
 	{
 		path = ft_strdup(cmd->u_data.s_cmd.argv[0]);
 		if (!path)
-			err_exit(EXIT_FAILURE, "ft_strdup");
+			return (err_exit(EXIT_FAILURE, "ft_strdup"));
 	}
 	else
 	{
 		path = search_path(cmd->u_data.s_cmd.argv[0], envp);
 		if (!path)
-			err_exit(EXIT_FAILURE, "search_path");
+			return (err_exit(EXIT_FAILURE, "search_path"));
 	}
-	printf("path: %s\n", path);
 	pid = fork();
 	if (pid < 0)
-		err_exit(EXIT_FAILURE, "fork");
+		return (err_exit(EXIT_FAILURE, "fork"));
 	else if (pid == 0)
 	{
 		if (cmd->u_data.s_cmd.redirect_count)
-			redirect(cmd->u_data.s_cmd.redirects, cmd->u_data.s_cmd.redirect_count);
+			status = redirect(cmd->u_data.s_cmd.redirects, cmd->u_data.s_cmd.redirect_count);
 		if (execve(path, cmd->u_data.s_cmd.argv, envp) == -1)
-			perror("execve");
+			return (err_exit(EXIT_FAILURE, "execve"));
 	}
 	else
 	{
 		if (waitpid(pid, &status, 0) == -1)
-			err_exit(EXIT_FAILURE, "waitpid");
+			return (err_exit(EXIT_FAILURE, "waitpid"));
 	}
+	return (status);
+}
+
+int	execute_pipeline(t_ast *node, char *envp[])
+{
+	printf("ain't done yet !\n");
+	return(1);
 }
 
 int	execute_recursive(t_ast *node, char *envp[])
@@ -147,8 +127,8 @@ int	execute_recursive(t_ast *node, char *envp[])
 	status = 0;
 	if (node->type == NODE_COMMAND)
 		status = execute_command(node, envp);
-	// else if (node->type == NODE_PIPELINE)
-	// 	status = execute_pipeline(node, envp);
+	else if (node->type == NODE_PIPELINE)
+		status = execute_pipeline(node, envp);
 	// else if (node->type == NODE_LOGICAL)
 	// 	status = execute_logical(node, envp);
 	// else if (node->type == NODE_SUBSHELL)

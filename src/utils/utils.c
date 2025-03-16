@@ -6,18 +6,19 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 14:42:35 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/16 11:19:51 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	err_exit(int status, char *message)
+int	err_exit(int status, char *message)
 {
 	if (message)
 		perror(message);
-	free_all();
-	exit(status);
+	return (status);
+	// free_all();
+	// exit(status);
 }
 
 bool	is_whitespace(char c)
