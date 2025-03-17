@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 15:52:09 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/17 17:37:12 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../src/tokenization/tokenize.h"
 # include "../src/execution/execute.h"
 # include "../src/heredoc/heredoc.h"
+# include "../src/environment/env.h"
 # include "../src/memory/memory.h"
 # include "../src/utils/utils.h"
 # include <readline/readline.h>

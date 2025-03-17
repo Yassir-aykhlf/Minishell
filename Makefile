@@ -2,7 +2,10 @@ NAME = Enigma
 CC = cc
 CFLAGS = -lreadline #-Wall -Wextra -Werror
 HEADER = includes/minishell.h
-SRC = src/main/shell.c src/scan/*.c src/ast/*.c src/memory/*.c src/tokenization/*.c src/utils/*.c src/heredoc/*.c src/execution/execute.c
+SRC =	src/main/shell.c src/scan/*.c src/ast/*.c \
+		src/memory/*.c src/tokenization/*.c src/utils/*.c \
+		src/heredoc/*.c src/execution/execute.c \
+		src/environment/*.c
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBFT_PATH = includes/lib/libft
 
