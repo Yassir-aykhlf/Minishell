@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_print (buggy).c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:53:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/18 15:41:56 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,7 @@ void	print_pipeline_node(t_ast *node, int level, int is_last)
 	
 	for (i = 0; i < node->u_data.s_pipeline.count; i++)
 	{
-		print_ast_recursive(node->u_data.s_pipeline.commands[i], 
-			level + 1, i == node->u_data.s_pipeline.count - 1);
+		print_ast_recursive(node->u_data.s_pipeline.commands[i], level + 1, i == node->u_data.s_pipeline.count - 1);
 	}
 }
 

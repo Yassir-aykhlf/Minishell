@@ -2,8 +2,8 @@
 
 ## Phase 1: Core Infrastructure
 
-### Environment Variable System (**yassir is working on this**)
-1. Create a proper environment variable management system
+### Environment Variable System
+1. Create a proper environment variable management system ✅
 2. Enhance the tokenizer to handle `$VAR` expansion
 3. Implement special variable handling for `$?` (last exit status)
 
@@ -20,7 +20,7 @@
 
 ## Phase 2: Core Command Execution
 
-### Builtin Commands (Relatively Self-Contained)
+### Builtin Commands
 11. Implement `echo` with `-n` option support
 12. Implement `pwd` without options
 13. Implement `env` without options
@@ -57,6 +57,7 @@
 ### Memory Management
 34. Ensure all allocated memory is properly tracked and freed
 
+---------------------------------------------------------------------------------------------------
 # Project Plan
 
 ## Phase 1: Basic Shell

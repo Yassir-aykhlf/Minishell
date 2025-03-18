@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/16 12:22:57 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/18 21:28:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,79 @@ int	execute_command(t_ast *cmd, char *envp[])
 	}
 	return (status);
 }
-
-int	execute_pipeline(t_ast *node, char *envp[])
+//
+int execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2], char *envp[])
 {
-	printf("ain't done yet !\n");
-	return(1);
+	if (prev_pipe_read != -1)
+	{
+		if (dup2(prev_pipe_read, STDIN_FILENO) == -1)
+			exit(err_exit(EXIT_FAILURE, "dup2"));
+		close(prev_pipe_read);
+	}
+	if (i < node->u_data.s_pipeline.count - 1)
+	{
+		close(pipe_fds[0]);
+		if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
+			exit(err_exit(EXIT_FAILURE, "dup2"));
+		close(pipe_fds[1]);
+	}
+	exit(execute_recursive(node->u_data.s_pipeline.commands[i], envp));
+	return (EXIT_FAILURE);
+}
+
+int handle_parent_process(int i, int *prev_pipe_read, int pipe_fds[2], t_ast *node)
+{
+	if (*prev_pipe_read != -1)
+		close(*prev_pipe_read);
+	if (i < node->u_data.s_pipeline.count - 1)
+	{
+		close(pipe_fds[1]);
+		*prev_pipe_read = pipe_fds[0];
+	}
+	return (0);
+}
+
+int validate_pipeline(t_ast *node)
+{
+	if (!node || node->type != NODE_PIPELINE || node->u_data.s_pipeline.count < 1)
+		return (err_exit(EXIT_FAILURE, "Invalid pipeline"));
+	return (0);
+}
+
+int execute_pipeline(t_ast *node, char *envp[])
+{
+	int		prev_pipe_read;
+	int		pipe_fds[2];
+	int		status;
+	pid_t	pid;
+	int		i;
+
+	status = 0;
+	prev_pipe_read = -1;
+	if (validate_pipeline(node) != 0)
+		return (EXIT_FAILURE);
+	i = 0;
+	while (i < node->u_data.s_pipeline.count)
+	{
+		if (i < node->u_data.s_pipeline.count - 1)
+			if (pipe(pipe_fds) == -1)
+				return (err_exit(EXIT_FAILURE, "pipe"));
+		pid = fork();
+		if (pid == -1)
+			return (err_exit(EXIT_FAILURE, "fork"));
+		if (pid == 0)
+			execute_child_process(node, i, prev_pipe_read, pipe_fds, envp);
+		else
+			handle_parent_process(i, &prev_pipe_read, pipe_fds, node);
+		i++;
+	}
+	i = 0;
+	while (i < node->u_data.s_pipeline.count)
+	{
+		wait(&status);
+		i++;
+	}
+	return (WEXITSTATUS(status));
 }
 
 int	execute_recursive(t_ast *node, char *envp[])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/18 16:56:34 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ t_ast	*ft_parse(t_token **tokens);
 
 // init and some utils
 
-t_ast	*parse_factor(t_token **tokens);
 t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right);
 t_ast	*handle_redirections(t_ast *node, t_token **tokens);
 t_ast	*create_pipeline_node(void);
