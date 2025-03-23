@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 21:21:13 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/23 23:21:34 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Helper function to get redirects info based on node type */
 static void	get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
 {
 	if (node->type == NODE_COMMAND)
@@ -32,7 +31,6 @@ static void	get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
 	}
 }
 
-/* Function to add a redirect to a node */
 void	add_redirect(t_ast *node, t_token_type type, char *file)
 {
 	t_redir	*old_redirects;
@@ -56,7 +54,6 @@ void	add_redirect(t_ast *node, t_token_type type, char *file)
 	}
 }
 
-/* Helper function to add an argument to a command node */
 void	add_argument(t_ast *cmd_node, char *arg)
 {
 	char	**new_args;
@@ -73,7 +70,6 @@ void	add_argument(t_ast *cmd_node, char *arg)
 	cmd_node->u_data.s_cmd.argv[arg_count + 1] = NULL;
 }
 
-/* Helper function to add a command to a pipeline node */
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node)
 {
 	size_t	new_size;

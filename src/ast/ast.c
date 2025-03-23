@@ -6,13 +6,12 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 22:15:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 23:22:54 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Function to parse a subshell */
 t_ast	*parse_subshell(t_token **tokens)
 {
 	t_ast	*subshell_node;
@@ -28,7 +27,6 @@ t_ast	*parse_subshell(t_token **tokens)
 	return (subshell_node);
 }
 
-/* Function to parse a simple command */
 t_ast	*parse_simple_command(t_token **tokens)
 {
 	t_token			*current;
@@ -51,7 +49,6 @@ t_ast	*parse_simple_command(t_token **tokens)
 	return (cmd_node);
 }
 
-/* Parse a command with potential redirections */
 t_ast	*parse_command_with_redirects(t_token **tokens)
 {
 	t_ast	*node;
@@ -69,7 +66,6 @@ t_ast	*parse_command_with_redirects(t_token **tokens)
 	return (handle_redirections(node, tokens));
 }
 
-/* Function to parse a pipeline */
 t_ast	*parse_pipeline(t_token **tokens)
 {
 	t_ast	*pipeline_node;
@@ -95,7 +91,6 @@ t_ast	*parse_pipeline(t_token **tokens)
 	return (pipeline_node);
 }
 
-/* Function to parse logical expressions */
 t_ast	*parse_logical_expr(t_token **tokens)
 {
 	t_logical_op	op;

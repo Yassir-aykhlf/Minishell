@@ -6,13 +6,12 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 23:11:21 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/19 13:55:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 23:24:02 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// utility to swap nodes returns 0 in error cases
 int	ft_swap_nodes(t_token *node1, t_token *node2)
 {
 	t_token_type	type;
@@ -29,7 +28,6 @@ int	ft_swap_nodes(t_token *node1, t_token *node2)
 	return (1);
 }
 
-// handeling heredoc utility to change to get multiline string from STDIN
 char	*handle_heredoc(char *delim)
 {
 	int (i) = 0;
@@ -48,7 +46,6 @@ char	*handle_heredoc(char *delim)
 	return (result);
 }
 
-// handeling heredoc if it exists
 t_token	*ft_heredoc(t_token *tokens)
 {
 	int (i) = 0;

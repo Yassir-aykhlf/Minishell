@@ -204,7 +204,7 @@ bool is_whitespace(char c);
 int ft_strcmp(const char *s1, const char *s2);
 bool is_operator_char(char c);
 char *ft_strndup(const char *s, size_t n);
-int spit_error(int status, char *message);
+int spit_error(int status, char *message, bool system_error);
 char *ft_strjoin_three(char const *s1, char const *s2, char const *s3);
 int env_listsize(t_env *lst);
 
@@ -245,10 +245,15 @@ char *ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 	return (str);
 }
 
-int spit_error(int status, char *message)
+int spit_error(int status, char *message, bool system_error)
 {
 	if (message)
-		perror(message);
+	{
+		if (system_error)
+			perror(message);
+		else
+			write(2, message, ft_strlen(message));
+	}
 	return (status);
 }
 
@@ -306,13 +311,14 @@ t_ast *create_subshell_node(void)
 	return (node);
 }
 
-t_ast *create_command_node(void)
+t_ast	*create_command_node(void)
 {
-	t_ast *node;
+	t_ast	*node;
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
-	node->u_data.s_cmd.argv = NULL;
+	node->u_data.s_cmd.argv = ft_malloc(sizeof(char *));
+	node->u_data.s_cmd.argv[0] = NULL;
 	node->u_data.s_cmd.redirects = NULL;
 	node->u_data.s_cmd.redirect_count = 0;
 	return (node);
@@ -341,7 +347,7 @@ t_ast *create_logical_node(t_logical_op op, t_ast *left, t_ast *right)
 	return (node);
 }
 
-static void get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
+static void	get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
 {
 	if (node->type == NODE_COMMAND)
 	{
@@ -360,11 +366,11 @@ static void get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
 	}
 }
 
-void add_redirect(t_ast *node, t_token_type type, char *file)
+void	add_redirect(t_ast *node, t_token_type type, char *file)
 {
-	t_redir *old_redirects;
-	t_redir *new_redirects;
-	size_t old_count;
+	t_redir	*old_redirects;
+	t_redir	*new_redirects;
+	size_t	old_count;
 
 	get_redirect_info(node, &old_redirects, &old_count);
 	new_redirects = ft_malloc(sizeof(t_redir) * (old_count + 1));
@@ -383,10 +389,10 @@ void add_redirect(t_ast *node, t_token_type type, char *file)
 	}
 }
 
-void add_argument(t_ast *cmd_node, char *arg)
+void	add_argument(t_ast *cmd_node, char *arg)
 {
-	char **new_args;
-	size_t arg_count;
+	char	**new_args;
+	size_t	arg_count;
 
 	arg_count = 0;
 	if (cmd_node->u_data.s_cmd.argv)
@@ -399,30 +405,32 @@ void add_argument(t_ast *cmd_node, char *arg)
 	cmd_node->u_data.s_cmd.argv[arg_count + 1] = NULL;
 }
 
-void add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node)
+void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node)
 {
-	size_t new_size;
-	t_ast **new_commands;
+	size_t	new_size;
+	t_ast	**new_commands;
 
 	new_size = pipeline_node->u_data.s_pipeline.count + 1;
 	new_commands = ft_malloc(sizeof(t_ast *) * new_size);
-	ft_memmove(new_commands, pipeline_node->u_data.s_pipeline.commands, sizeof(t_ast *) * (new_size - 1));
+	ft_memmove(new_commands, pipeline_node->u_data
+		.s_pipeline.commands, sizeof(t_ast *) * (new_size - 1));
 	pipeline_node->u_data.s_pipeline.commands = new_commands;
 	pipeline_node->u_data.s_pipeline.commands[pipeline_node
-												  ->u_data.s_pipeline.count] = cmd_node;
+		->u_data.s_pipeline.count] = cmd_node;
 	pipeline_node->u_data.s_pipeline.count++;
 }
 
-t_ast *handle_redirections(t_ast *node, t_token **tokens)
+
+t_ast	*handle_redirections(t_ast *node, t_token **tokens)
 {
-	t_token_type redirect_type;
-	t_token *current;
+	t_token_type	redirect_type;
+	t_token			*current;
 
 	while (*tokens)
 	{
 		current = *tokens;
 		if (!is_redirect(current))
-			break;
+			break ;
 		redirect_type = current->type;
 		*tokens = current->next;
 		if (!*tokens || ((*tokens)->type != TOKEN_WORD))
@@ -433,31 +441,38 @@ t_ast *handle_redirections(t_ast *node, t_token **tokens)
 	return (node);
 }
 
-t_ast *ft_parse(t_token **tokens)
+t_ast	*ft_parse(t_token **tokens)
 {
 	if (!tokens || !*tokens)
 		return (NULL);
 	return (parse_logical_expr(tokens));
 }
 
-int is_redirect(t_token *token)
+int	is_redirect(t_token *token)
 {
-	if (token->type == TOKEN_REDIRECT_IN || token->type == TOKEN_REDIRECT_OUT || token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC)
+	if (token->type == TOKEN_REDIRECT_IN
+		|| token->type == TOKEN_REDIRECT_OUT
+		|| token->type == TOKEN_APPEND
+		|| token->type == TOKEN_HEREDOC)
 		return (1);
 	return (0);
 }
 
-int is_cmd_finished(t_token *token)
+int	is_cmd_finished(t_token *token)
 {
-	if (token->type == TOKEN_PIPE || token->type == TOKEN_AND || token->type == TOKEN_OR)
+	if (!token)
+		return (1);
+	if (token->type == TOKEN_PIPE
+		|| token->type == TOKEN_AND
+		|| token->type == TOKEN_OR)
 		return (1);
 	return (0);
 }
 
-t_ast *parse_subshell(t_token **tokens)
+t_ast	*parse_subshell(t_token **tokens)
 {
-	t_ast *subshell_node;
-	t_ast *command_node;
+	t_ast	*subshell_node;
+	t_ast	*command_node;
 
 	*tokens = (*tokens)->next;
 	command_node = parse_logical_expr(tokens);
@@ -469,79 +484,96 @@ t_ast *parse_subshell(t_token **tokens)
 	return (subshell_node);
 }
 
-t_ast *parse_simple_command(t_token **tokens)
+t_ast	*parse_simple_command(t_token **tokens)
 {
-	t_token *current;
-	t_ast *cmd_node;
+	t_token			*current;
+	t_ast			*cmd_node;
 
 	cmd_node = create_command_node();
 	while (*tokens)
 	{
 		current = *tokens;
 		if (is_cmd_finished(current) || is_redirect(current))
-			break;
+			break ;
 		if (current->type == TOKEN_WORD)
 		{
 			add_argument(cmd_node, current->value);
 			*tokens = current->next;
-			continue;
+			continue ;
 		}
 		return (NULL);
 	}
 	return (cmd_node);
 }
 
-t_ast *parse_command_with_redirects(t_token **tokens)
+t_ast	*parse_command_with_redirects(t_token **tokens)
 {
-	t_ast *node;
+	t_ast	*node;
 
 	if (*tokens && (*tokens)->type == TOKEN_PAREN_OPEN)
 		node = parse_subshell(tokens);
 	else
 		node = parse_simple_command(tokens);
+	if (node && node->type == NODE_COMMAND && 
+		!node->u_data.s_cmd.argv[0] && 
+		node->u_data.s_cmd.redirect_count == 0)
+	{
+		return (NULL);
+	}
 	return (handle_redirections(node, tokens));
 }
 
-t_ast *parse_pipeline(t_token **tokens)
+t_ast	*parse_pipeline(t_token **tokens)
 {
-	t_ast *pipeline_node;
-	t_ast *cmd_node;
+	t_ast	*pipeline_node;
+	t_ast	*cmd_node;
 
 	pipeline_node = create_pipeline_node();
+	if (!*tokens || is_cmd_finished(*tokens))
+		return (NULL);
 	cmd_node = parse_command_with_redirects(tokens);
+	if (!cmd_node)
+		return (NULL);
 	add_command_to_pipeline(pipeline_node, cmd_node);
 	while (*tokens && (*tokens)->type == TOKEN_PIPE)
 	{
 		*tokens = (*tokens)->next;
+		if (!*tokens || is_cmd_finished(*tokens))
+			return (NULL);
 		cmd_node = parse_command_with_redirects(tokens);
+		if (!cmd_node)
+			return (NULL);
 		add_command_to_pipeline(pipeline_node, cmd_node);
-	}
-	if (pipeline_node->u_data.s_pipeline.count == 1)
-	{
-		cmd_node = pipeline_node->u_data.s_pipeline.commands[0];
-		return (cmd_node);
 	}
 	return (pipeline_node);
 }
 
-t_ast *parse_logical_expr(t_token **tokens)
+t_ast	*parse_logical_expr(t_token **tokens)
 {
-	t_logical_op op;
-	t_ast *result;
-	t_ast *right;
-	t_ast *left;
+	t_logical_op	op;
+	t_ast			*result;
+	t_ast			*right;
+	t_ast			*left;
 
 	left = parse_pipeline(tokens);
-	while (*tokens && ((*tokens)->type == TOKEN_AND || (*tokens)->type == TOKEN_OR))
+	if (!left)
+		return (NULL);
+	while (*tokens && ((*tokens)->type == TOKEN_AND
+			|| (*tokens)->type == TOKEN_OR))
 	{
 		op = (*tokens)->type - 6;
 		*tokens = (*tokens)->next;
 		right = parse_pipeline(tokens);
+		if (!right)
+			return (NULL);
 		result = create_logical_node(op, left, right);
+		if (!result)
+			return (NULL);
 		left = result;
 	}
 	return (left);
 }
+
 
 t_env *create_env_node(char *key, char *value)
 {
@@ -575,13 +607,11 @@ void link_env_node(t_env **head, t_env *node)
 
 void parse_env_var(const char *var)
 {
-	int i;
 	char *key;
 	char *pos;
 	char *value;
 	t_env **env_list;
 
-	i = 0;
 	env_list = get_env_list();
 	pos = ft_strchr(var, '=');
 	key = ft_strndup(var, pos - var);
@@ -703,7 +733,7 @@ char *search_path(char *cmd, char *envp[])
 	path_env = envp[i] + 5;
 	path = ft_split(path_env, ':');
 	if (!path)
-		spit_error(EXIT_FAILURE, "ft_split");
+		spit_error(EXIT_FAILURE, "ft_split", true);
 	i = 0;
 	while (path[i])
 	{
@@ -716,12 +746,12 @@ char *search_path(char *cmd, char *envp[])
 	return (NULL);
 }
 
-int redirect(t_redir *redirects, size_t count)
+int	redirect(t_redir *redirects, size_t count)
 {
-	int fd;
-	int flags;
-	int mode;
-	int i;
+	int		fd;
+	int		flags;
+	int		mode;
+	size_t	i;
 
 	i = 0;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
@@ -735,80 +765,80 @@ int redirect(t_redir *redirects, size_t count)
 			flags = O_WRONLY | O_CREAT | O_APPEND;
 		fd = open(redirects[i].file, flags, mode);
 		if (fd == -1)
-			return (spit_error(EXIT_FAILURE, "open"));
+			return (spit_error(EXIT_FAILURE, "open", true));
 		if (redirects[i].type == TOKEN_REDIRECT_IN)
 		{
 			if (dup2(fd, STDIN_FILENO) == -1)
-				return (spit_error(EXIT_FAILURE, "dup2"));
+				return (spit_error(EXIT_FAILURE, "dup2", true));
 		}
 		else
 		{
 			if (dup2(fd, STDOUT_FILENO) == -1)
-				return (spit_error(EXIT_FAILURE, "dup2"));
+				return (spit_error(EXIT_FAILURE, "dup2", true));
 		}
 		if (close(fd) == -1)
-			return (spit_error(EXIT_FAILURE, "close"));
+			return (spit_error(EXIT_FAILURE, "close", true));
 		i++;
 	}
 	return (0);
 }
 
-int execute_command(t_ast *cmd, char *envp[])
+int	execute_command(t_ast *cmd, char *envp[])
 {
-	char *path;
-	int status;
-	pid_t pid;
-
+	char	*path;
+	int		status;
+	pid_t	pid;
+	
 	if (ft_strchr(cmd->u_data.s_cmd.argv[0], '/'))
 	{
 		path = ft_strdup(cmd->u_data.s_cmd.argv[0]);
 		if (!path)
-			return (spit_error(EXIT_FAILURE, "ft_strdup"));
+			return (spit_error(EXIT_FAILURE, "ft_strdup", true));
 	}
 	else
 	{
 		path = search_path(cmd->u_data.s_cmd.argv[0], envp);
 		if (!path)
-			return (spit_error(EXIT_FAILURE, "search_path"));
+			return (spit_error(EXIT_FAILURE, "search_path", true));
 	}
 	pid = fork();
 	if (pid < 0)
-		return (spit_error(EXIT_FAILURE, "fork"));
+		return (spit_error(EXIT_FAILURE, "fork", true));
 	else if (pid == 0)
 	{
 		if (cmd->u_data.s_cmd.redirect_count)
 			status = redirect(cmd->u_data.s_cmd.redirects, cmd->u_data.s_cmd.redirect_count);
 		if (execve(path, cmd->u_data.s_cmd.argv, envp) == -1)
-			return (spit_error(EXIT_FAILURE, "execve"));
+			return (spit_error(EXIT_FAILURE, "execve", true));
 	}
 	else
 	{
 		if (waitpid(pid, &status, 0) == -1)
-			return (spit_error(EXIT_FAILURE, "waitpid"));
+			return (spit_error(EXIT_FAILURE, "waitpid", true));
 	}
 	return (status);
 }
 
-int execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2], char *envp[])
+int	execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2], char *envp[])
 {
 	if (prev_pipe_read != -1)
 	{
 		if (dup2(prev_pipe_read, STDIN_FILENO) == -1)
-			exit(spit_error(EXIT_FAILURE, "dup2"));
+			exit(spit_error(EXIT_FAILURE, "dup2", true));
 		close(prev_pipe_read);
 	}
 	if (i < node->u_data.s_pipeline.count - 1)
 	{
 		close(pipe_fds[0]);
 		if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
-			exit(spit_error(EXIT_FAILURE, "dup2"));
+			exit(spit_error(EXIT_FAILURE, "dup2", true));
 		close(pipe_fds[1]);
 	}
 	exit(execute_recursive(node->u_data.s_pipeline.commands[i], envp));
 	return (EXIT_FAILURE);
 }
 
-int handle_parent_process(int i, int *prev_pipe_read, int pipe_fds[2], t_ast *node)
+int	handle_parent_process(int i, int *prev_pipe_read, int pipe_fds[2], t_ast *node)
 {
 	if (*prev_pipe_read != -1)
 		close(*prev_pipe_read);
@@ -820,20 +850,20 @@ int handle_parent_process(int i, int *prev_pipe_read, int pipe_fds[2], t_ast *no
 	return (0);
 }
 
-int validate_pipeline(t_ast *node)
+int	validate_pipeline(t_ast *node)
 {
 	if (!node || node->type != NODE_PIPELINE || node->u_data.s_pipeline.count < 1)
-		return (spit_error(EXIT_FAILURE, "Invalid pipeline"));
+		return (spit_error(EXIT_FAILURE, "Invalid pipeline", false));
 	return (0);
 }
 
-int execute_pipeline(t_ast *node, char *envp[])
+int	execute_pipeline(t_ast *node, char *envp[])
 {
-	int prev_pipe_read;
-	int pipe_fds[2];
-	int status;
-	pid_t pid;
-	int i;
+	int		prev_pipe_read;
+	int		pipe_fds[2];
+	int		status;
+	pid_t	pid;
+	int		i;
 
 	status = 0;
 	prev_pipe_read = -1;
@@ -843,8 +873,11 @@ int execute_pipeline(t_ast *node, char *envp[])
 	while (i < node->u_data.s_pipeline.count)
 	{
 		if (i < node->u_data.s_pipeline.count - 1)
-			pipe(pipe_fds);
+			if (pipe(pipe_fds) == -1)
+				return (spit_error(EXIT_FAILURE, "pipe", true));
 		pid = fork();
+		if (pid == -1)
+			return (spit_error(EXIT_FAILURE, "fork", true));
 		if (pid == 0)
 			execute_child_process(node, i, prev_pipe_read, pipe_fds, envp);
 		else
@@ -857,12 +890,12 @@ int execute_pipeline(t_ast *node, char *envp[])
 		wait(&status);
 		i++;
 	}
-	return (status);
+	return (WEXITSTATUS(status));
 }
 
-int execute_recursive(t_ast *node, char *envp[])
+int	execute_recursive(t_ast *node, char *envp[])
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (node->type == NODE_COMMAND)
@@ -876,7 +909,7 @@ int execute_recursive(t_ast *node, char *envp[])
 	return (status);
 }
 
-int ft_execute(t_ast *root, char *envp[])
+int	ft_execute(t_ast *root, char *envp[])
 {
 	if (!root)
 		return (EMPTY_AST);
@@ -973,7 +1006,6 @@ void *ft_malloc(size_t size)
 {
 	t_alloc **alloc_list_ptr;
 	t_alloc *new_alloc;
-	void *result;
 
 	alloc_list_ptr = get_alloc_list();
 	if (size == 0)
@@ -1182,9 +1214,7 @@ void handle_operator(const char *input, int *pos, t_token **tokens)
 char *process_word_segment(const char *input, int *pos, int len)
 {
 	int start;
-	char *segment;
 	char quote;
-	char *quoted_part;
 
 	if (input[*pos] == '\'' || input[*pos] == '\"')
 	{
@@ -1244,13 +1274,23 @@ char *take_command(void)
 	return (cmnd);
 }
 
-int interpret(const char *cmnd, char *envp[])
+char	*last_token(t_token *tokens)
 {
-	t_scan_status status;
-	t_token *tokens;
-	t_ast *ast;
-	int ret_status;
+	t_token	*current;
 
+	current = tokens;
+	while (current->next)
+		current = current->next;
+	return (current->value);
+}
+
+int	interpret(const char *cmnd, char *envp[])
+{
+	t_scan_status	status;
+	t_token			*tokens;
+	t_ast			*ast;
+	int				ret_status;
+	
 	status = ft_scan(cmnd);
 	if (status != SCAN_SUCCESS)
 	{
@@ -1258,12 +1298,19 @@ int interpret(const char *cmnd, char *envp[])
 		return (-1);
 	}
 	tokens = ft_tokenize(cmnd);
-	if (!tokens)
+ 	if (!tokens)
 		return (-1);
 	tokens = ft_heredoc(tokens);
 	ast = ft_parse(&tokens);
-	if (!ast)
-		return (-2);
+	if (!ast || tokens)
+	{
+		if (tokens)	
+			printf("syntax error near unexpected token `%s'\n", tokens->value);
+		else
+			printf("syntax error unexpected token `%s'\n", last_token(ft_tokenize(cmnd)));
+		return (2);
+	}
+	// print_ast(ast); 
 	ret_status = ft_execute(ast, envp);
 	return (ret_status);
 }

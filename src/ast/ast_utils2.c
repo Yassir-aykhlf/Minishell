@@ -6,13 +6,12 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 20:41:34 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 20:22:38 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 23:22:01 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Function to handle redirections for any node type */
 t_ast	*handle_redirections(t_ast *node, t_token **tokens)
 {
 	t_token_type	redirect_type;
@@ -33,7 +32,6 @@ t_ast	*handle_redirections(t_ast *node, t_token **tokens)
 	return (node);
 }
 
-/* Main parsing function */
 t_ast	*ft_parse(t_token **tokens)
 {
 	if (!tokens || !*tokens)
@@ -41,7 +39,6 @@ t_ast	*ft_parse(t_token **tokens)
 	return (parse_logical_expr(tokens));
 }
 
-/* C'mon it is just here for normes */
 int	is_redirect(t_token *token)
 {
 	if (token->type == TOKEN_REDIRECT_IN
@@ -52,7 +49,6 @@ int	is_redirect(t_token *token)
 	return (0);
 }
 
-/* C'mon it is just here for normes */
 int	is_cmd_finished(t_token *token)
 {
 	if (!token)
