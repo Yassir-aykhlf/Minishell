@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/23 22:31:29 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 23:10:48 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ char	*take_command(void)
 	cmnd = readline("\033[92mEnigma\033[94m$ \033[0m");
 	add_history(cmnd);
 	return (cmnd);
+}
+
+char	*last_token(t_token *tokens)
+{
+	t_token	*current;
+
+	current = tokens;
+	while (current->next)
+		current = current->next;
+	return (current->value);
 }
 
 int	interpret(const char *cmnd, char *envp[])
@@ -43,6 +53,8 @@ int	interpret(const char *cmnd, char *envp[])
 	{
 		if (tokens)	
 			printf("syntax error near unexpected token `%s'\n", tokens->value);
+		else
+			printf("syntax error unexpected token `%s'\n", last_token(ft_tokenize(cmnd)));
 		return (2);
 	}
 	// print_ast(ast); 
