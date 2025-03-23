@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 23:11:21 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/13 16:39:18 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/19 13:55:50 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*handle_heredoc(char *delim)
 }
 
 // handeling heredoc if it exists
-t_token	*here_doc(t_token *tokens)
+t_token	*ft_heredoc(t_token *tokens)
 {
 	int (i) = 0;
 	t_token *(prv), (*temp) = tokens;

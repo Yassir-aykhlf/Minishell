@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/17 17:37:12 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 22:18:33 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 char	*take_command(void);
 char	*search_path(char *cmd, char *envp[]);
-int		process_command(const char *cmnd, char *envp[]);
-t_token	*here_doc(t_token *tokens);
+int		interpret(const char *cmnd, char *envp[]);
+t_token	*ft_heredoc(t_token *tokens);
 char	*handle_heredoc(char *delim);
 t_ast	*ft_parse(t_token **tokens);
 

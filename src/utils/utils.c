@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/17 17:23:08 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 22:02:52 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,16 @@ char	*ft_strjoin_three(char const *s1, char const *s2, char const *s3)
 	return (str);
 }
 
-int	err_exit(int status, char *message)
+int	spit_error(int status, char *message, bool system_error)
 {
 	if (message)
-		perror(message);
+	{
+		if (system_error)
+			perror(message);
+		else
+			write(2, message, ft_strlen(message));
+	}
 	return (status);
-	// free_all();
-	// exit(status);
 }
 
 bool	is_whitespace(char c)

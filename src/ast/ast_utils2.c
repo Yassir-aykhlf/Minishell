@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 20:41:34 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 20:59:09 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/23 20:22:38 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	is_redirect(t_token *token)
 /* C'mon it is just here for normes */
 int	is_cmd_finished(t_token *token)
 {
+	if (!token)
+		return (1);
 	if (token->type == TOKEN_PIPE
 		|| token->type == TOKEN_AND
 		|| token->type == TOKEN_OR)

@@ -90,7 +90,7 @@ void	skip_operator(const char *input, int *i)
  * - SCAN_UNCLOSED_QUOTE: There is an unclosed quote in the input string.
  * - SCAN_INVALID_OPERATOR: There is an invalid operator sequence in the input string.
  */
-t_scan_status	ft_scanner(const char *input)
+t_scan_status	ft_scan(const char *input)
 {
 	bool	in_single;
 	bool	in_double;

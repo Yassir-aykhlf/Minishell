@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 17:01:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/12 23:39:59 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/23 21:58:48 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ void	handle_operator(const char *input, int *pos, t_token **tokens)
 char	*process_word_segment(const char *input, int *pos, int len)
 {
 	int		start;
-	char	*segment;
 	char	quote;
-	char	*quoted_part;
 
 	if (input[*pos] == '\'' || input[*pos] == '\"')
 	{

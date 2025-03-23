@@ -6,24 +6,24 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:21:12 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/17 16:07:02 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 21:57:25 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_allocation	**get_alloc_list(void)
+t_alloc	**get_alloc_list(void)
 {
-	static t_allocation	*alloc_list;
+	static t_alloc	*alloc_list;
 
 	return (&alloc_list);
 }
 
 void	free_all(void)
 {
-	t_allocation	**alloc_list_ptr;
-	t_allocation	*current;
-	t_allocation	*next;
+	t_alloc	**alloc_list_ptr;
+	t_alloc	*current;
+	t_alloc	*next;
 
 	alloc_list_ptr = get_alloc_list();
 	current = *alloc_list_ptr;
@@ -41,14 +41,13 @@ void	free_all(void)
 
 void	*ft_malloc(size_t size)
 {
-	t_allocation	**alloc_list_ptr;
-	t_allocation	*new_alloc;
-	void			*result;
+	t_alloc	**alloc_list_ptr;
+	t_alloc	*new_alloc;
 
 	alloc_list_ptr = get_alloc_list();
 	if (size == 0)
 		return (NULL);
-	new_alloc = malloc(sizeof(t_allocation));
+	new_alloc = malloc(sizeof(t_alloc));
 	if (!new_alloc)
 	{
 		write(2, "Allocation failed\n", 18);

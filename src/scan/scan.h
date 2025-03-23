@@ -29,7 +29,7 @@ bool			valid_operator(const char *input, int pos);
 bool			dual_operator(const char *input, int pos);
 const char		*translate_message(t_scan_status status);
 void			skip_operator(const char *input, int *i);
-t_scan_status	ft_scanner(const char *input);
+t_scan_status	ft_scan(const char *input);
 bool			is_operator_char(char c);
 
 #endif

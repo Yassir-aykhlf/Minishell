@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 15:53:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/18 15:41:56 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/23 22:00:10 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	print_indent(int level, int is_last)
 
 void	print_command_node(t_ast *node, int level, int is_last)
 {
-	int		i;
 	char	*joined_cmd;
+	size_t	i;
 	size_t	total_len;
 	size_t	current_len;
 

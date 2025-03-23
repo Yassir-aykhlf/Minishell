@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:54:57 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/13 14:56:37 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/03/19 13:55:50 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 
 int		ft_swap_nodes(t_token *node1, t_token *node2);
 char	*handle_heredoc(char *delim);
-t_token	*here_doc(t_token *tokens);
+t_token	*ft_heredoc(t_token *tokens);
 
 #endif

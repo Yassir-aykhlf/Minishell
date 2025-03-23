@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/14 21:18:28 by arajma           ###   ########.fr       */
+/*   Updated: 2025/03/23 20:57:25 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_ast	*create_command_node(void)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
-	node->u_data.s_cmd.argv = NULL;
+	node->u_data.s_cmd.argv = ft_malloc(sizeof(char *));
+	node->u_data.s_cmd.argv[0] = NULL;
 	node->u_data.s_cmd.redirects = NULL;
 	node->u_data.s_cmd.redirect_count = 0;
 	return (node);
