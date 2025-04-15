@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 23:22:54 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/15 11:13:48 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,43 +27,51 @@ t_ast	*parse_subshell(t_token **tokens)
 	return (subshell_node);
 }
 
-t_ast	*parse_simple_command(t_token **tokens)
+t_ast	*parse_simple_cmd(t_token **tokens)
 {
-	t_token			*current;
-	t_ast			*cmd_node;
-
-	cmd_node = create_command_node();
-	while (*tokens)
+	t_ast *(node) = create_command_node();
+	while (*tokens && !is_cmd_finished(*tokens))
 	{
-		current = *tokens;
-		if (is_cmd_finished(current) || is_redirect(current))
-			break ;
-		if (current->type == TOKEN_WORD)
+		t_token (*cur) = *tokens;
+		if (is_redirect(cur))
 		{
-			add_argument(cmd_node, current->value);
-			*tokens = current->next;
-			continue ;
+			t_token_type (type) = cur->type;
+			*tokens = cur->next;
+			if (!*tokens || (*tokens)->type != TOKEN_WORD)
+				return (NULL);
+			add_redirect(node, type, (*tokens)->value);
+			*tokens = (*tokens)->next;
 		}
-		return (NULL);
+		else if (cur->type == TOKEN_WORD)
+			(add_argument(node, cur->value), *tokens = cur->next);
+		else
+			break ;
 	}
-	return (cmd_node);
+	if (node->type == NODE_COMMAND && !node->u_data.s_cmd.argv
+		&& node->u_data.s_cmd.redirect_count == 0)
+		return (NULL);
+	return (node);
 }
 
-t_ast	*parse_command_with_redirects(t_token **tokens)
+t_ast	*parse_cmd_redir(t_token **tokens)
 {
-	t_ast	*node;
-
 	if (*tokens && (*tokens)->type == TOKEN_PAREN_OPEN)
-		node = parse_subshell(tokens);
-	else
-		node = parse_simple_command(tokens);
-	if (node && node->type == NODE_COMMAND && 
-		!node->u_data.s_cmd.argv[0] && 
-		node->u_data.s_cmd.redirect_count == 0)
 	{
-		return (NULL);
+		t_ast (*node) = parse_subshell(tokens);
+		if (!node)
+			return (NULL);
+		while (*tokens && is_redirect(*tokens))
+		{
+			t_token_type (type) = (*tokens)->type;
+			*tokens = (*tokens)->next;
+			if (!*tokens || (*tokens)->type != TOKEN_WORD)
+				return (NULL);
+			add_redirect(node, type, (*tokens)->value);
+			*tokens = (*tokens)->next;
+		}
+		return (node);
 	}
-	return (handle_redirections(node, tokens));
+	return (parse_simple_cmd(tokens));
 }
 
 t_ast	*parse_pipeline(t_token **tokens)
@@ -74,7 +82,7 @@ t_ast	*parse_pipeline(t_token **tokens)
 	pipeline_node = create_pipeline_node();
 	if (!*tokens || is_cmd_finished(*tokens))
 		return (NULL);
-	cmd_node = parse_command_with_redirects(tokens);
+	cmd_node = parse_cmd_redir(tokens);
 	if (!cmd_node)
 		return (NULL);
 	add_command_to_pipeline(pipeline_node, cmd_node);
@@ -83,7 +91,7 @@ t_ast	*parse_pipeline(t_token **tokens)
 		*tokens = (*tokens)->next;
 		if (!*tokens || is_cmd_finished(*tokens))
 			return (NULL);
-		cmd_node = parse_command_with_redirects(tokens);
+		cmd_node = parse_cmd_redir(tokens);
 		if (!cmd_node)
 			return (NULL);
 		add_command_to_pipeline(pipeline_node, cmd_node);
