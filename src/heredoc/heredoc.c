@@ -1,74 +1,111 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   n_heredoc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/09 23:11:21 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 23:24:02 by yaykhlf          ###   ########.fr       */
+/*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
+/*   Updated: 2025/04/11 11:53:40 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../includes/minishell.h"
 
-int	ft_swap_nodes(t_token *node1, t_token *node2)
+// Generate a unique temporary filename
+char	*generate_temp_filename(void)
 {
-	t_token_type	type;
-	char			*value;
+	static int	counter = 0;
+	char		*filename;
+	char		*counter_str;
 
-	if (!node1 || !node2)
-		return (0);
-	type = node1->type;
-	node1->type = node2->type;
-	node2->type = type;
-	value = node1->value;
-	node1->value = node2->value;
-	node2->value = value;
-	return (1);
+	counter_str = ft_itoa(counter++);
+	filename = ft_strjoin("/tmp/minishell_heredoc_", counter_str);
+	return (filename);
 }
 
-char	*handle_heredoc(char *delim)
+// Handle SIGINT in heredoc child process
+static void	heredoc_sigint_handler(int sig)
 {
-	int (i) = 0;
-	char *(input), (*result) = NULL;
+	(void)sig;
+	write(1, "\n", 1);
+	exit(130);
+}
+
+// Handle heredoc input in child process, writing to temp file
+static int	child_handle_heredoc(char *delim, int fd)
+{
+	char	*input;
+
+	signal(SIGINT, heredoc_sigint_handler);
 	while (1)
 	{
 		input = readline("> ");
 		if (!input || ft_strcmp(input, delim) == 0)
+		{
+			//free(input);
 			break ;
-		if (i)
-			result = ft_strjoin(result, "\n");
-		result = ft_strjoin(result, input);
-		free(input);
-		i = 1;
+		}
+		write(fd, input, ft_strlen(input));
+		write(fd, "\n", 1);
+		//free(input);
 	}
-	return (result);
+	close(fd);
+	exit(0);
 }
 
+// Create a temp file and handle heredoc input in a separate process
+char	*handle_heredoc(char *delim)
+{
+	char	*filename;
+	pid_t	pid;
+	int		fd;
+	int		status;
+
+	filename = generate_temp_filename();
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	if (fd < 0)
+		return (NULL);
+	pid = fork();
+	if (pid < 0)
+	{
+		close(fd);
+		unlink(filename);
+		return (NULL);
+	}
+	if (pid == 0)
+		child_handle_heredoc(delim, fd);
+	close(fd);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		unlink(filename);
+		return (NULL);
+	}
+	return (filename);
+}
+
+// Process all heredocs in the token list
 t_token	*ft_heredoc(t_token *tokens)
 {
-	int (i) = 0;
-	t_token *(prv), (*temp) = tokens;
-	prv = NULL;
+	t_token	*temp;
+	char	*heredoc_file;
+
+	temp = tokens;
 	while (temp)
 	{
 		if (temp->type == TOKEN_HEREDOC)
 		{
-			temp->type = TOKEN_REDIRECT_IN;
-			temp->value = ft_strdup("<");
 			if (!temp->next || temp->next->type != TOKEN_WORD)
 				return (NULL);
-			temp->next->value = handle_heredoc(temp->next->value);
-			if (temp->next->value == NULL)
-				temp->next->value = ft_strdup("");
-			if (temp->next->next)
-				if (!prv || (prv && prv->type != TOKEN_WORD))
-					(ft_swap_nodes(temp->next, temp->next->next)
-						, ft_swap_nodes(temp, temp->next));
+			heredoc_file = handle_heredoc(temp->next->value);
+			if (!heredoc_file)
+				return (NULL);
+			temp->type = TOKEN_REDIRECT_IN;
+			temp->value = ft_strdup("<");
+			temp->next->value = heredoc_file;
 		}
-		i++;
-		prv = temp;
 		temp = temp->next;
 	}
 	return (tokens);
