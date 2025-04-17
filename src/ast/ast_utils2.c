@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 20:41:34 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 23:22:01 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:10:43 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_ast	*handle_redirections(t_ast *node, t_token **tokens)
 		*tokens = current->next;
 		if (!*tokens || ((*tokens)->type != TOKEN_WORD))
 			return (NULL);
-		add_redirect(node, redirect_type, (*tokens)->value);
+		add_redirect(node, redirect_type, (*tokens)->value, (*tokens)->mask);
 		*tokens = (*tokens)->next;
 	}
 	return (node);

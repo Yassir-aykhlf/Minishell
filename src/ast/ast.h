@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/18 16:56:34 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:41:58 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
+	char			*mask;
+	struct s_redir	*next;
 }	t_redir;
+
+typedef struct s_args
+{
+	char			*file;
+	char			*mask;
+	struct s_args	*next;
+}	t_args;
 
 typedef struct s_ast	t_ast;
 
@@ -57,15 +66,12 @@ typedef struct s_ast
 		}		s_pipeline;
 		struct
 		{
-			char	**argv;
+			t_args	*argv;
 			t_redir	*redirects;
-			size_t	redirect_count;
 		}		s_cmd;
 		struct
 		{
 			t_ast	*command;
-			t_redir	*redirects;
-			size_t	redirect_count;
 		}		s_subshell;
 	}	u_data;
 }	t_ast;
@@ -87,8 +93,8 @@ t_ast	*create_subshell_node(void);
 
 // ast utils functions
 
-void	add_redirect(t_ast *cmd_node, t_token_type type, char *file);
-void	add_argument(t_ast *cmd_node, char *arg);
+void	add_redirect(t_ast *cmd_node, t_token_type type, char *file, char *mask);
+void	add_argument(t_ast *cmd_node, char *arg, char *mask);
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node);
 int		is_redirect(t_token *token);
 int		is_cmd_finished(t_token *token);

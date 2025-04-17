@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/15 11:13:48 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/17 18:44:58 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ t_ast	*parse_simple_cmd(t_token **tokens)
 			*tokens = cur->next;
 			if (!*tokens || (*tokens)->type != TOKEN_WORD)
 				return (NULL);
-			add_redirect(node, type, (*tokens)->value);
+			add_redirect(node, type, (*tokens)->value, (*tokens)->mask);
 			*tokens = (*tokens)->next;
 		}
 		else if (cur->type == TOKEN_WORD)
-			(add_argument(node, cur->value), *tokens = cur->next);
+			(add_argument(node, cur->value, cur->mask), *tokens = cur->next);
 		else
 			break ;
 	}
 	if (node->type == NODE_COMMAND && !node->u_data.s_cmd.argv
-		&& node->u_data.s_cmd.redirect_count == 0)
-		return (NULL);
+    	&& !node->u_data.s_cmd.redirects)
+    	return (NULL);
 	return (node);
 }
 
@@ -60,15 +60,6 @@ t_ast	*parse_cmd_redir(t_token **tokens)
 		t_ast (*node) = parse_subshell(tokens);
 		if (!node)
 			return (NULL);
-		while (*tokens && is_redirect(*tokens))
-		{
-			t_token_type (type) = (*tokens)->type;
-			*tokens = (*tokens)->next;
-			if (!*tokens || (*tokens)->type != TOKEN_WORD)
-				return (NULL);
-			add_redirect(node, type, (*tokens)->value);
-			*tokens = (*tokens)->next;
-		}
 		return (node);
 	}
 	return (parse_simple_cmd(tokens));
