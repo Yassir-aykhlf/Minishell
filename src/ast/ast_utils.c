@@ -3,71 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 23:21:34 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:44:30 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	get_redirect_info(t_ast *node, t_redir **redirects, size_t *count)
+void	add_redirect(t_ast *node, t_token_type type, char *file, char *mask)
 {
-	if (node->type == NODE_COMMAND)
-	{
-		*redirects = node->u_data.s_cmd.redirects;
-		*count = node->u_data.s_cmd.redirect_count;
-	}
-	else if (node->type == NODE_SUBSHELL)
-	{
-		*redirects = node->u_data.s_subshell.redirects;
-		*count = node->u_data.s_subshell.redirect_count;
-	}
+	t_redir	*new_redir;
+	t_redir	*current;
+
+	if (node->type != NODE_COMMAND)
+		return ;
+	new_redir = ft_malloc(sizeof(t_redir));
+	new_redir->type = type;
+	new_redir->file = ft_strdup(file);
+	new_redir->mask = ft_strdup(mask);
+	new_redir->next = NULL;
+	if (!node->u_data.s_cmd.redirects)
+		node->u_data.s_cmd.redirects = new_redir;
 	else
 	{
-		*redirects = NULL;
-		*count = 0;
+		current = node->u_data.s_cmd.redirects;
+		while (current->next)
+			current = current->next;
+		current->next = new_redir;
 	}
 }
 
-void	add_redirect(t_ast *node, t_token_type type, char *file)
+void	add_argument(t_ast *cmd_node, char *arg, char *mask)
 {
-	t_redir	*old_redirects;
-	t_redir	*new_redirects;
-	size_t	old_count;
+	t_args	*new_arg;
+	t_args	*current;
 
-	get_redirect_info(node, &old_redirects, &old_count);
-	new_redirects = ft_malloc(sizeof(t_redir) * (old_count + 1));
-	ft_memmove(new_redirects, old_redirects, sizeof(t_redir) * old_count);
-	new_redirects[old_count].type = type;
-	new_redirects[old_count].file = ft_strdup(file);
-	if (node->type == NODE_COMMAND)
+	new_arg = ft_malloc(sizeof(t_args));
+	new_arg->file = ft_strdup(arg);
+	new_arg->mask = ft_strdup(mask);
+	new_arg->next = NULL;
+	if (!cmd_node->u_data.s_cmd.argv)
+		cmd_node->u_data.s_cmd.argv = new_arg;
+	else
 	{
-		node->u_data.s_cmd.redirects = new_redirects;
-		node->u_data.s_cmd.redirect_count = old_count + 1;
+		current = cmd_node->u_data.s_cmd.argv;
+		while (current->next)
+			current = current->next;
+		current->next = new_arg;
 	}
-	else if (node->type == NODE_SUBSHELL)
-	{
-		node->u_data.s_subshell.redirects = new_redirects;
-		node->u_data.s_subshell.redirect_count = old_count + 1;
-	}
-}
-
-void	add_argument(t_ast *cmd_node, char *arg)
-{
-	char	**new_args;
-	size_t	arg_count;
-
-	arg_count = 0;
-	if (cmd_node->u_data.s_cmd.argv)
-		while (cmd_node->u_data.s_cmd.argv[arg_count])
-			arg_count++;
-	new_args = ft_malloc(8 * (arg_count + 2));
-	ft_memmove(new_args, cmd_node->u_data.s_cmd.argv, 8 * arg_count);
-	cmd_node->u_data.s_cmd.argv = new_args;
-	cmd_node->u_data.s_cmd.argv[arg_count] = ft_strdup(arg);
-	cmd_node->u_data.s_cmd.argv[arg_count + 1] = NULL;
 }
 
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node)

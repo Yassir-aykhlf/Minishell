@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/03/23 20:57:25 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:45:19 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ t_ast	*create_subshell_node(void)
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_SUBSHELL;
 	node->u_data.s_subshell.command = NULL;
-	node->u_data.s_subshell.redirects = NULL;
-	node->u_data.s_subshell.redirect_count = 0;
 	return (node);
 }
 
@@ -32,10 +30,8 @@ t_ast	*create_command_node(void)
 
 	node = ft_malloc(sizeof(t_ast));
 	node->type = NODE_COMMAND;
-	node->u_data.s_cmd.argv = ft_malloc(sizeof(char *));
-	node->u_data.s_cmd.argv[0] = NULL;
+	node->u_data.s_cmd.argv = NULL;
 	node->u_data.s_cmd.redirects = NULL;
-	node->u_data.s_cmd.redirect_count = 0;
 	return (node);
 }
 
