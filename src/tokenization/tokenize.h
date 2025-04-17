@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:58:00 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/17 15:16:29 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:04:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ typedef enum e_token_type
 	TOKEN_PAREN_OPEN,
 	TOKEN_PAREN_CLOSE
 }	t_token_type;
+
+static const struct
+{
+	const char		*symbol;
+	t_token_type	type;
+}
+s_operators[] =
+{
+	{"<<", TOKEN_HEREDOC}, {">>", TOKEN_APPEND}, {"&&", TOKEN_AND},
+	{"||", TOKEN_OR}, {"<", TOKEN_REDIRECT_IN}, {">", TOKEN_REDIRECT_OUT},
+	{"|", TOKEN_PIPE}, {"(", TOKEN_PAREN_OPEN}, {")", TOKEN_PAREN_CLOSE}
+};
 
 typedef struct s_token
 {
