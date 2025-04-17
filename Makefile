@@ -1,6 +1,6 @@
 NAME = Enigma
 CC = cc
-CFLAGS = -g3 -lreadline -Wall -Wextra -Werror
+CFLAGS = -g3 -lreadline #-Wall -Wextra -Werror
 HEADER = includes/minishell.h
 SRC =	src/main/shell.c src/scan/*.c src/ast/*.c \
 		src/memory/*.c src/tokenization/*.c src/utils/*.c \

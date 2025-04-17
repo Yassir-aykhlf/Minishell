@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/17 17:37:55 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/16 19:59:32 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ t_env	**get_env_list(void)
 	return (&env_list);
 }
 
-void	init_env(char **envp)
+void	init_env(char **env)
 {
 	int	i;
 
 	i = 0;
-	if (!envp || !*envp)
+	if (!env || !*env)
 		return ;
-	while (envp[i])
+	while (env[i])
 	{
-		parse_env_var(envp[i]);
+		parse_env_var(env[i]);
 		i++;
 	}
 }
@@ -91,21 +91,21 @@ char	**env_to_array(void)
 {
 	t_env	**env_list;
 	t_env	*current;
-	char	**envp;
+	char	**env;
 	int		size;
 	int		i;
 
 	i = 0;
 	env_list = get_env_list();
 	size = env_listsize(*env_list);
-	envp = ft_malloc((size + 1) * sizeof(char *));
+	env = ft_malloc((size + 1) * sizeof(char *));
 	current = *env_list;
 	while (current)
 	{
-		envp[i] = ft_strjoin_three(current->key, "=", current->value);
+		env[i] = ft_strjoin_three(current->key, "=", current->value);
 		current = current->next;
 		i++;
 	}
-	envp[i] = NULL;
-	return (envp);
+	env[i] = NULL;
+	return (env);
 }
