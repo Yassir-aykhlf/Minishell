@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/16 19:59:32 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/18 16:23:28 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,79 @@ int	redirect(t_redir *redirects, size_t count)
 	return (0);
 }
 
+char	*get_arg(t_args *args, int index)
+{
+	int	i;
+
+	i = 0;
+	if (!args || index < 0)
+		return (NULL);
+	while (args && i < index)
+	{
+		args = args->next;
+		i++;
+	}
+	if (args)
+		return (args->arg);
+	return (NULL);
+}
+
+int	get_redir_count(t_redir *redirects)
+{
+	int	count;
+
+	count = 0;
+	while (redirects)
+	{
+		count++;
+		redirects = redirects->next;
+	}
+	return (count);
+}
+
+char	**get_argv(t_args *args)
+{
+	int		count;
+	char	**argv;
+	int		i;
+	t_args	*temp;
+
+	count = 0;
+	temp = args;
+	while (temp)
+	{
+		count++;
+		temp = temp->next;
+	}
+	argv = ft_malloc(sizeof(char *) * (count + 1));
+	if (!argv)
+		return (NULL);
+	i = 0;
+	temp = args;
+	while (temp)
+	{
+		argv[i++] = temp->arg;
+		temp = temp->next;
+	}
+	argv[i] = NULL;
+	return (argv);
+}
+
 int	execute_command(t_ast *cmd, char *env[])
 {
 	char	*path;
 	int		status;
 	pid_t	pid;
 	
-	if (ft_strchr(cmd->u_data.s_cmd.argv[0], '/'))
+	if (ft_strchr(get_arg(cmd->u_data.s_cmd.argv, 0), '/'))
 	{
-		path = ft_strdup(cmd->u_data.s_cmd.argv[0]);
+		path = ft_strdup(get_arg(cmd->u_data.s_cmd.argv, 0));
 		if (!path)
 			return (spit_error(EXIT_FAILURE, "ft_strdup", true));
 	}
 	else
 	{
-		path = search_path(cmd->u_data.s_cmd.argv[0], env);
+		path = search_path(get_arg(cmd->u_data.s_cmd.argv, 0), env);
 		if (!path)
 			return (spit_error(EXIT_FAILURE, "search_path", true));
 	}
@@ -101,9 +159,10 @@ int	execute_command(t_ast *cmd, char *env[])
 		return (spit_error(EXIT_FAILURE, "fork", true));
 	else if (pid == 0)
 	{
-		if (cmd->u_data.s_cmd.redirect_count)
-			status = redirect(cmd->u_data.s_cmd.redirects, cmd->u_data.s_cmd.redirect_count);
-		if (execve(path, cmd->u_data.s_cmd.argv, env) == -1)
+		if (get_redir_count(cmd->u_data.s_cmd.redirects) > 0)
+			status = redirect(cmd->u_data.s_cmd.redirects, 
+				get_redir_count(cmd->u_data.s_cmd.redirects));
+		if (execve(path, get_argv(cmd->u_data.s_cmd.argv), env) == -1)
 			return (spit_error(EXIT_FAILURE, "execve", true));
 	}
 	else

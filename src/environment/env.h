@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:24 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/16 20:02:02 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/18 15:42:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_env
 }					t_env;
 
 t_env	**get_env_list(void);
-void	init_env(char **env);
+void	init_env_ll(char **env);
 char	*get_env_value(char *key);
 void	set_env(char *key, char *value);
 void	unset_env(char *key);

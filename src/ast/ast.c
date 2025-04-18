@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/17 18:44:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/18 16:07:03 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ t_ast	*parse_simple_cmd(t_token **tokens)
 			break ;
 	}
 	if (node->type == NODE_COMMAND && !node->u_data.s_cmd.argv
-    	&& !node->u_data.s_cmd.redirects)
-    	return (NULL);
+		&& !node->u_data.s_cmd.redirects)
+		return (NULL);
 	return (node);
 }
 

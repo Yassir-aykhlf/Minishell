@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/17 18:44:30 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/17 20:05:58 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_argument(t_ast *cmd_node, char *arg, char *mask)
 	t_args	*current;
 
 	new_arg = ft_malloc(sizeof(t_args));
-	new_arg->file = ft_strdup(arg);
+	new_arg->arg = ft_strdup(arg);
 	new_arg->mask = ft_strdup(mask);
 	new_arg->next = NULL;
 	if (!cmd_node->u_data.s_cmd.argv)

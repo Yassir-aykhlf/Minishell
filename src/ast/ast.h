@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/17 18:41:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/17 20:11:05 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_redir
 
 typedef struct s_args
 {
-	char			*file;
+	char			*arg;
 	char			*mask;
 	struct s_args	*next;
 }	t_args;

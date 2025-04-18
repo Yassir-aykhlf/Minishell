@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:37:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/17 17:38:02 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/18 15:36:28 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,11 @@ void	link_env_node(t_env **head, t_env *node)
 
 void	parse_env_var(const char *var)
 {
-	int		i;
 	char	*key;
 	char	*pos;
 	char	*value;
 	t_env	**env_list;
 
-	i = 0;
 	env_list = get_env_list();
 	pos = ft_strchr(var, '=');
 	key = ft_strndup(var, pos - var);

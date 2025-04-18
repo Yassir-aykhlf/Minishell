@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/16 19:59:32 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/18 15:42:41 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_env	**get_env_list(void)
 	return (&env_list);
 }
 
-void	init_env(char **env)
+void	init_env_ll(char **env)
 {
 	int	i;
 
