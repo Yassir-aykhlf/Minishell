@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/18 15:51:32 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 11:24:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@
 # include <stdio.h>
 # include <errno.h>
 
+void	print_env(t_env **env_list);
 char	*get_command(void);
-char	*search_path(char *cmd, char *env[]);
+char	*search_path(char *cmd);
 int		interpreter(const char *cmd, char *env[]);
 t_token	*ft_heredoc(t_token *tokens);
 char	*handle_heredoc(char *delim);

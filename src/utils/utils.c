@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:58:51 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/23 22:02:52 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 11:18:08 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ int	env_listsize(t_env *lst)
 	int		count;
 	t_env	*current;
 
+	if (!lst)
+		return (0);
 	count = 0;
 	current = lst;
 	while (current)
 	{
-		current = current->next;
 		count++;
+		current = current->next;
 	}
 	return (count);
 }

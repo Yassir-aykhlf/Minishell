@@ -6,20 +6,22 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/18 16:23:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 11:33:42 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*search_path(char *cmd, char *env[])
+char	*search_path(char *cmd)
 {
 	char	*tmp_slash;
 	char	*path_env;
 	char	**path;
 	char	*tmp;
 	int		i;
+	char	**env;
 
+	env = env_to_array();
 	i = 0;
 	while (ft_strncmp(env[i], "PATH=", 5))
 		i++;
@@ -136,12 +138,125 @@ char	**get_argv(t_args *args)
 	return (argv);
 }
 
-int	execute_command(t_ast *cmd, char *env[])
+int	is_builtin(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
+		!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") ||
+		!ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") ||
+		!ft_strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
+
+int	builtin_echo(char **args)
+{
+	int	newline;
+	int	i;
+	
+	newline = 1;
+	if (args[1] && !ft_strcmp(args[1], "-n"))
+	{
+		newline = 0;
+		args++;
+	}
+	i = 1;
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], STDOUT_FILENO);
+		if (args[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		i++;
+	}
+	if (newline)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (0);
+}
+
+int builtin_cd(char **args, char **env)
+{
+	char	*target_dir;
+	char	*current_dir;
+	char	**env_2d_array;
+	
+	target_dir = NULL;
+	current_dir = getcwd(NULL, 0);
+	if (!current_dir)
+	{
+		perror("getcwd");
+		return 1;
+	}
+	if (!args[1] || strcmp(args[1], "~") == 0)
+	{
+		target_dir = get_env_value("HOME");
+		if (!target_dir)
+		{
+			write(2, "cd: HOME not set\n", 17);
+			return 1;
+		}
+	}
+	else if (strcmp(args[1], "-") == 0)
+	{
+		target_dir = get_env_value("OLDPWD");
+		if (!target_dir)
+		{
+			write(2, "cd: OLDPWD not set\n", 19);
+			return 1;
+		}
+		printf("%s\n", target_dir);
+	}
+	else
+		target_dir = args[1];
+	if (chdir(target_dir) == -1)
+	{
+		perror("cd");
+		return 1;
+	}
+	set_env_var("OLDPWD", current_dir);
+	current_dir = getcwd(NULL, 0);
+	if (!current_dir)
+	{
+		perror("getcwd");
+		return 1;
+	}
+	set_env_var("PWD", current_dir);
+	return 0;
+}
+int	execute_builtin(char *cmd, char **args)
+{
+	char	**env;
+
+	env = env_to_array();
+	if (!ft_strcmp(cmd, "echo"))
+		return (builtin_echo(args));
+	else if (!ft_strcmp(cmd, "cd"))
+		return (builtin_cd(args, env));
+	// else if (!ft_strcmp(cmd, "pwd"))
+	// 	return (builtin_pwd());
+	// else if (!ft_strcmp(cmd, "export"))
+	// 	return (builtin_export(args, env));
+	// else if (!ft_strcmp(cmd, "unset"))
+	// 	return (builtin_unset(args, env));
+	// else if (!ft_strcmp(cmd, "env"))
+	// 	return (builtin_env(env));
+	// else if (!ft_strcmp(cmd, "exit"))
+	// 	return (builtin_exit(args));
+	return (-1);
+}
+
+int	execute_command(t_ast *cmd)
 {
 	char	*path;
 	int		status;
+	char	*command;
 	pid_t	pid;
-	
+	char	**env;
+
+	env = env_to_array();
+	command = get_arg(cmd->u_data.s_cmd.argv, 0);
+	if (is_builtin(command))
+		return (execute_builtin(command, get_argv(cmd->u_data.s_cmd.argv)));
 	if (ft_strchr(get_arg(cmd->u_data.s_cmd.argv, 0), '/'))
 	{
 		path = ft_strdup(get_arg(cmd->u_data.s_cmd.argv, 0));
@@ -150,7 +265,7 @@ int	execute_command(t_ast *cmd, char *env[])
 	}
 	else
 	{
-		path = search_path(get_arg(cmd->u_data.s_cmd.argv, 0), env);
+		path = search_path(get_arg(cmd->u_data.s_cmd.argv, 0));
 		if (!path)
 			return (spit_error(EXIT_FAILURE, "search_path", true));
 	}
@@ -173,8 +288,11 @@ int	execute_command(t_ast *cmd, char *env[])
 	return (status);
 }
 
-int	execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2], char *env[])
+int	execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2])
 {
+	char	**env;
+
+	env = env_to_array();
 	if (prev_pipe_read != -1)
 	{
 		if (dup2(prev_pipe_read, STDIN_FILENO) == -1)
@@ -188,7 +306,7 @@ int	execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2
 			exit(spit_error(EXIT_FAILURE, "dup2", true));
 		close(pipe_fds[1]);
 	}
-	exit(execute_recursive(node->u_data.s_pipeline.commands[i], env));
+	exit(execute_recursive(node->u_data.s_pipeline.commands[i]));
 	return (EXIT_FAILURE);
 }
 
@@ -211,14 +329,16 @@ int	validate_pipeline(t_ast *node)
 	return (0);
 }
 
-int	execute_pipeline(t_ast *node, char *env[])
+int	execute_pipeline(t_ast *node)
 {
 	int		prev_pipe_read;
 	int		pipe_fds[2];
 	int		status;
 	pid_t	pid;
 	int		i;
+	char	**env;
 
+	env = env_to_array();
 	status = 0;
 	prev_pipe_read = -1;
 	if (validate_pipeline(node) != 0)
@@ -233,7 +353,7 @@ int	execute_pipeline(t_ast *node, char *env[])
 		if (pid == -1)
 			return (spit_error(EXIT_FAILURE, "fork", true));
 		if (pid == 0)
-			execute_child_process(node, i, prev_pipe_read, pipe_fds, env);
+			execute_child_process(node, i, prev_pipe_read, pipe_fds);
 		else
 			handle_parent_process(i, &prev_pipe_read, pipe_fds, node);
 		i++;
@@ -247,15 +367,17 @@ int	execute_pipeline(t_ast *node, char *env[])
 	return (WEXITSTATUS(status));
 }
 
-int	execute_recursive(t_ast *node, char *env[])
+int	execute_recursive(t_ast *node)
 {
 	int	status;
+	char	**env;
 
+	env = env_to_array();
 	status = 0;
 	if (node->type == NODE_COMMAND)
-		status = execute_command(node, env);
+		status = execute_command(node);
 	else if (node->type == NODE_PIPELINE)
-		status = execute_pipeline(node, env);
+		status = execute_pipeline(node);
 	// else if (node->type == NODE_LOGICAL)
 	// 	status = execute_logical(node, env);
 	// else if (node->type == NODE_SUBSHELL)
@@ -263,9 +385,12 @@ int	execute_recursive(t_ast *node, char *env[])
 	return (status);
 }
 
-int	ft_execute(t_ast *root, char *env[])
+int	ft_execute(t_ast *root)
 {
+	char	**env;
+
+	env = env_to_array();
 	if (!root)
 		return (EMPTY_AST);
-	return (execute_recursive(root, env));
+	return (execute_recursive(root));
 }

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/18 15:42:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 11:24:33 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*get_env_value(char *key)
 	return (NULL);
 }
 
-void	set_env(char *key, char *value)
+void	set_env_var(char *key, char *value)
 {
 	t_env	**env_list;
 	t_env	*current;
@@ -70,7 +70,7 @@ void	set_env(char *key, char *value)
 	link_env_node(env_list, create_env_node(key, value));
 }
 
-void	unset_env(char *key)
+void	unset_env_var(char *key)
 {
 	t_env	**env_list;
 	t_env	*current;
@@ -87,6 +87,20 @@ void	unset_env(char *key)
 	}
 }
 
+void	print_env(t_env **env_list)
+{
+	t_env	*current;
+
+	if (!env_list || !*env_list)
+		return ;
+	current = *env_list;
+	while (current)
+	{
+		printf("%s=%s\n", current->key, current->value);
+		current = current->next;
+	}
+}
+
 char	**env_to_array(void)
 {
 	t_env	**env_list;
@@ -97,6 +111,7 @@ char	**env_to_array(void)
 
 	i = 0;
 	env_list = get_env_list();
+	print_env(env_list);
 	size = env_listsize(*env_list);
 	env = ft_malloc((size + 1) * sizeof(char *));
 	current = *env_list;

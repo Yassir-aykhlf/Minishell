@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/18 15:52:05 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 11:13:18 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,8 @@ int	interpreter(const char *cmd, char *env[])
 			write(2, "syntax error near unexpected token `;'\n", 39);
 		return (2);
 	}
-	ret_status = ft_execute(ast, env);
+	ret_status = ft_execute(ast);
 	return (ret_status);
-}
-
-void	print_env(char *env[])
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
 }
 
 int	main(int argc, char **argv, char **envp)
