@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 11:24:33 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:17:06 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	set_env_var(char *key, char *value)
 {
 	t_env	**env_list;
 	t_env	*current;
+	char	*new_value;
 
 	env_list = get_env_list();
 	current = *env_list;
@@ -62,7 +63,9 @@ void	set_env_var(char *key, char *value)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
-			current->value = ft_strdup(value);
+			/* new_value */ current->value = ft_strdup(value);
+			// free(current->value);
+			// current->value = new_value;
 			return ;
 		}
 		current = current->next;
@@ -87,18 +90,26 @@ void	unset_env_var(char *key)
 	}
 }
 
-void	print_env(t_env **env_list)
+void	print_env(void)
 {
+	t_env	**env_list;
 	t_env	*current;
+	int		i;
 
-	if (!env_list || !*env_list)
-		return ;
+	i = 0;
+	env_list = get_env_list();
 	current = *env_list;
 	while (current)
 	{
-		printf("%s=%s\n", current->key, current->value);
+		i++;
+		if (/* current->value &&  */!ft_strcmp(current->key, "PWD"))
+			printf("%d:::::: %s=%s\n",i , current->key, current->value);
+		// else
+		// 	printf("%s\n", current->key);
 		current = current->next;
 	}
+	printf("---------------------------------\n");
+	return ;
 }
 
 char	**env_to_array(void)
@@ -111,7 +122,6 @@ char	**env_to_array(void)
 
 	i = 0;
 	env_list = get_env_list();
-	print_env(env_list);
 	size = env_listsize(*env_list);
 	env = ft_malloc((size + 1) * sizeof(char *));
 	current = *env_list;

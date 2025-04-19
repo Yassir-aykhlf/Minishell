@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 11:33:42 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:17:55 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ int builtin_cd(char **args, char **env)
 {
 	char	*target_dir;
 	char	*current_dir;
-	char	**env_2d_array;
 	
 	target_dir = NULL;
 	current_dir = getcwd(NULL, 0);
@@ -204,7 +203,6 @@ int builtin_cd(char **args, char **env)
 			write(2, "cd: OLDPWD not set\n", 19);
 			return 1;
 		}
-		printf("%s\n", target_dir);
 	}
 	else
 		target_dir = args[1];
@@ -221,8 +219,17 @@ int builtin_cd(char **args, char **env)
 		return 1;
 	}
 	set_env_var("PWD", current_dir);
+	system("pwd");
+	print_env();
 	return 0;
 }
+
+int builtin_env(char **env)
+{
+	print_env();
+	return (0);
+}
+
 int	execute_builtin(char *cmd, char **args)
 {
 	char	**env;
@@ -238,10 +245,12 @@ int	execute_builtin(char *cmd, char **args)
 	// 	return (builtin_export(args, env));
 	// else if (!ft_strcmp(cmd, "unset"))
 	// 	return (builtin_unset(args, env));
-	// else if (!ft_strcmp(cmd, "env"))
-	// 	return (builtin_env(env));
+	else if (!ft_strcmp(cmd, "env"))
+		return (builtin_env(env));
 	// else if (!ft_strcmp(cmd, "exit"))
 	// 	return (builtin_exit(args));
+	system("pwd");
+	print_env();
 	return (-1);
 }
 
@@ -256,7 +265,12 @@ int	execute_command(t_ast *cmd)
 	env = env_to_array();
 	command = get_arg(cmd->u_data.s_cmd.argv, 0);
 	if (is_builtin(command))
-		return (execute_builtin(command, get_argv(cmd->u_data.s_cmd.argv)));
+	{
+		execute_builtin(command, get_argv(cmd->u_data.s_cmd.argv));
+		system("pwd");
+		print_env();
+		return (0);
+	}
 	if (ft_strchr(get_arg(cmd->u_data.s_cmd.argv, 0), '/'))
 	{
 		path = ft_strdup(get_arg(cmd->u_data.s_cmd.argv, 0));
@@ -374,8 +388,11 @@ int	execute_recursive(t_ast *node)
 
 	env = env_to_array();
 	status = 0;
-	if (node->type == NODE_COMMAND)
+	if (node->type == NODE_COMMAND){
 		status = execute_command(node);
+		system("pwd");
+		print_env();
+	}
 	else if (node->type == NODE_PIPELINE)
 		status = execute_pipeline(node);
 	// else if (node->type == NODE_LOGICAL)

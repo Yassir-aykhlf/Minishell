@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:37:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/18 15:36:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:59:40 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_env	*create_env_node(char *key, char *value)
 
 	if (!key || !value)
 		return (NULL);
-	node = ft_malloc(sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	node->key = key;
 	node->value = value;
 	node->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 11:13:18 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:30:00 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		input = get_command();
 		interpreter(input, env);
-		free_all();
 		free(input);
 	}
+	free_all();
 	return (0);
 }
