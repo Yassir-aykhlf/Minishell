@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 17:17:55 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:26:13 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,6 +407,7 @@ int	ft_execute(t_ast *root)
 	char	**env;
 
 	env = env_to_array();
+	print_env();
 	if (!root)
 		return (EMPTY_AST);
 	return (execute_recursive(root));

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 16:30:00 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:29:31 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	main(int argc, char **argv, char **envp)
 	env = env_to_array();
 	while (1)
 	{
+		printf("first env :");
+		print_env();
 		input = get_command();
 		interpreter(input, env);
 		free(input);
