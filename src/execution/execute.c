@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/21 18:39:24 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/21 20:00:31 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,6 +345,56 @@ int	builtin_export(char **args, char **env)
 	return (0);
 }
 
+int	builtin_unset(char **args, char **env)
+{
+	int	i;
+
+	if (!args[1])
+		return (0);
+	i = 1;
+	while (args[i])
+	{
+		// if (ft_strchr(args[i], '='))
+		// 	args[i][ft_strchr(args[i], '=') - args[i]] = '\0';
+		unset_env_var(args[i]);
+		i++;
+	}
+	return (0);
+}
+
+bool is_child_process(void)
+{
+	static pid_t original_pid = 0;
+	
+	if (original_pid == 0)
+		original_pid = getpid();
+	
+	return getpid() != original_pid;
+}
+
+int	builtin_exit(char **args)
+{
+	int	status;
+
+	if (args[1])
+	{
+		if (ft_isdigit(args[1][0]) || (args[1][0] == '-' && ft_isdigit(args[1][1])))
+			status = ft_atoi(args[1]);
+		else
+		{
+			ft_putstr_fd("exit: ", STDERR_FILENO);
+			ft_putstr_fd(args[1], STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			return (2);
+		}
+	}
+	else
+		status = 0;
+	if (!is_child_process())
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+	exit(status);
+}
+
 int	execute_builtin(char *cmd, char **args)
 {
 	char	**env;
@@ -358,12 +408,12 @@ int	execute_builtin(char *cmd, char **args)
 		return (builtin_pwd());
 	else if (!ft_strcmp(cmd, "export"))
 		return (builtin_export(args, env));
-	// else if (!ft_strcmp(cmd, "unset"))
-	// 	return (builtin_unset(args, env));
+	else if (!ft_strcmp(cmd, "unset"))
+		return (builtin_unset(args, env));
 	else if (!ft_strcmp(cmd, "env"))
 		return (builtin_env(env));
-	// else if (!ft_strcmp(cmd, "exit"))
-	// 	return (builtin_exit(args));
+	else if (!ft_strcmp(cmd, "exit"))
+		return (builtin_exit(args));
 	return (-1);
 }
 
