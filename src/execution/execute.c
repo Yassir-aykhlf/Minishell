@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 17:26:13 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/21 18:39:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,11 @@ int builtin_cd(char **args, char **env)
 	if (chdir(target_dir) == -1)
 	{
 		perror("cd");
+		free(current_dir);
 		return 1;
 	}
 	set_env_var("OLDPWD", current_dir);
+	free(current_dir);
 	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 	{
@@ -219,14 +221,127 @@ int builtin_cd(char **args, char **env)
 		return 1;
 	}
 	set_env_var("PWD", current_dir);
-	system("pwd");
-	print_env();
+	free(current_dir);
 	return 0;
 }
 
 int builtin_env(char **env)
 {
 	print_env();
+	return (0);
+}
+
+int	builtin_pwd(void)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (spit_error(EXIT_FAILURE, "getcwd", true));
+	ft_putstr_fd(pwd, STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	free(pwd);
+	return (0);
+}
+
+void builtin_export_print(char **env)
+{
+	t_env	**env_list;
+	t_env	*current;
+
+	env_list = get_env_list();
+	current = *env_list;
+	while (current)
+	{
+		if (current->value)
+			printf("declare -x %s=\"%s\"\n", current->key, current->value);
+		else
+			printf("declare -x %s\n", current->key);
+		current = current->next;
+	}
+}
+
+int	validate_export(char **args)
+{
+	int		i;
+	int		j;
+	char	*key;
+	int		status;
+	
+	if (!args)
+		return (EXIT_FAILURE);
+	i = 1;
+	status = 0;
+	while (args[i])
+	{
+		if (!args[i][0])
+		{
+			i++;
+			continue;
+		}
+		if (ft_strchr(args[i], '='))
+		{
+			key = ft_strndup(args[i], ft_strchr(args[i], '=') - args[i]);
+			if (!key)
+				return (spit_error(EXIT_FAILURE, "ft_strndup", true));
+		}
+		else
+			key = args[i];
+		if (!((key[0] >= 'a' && key[0] <= 'z') || 
+			  (key[0] >= 'A' && key[0] <= 'Z') || key[0] == '_'))
+		{
+			ft_putstr_fd("export: `", STDERR_FILENO);
+			ft_putstr_fd(args[i], STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			status = EXIT_FAILURE;
+			i++;
+			continue;
+		}
+		j = 1;
+		while (key[j])
+		{
+			if (!((key[j] >= 'a' && key[j] <= 'z') || 
+				  (key[j] >= 'A' && key[j] <= 'Z') || 
+				  (key[j] >= '0' && key[j] <= '9') || key[j] == '_'))
+			{
+				ft_putstr_fd("export: `", STDERR_FILENO);
+				ft_putstr_fd(args[i], STDERR_FILENO);
+				ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+				status = EXIT_FAILURE;
+				break;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (status);
+}
+
+int	builtin_export(char **args, char **env)
+{
+	char	*key;
+	char	*value;
+	int	i;
+
+	if (validate_export(args) != 0)
+		return (EXIT_FAILURE);
+	if (!args[1])
+	{
+		builtin_export_print(env);
+		return (0);
+	}
+	i = 1;
+	while (args[i])
+	{
+		if (ft_strchr(args[i], '='))
+		{
+			key = ft_strndup(args[i], ft_strchr(args[i], '=') - args[i]);
+			set_env_var(key, ft_strchr(args[i], '=') + 1);
+		}
+		else
+			set_env_var(args[i], NULL);
+		i++;
+	}
 	return (0);
 }
 
@@ -239,18 +354,16 @@ int	execute_builtin(char *cmd, char **args)
 		return (builtin_echo(args));
 	else if (!ft_strcmp(cmd, "cd"))
 		return (builtin_cd(args, env));
-	// else if (!ft_strcmp(cmd, "pwd"))
-	// 	return (builtin_pwd());
-	// else if (!ft_strcmp(cmd, "export"))
-	// 	return (builtin_export(args, env));
+	else if (!ft_strcmp(cmd, "pwd"))
+		return (builtin_pwd());
+	else if (!ft_strcmp(cmd, "export"))
+		return (builtin_export(args, env));
 	// else if (!ft_strcmp(cmd, "unset"))
 	// 	return (builtin_unset(args, env));
 	else if (!ft_strcmp(cmd, "env"))
 		return (builtin_env(env));
 	// else if (!ft_strcmp(cmd, "exit"))
 	// 	return (builtin_exit(args));
-	system("pwd");
-	print_env();
 	return (-1);
 }
 
@@ -263,14 +376,6 @@ int	execute_command(t_ast *cmd)
 	char	**env;
 
 	env = env_to_array();
-	command = get_arg(cmd->u_data.s_cmd.argv, 0);
-	if (is_builtin(command))
-	{
-		execute_builtin(command, get_argv(cmd->u_data.s_cmd.argv));
-		system("pwd");
-		print_env();
-		return (0);
-	}
 	if (ft_strchr(get_arg(cmd->u_data.s_cmd.argv, 0), '/'))
 	{
 		path = ft_strdup(get_arg(cmd->u_data.s_cmd.argv, 0));
@@ -355,6 +460,14 @@ int	execute_pipeline(t_ast *node)
 	env = env_to_array();
 	status = 0;
 	prev_pipe_read = -1;
+	// some fucked up logic here
+	char *command = get_arg(node->u_data.s_pipeline.commands[0]->u_data.s_cmd.argv, 0);
+	if (is_builtin(command))
+	{
+		execute_builtin(command, get_argv(node->u_data.s_pipeline.commands[0]->u_data.s_cmd.argv));
+		return (0);
+	}
+	/////////////////////////////
 	if (validate_pipeline(node) != 0)
 		return (EXIT_FAILURE);
 	i = 0;
@@ -384,15 +497,10 @@ int	execute_pipeline(t_ast *node)
 int	execute_recursive(t_ast *node)
 {
 	int	status;
-	char	**env;
 
-	env = env_to_array();
 	status = 0;
-	if (node->type == NODE_COMMAND){
+	if (node->type == NODE_COMMAND)
 		status = execute_command(node);
-		system("pwd");
-		print_env();
-	}
 	else if (node->type == NODE_PIPELINE)
 		status = execute_pipeline(node);
 	// else if (node->type == NODE_LOGICAL)
@@ -407,7 +515,6 @@ int	ft_execute(t_ast *root)
 	char	**env;
 
 	env = env_to_array();
-	print_env();
 	if (!root)
 		return (EMPTY_AST);
 	return (execute_recursive(root));

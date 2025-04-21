@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 17:17:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/21 18:55:35 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	set_env_var(char *key, char *value)
 {
 	t_env	**env_list;
 	t_env	*current;
-	char	*new_value;
 
 	env_list = get_env_list();
 	current = *env_list;
@@ -63,9 +62,8 @@ void	set_env_var(char *key, char *value)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
-			/* new_value */ current->value = ft_strdup(value);
-			// free(current->value);
-			// current->value = new_value;
+			if (value)
+				current->value = ft_strdup(value);
 			return ;
 		}
 		current = current->next;
@@ -102,13 +100,12 @@ void	print_env(void)
 	while (current)
 	{
 		i++;
-		if (/* current->value &&  */!ft_strcmp(current->key, "PWD"))
-			printf("%d:::::: %s=%s\n",i , current->key, current->value);
-		// else
-		// 	printf("%s\n", current->key);
+		if (current->value)
+			printf("%s=%s\n", current->key, current->value);
+		else
+			printf("%s\n", current->key);
 		current = current->next;
 	}
-	printf("---------------------------------\n");
 	return ;
 }
 

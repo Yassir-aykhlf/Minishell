@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 17:01:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/17 19:05:08 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/21 17:56:59 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,5 @@ t_token	*ft_tokenize(const char *input)
 		if (word_buff)
 			add_token(&tokens, create_token(TOKEN_WORD, word_buff, mask_buff));
 	}
-	print_tokens(tokens);
 	return (tokens);
 }

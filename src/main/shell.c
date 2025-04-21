@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 17:29:31 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/21 15:10:55 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*last_token(t_token *tokens)
 	return (current->value);
 }
 
-int	interpreter(const char *cmd, char *env[])
+int	interpreter(const char *cmd)
 {
 	t_scan_status	status;
 	t_token			*tokens;
@@ -72,13 +72,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_env_ll(envp);
-	env = env_to_array();
 	while (1)
 	{
-		printf("first env :");
-		print_env();
 		input = get_command();
-		interpreter(input, env);
+		interpreter(input);
 		free(input);
 	}
 	free_all();

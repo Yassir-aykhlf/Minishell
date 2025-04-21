@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 16:55:59 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:57:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 void	print_env(void);
 char	*get_command(void);
 char	*search_path(char *cmd);
-int		interpreter(const char *cmd, char *env[]);
+int		interpreter(const char *cmd);
 t_token	*ft_heredoc(t_token *tokens);
 char	*handle_heredoc(char *delim);
 t_ast	*ft_parse(t_token **tokens);
