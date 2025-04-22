@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/21 21:02:44 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/21 22:08:33 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_args	*expand_token(char *token, char *mask)
 	while (token[ex->pos])
 	{
 		if (token[ex->pos] == '$' && mask[ex->pos] != 'S')
-			handle_var(&ex);
+			handle_var(ex);
 		else
 		{
 			ex->word = append_char(ex->word, token[ex->pos]);
@@ -73,8 +73,8 @@ t_args	*expand_token(char *token, char *mask)
 		}
 	}
 	if (ex->word && *(ex->word))
-		add_to_list(&ex);
-	return (ex->head);
+		add_to_list(ex);
+	return (*(ex->head));
 }
 
 int	handle_field_splitting(t_expand *ex, const char *value, int var_start)

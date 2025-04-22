@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/21 21:06:35 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/21 22:26:15 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ char	*get_var_value(char *name)
 t_expand	*init_exp_cntext(char *token, char *mask)
 {
 	t_expand *(new) = ft_malloc(sizeof(t_expand));
-	new->head = NULL;
-	new->tail = NULL;
+	new->head = ft_malloc(8);
+	*(new->head) = NULL;
 	new->pos = 0;
 	new->token = token;
 	new->mask = mask;

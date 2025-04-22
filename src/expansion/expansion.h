@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:09:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/21 20:57:31 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/21 22:15:37 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 # include "../../includes/minishell.h"
 
+typedef struct s_args t_args;
+
 typedef struct s_expand
 {
 	t_args	**head;
-	t_args	**tail;
 	int		pos;
 	char	*token;
 	char	*mask;

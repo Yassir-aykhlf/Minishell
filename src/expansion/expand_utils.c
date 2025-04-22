@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/21 21:03:32 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/21 22:26:26 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,18 @@ void	expand_command(t_ast *cmd)
 void	add_to_list(t_expand *ex)
 {
 	int (i) = 0;
-	t_args *(new_arg) = ft_malloc(sizeof(t_args));
+	t_args *(temp), *(new_arg) = ft_malloc(sizeof(t_args));
 	new_arg->arg = ft_strdup(ex->word);
-	new_arg->mask = ft_malloc(strlen(ex->word) + 1);
-	while (ex->word[i])
-		new_arg->mask[i++] = 'N';
-	new_arg->mask[strlen(ex->word)] = '\0';
+	new_arg->mask = ft_calloc(1, 1);
 	new_arg->next = NULL;
 	if (!*(ex->head))
-	{
 		*(ex->head) = new_arg;
-		*(ex->tail) = new_arg;
-	}
 	else
 	{
-		(*(ex->tail))->next = new_arg;
-		*(ex->tail) = new_arg;
+		temp = *(ex->head);
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new_arg;
 	}
 	ex->word = ft_strdup("");
 }
@@ -48,9 +44,10 @@ void	add_to_list(t_expand *ex)
 void	handle_exit_code(t_expand *ex)
 {
 	ex->pos++;
-	char *(exit_code) = ft_itoa(get_last_ext());
-	char *(tmp) = ft_strjoin(ex->word, exit_code);
-	ex->word = tmp;
+	//char *(exit_code) = ft_itoa(get_last_ext());
+	//char *(tmp) = ft_strjoin(ex->word, exit_code);
+	//ex->word = tmp;
+	ex->word = ft_strdup("0");
 }
 
 char	**ft_split_whitespace(const char *s)

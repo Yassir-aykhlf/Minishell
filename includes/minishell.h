@@ -6,13 +6,14 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/21 21:37:37 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/21 21:48:23 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../src/ast/ast.h"
 # include "../src/tokenization/tokenize.h"
 # include "../src/expansion/expansion.h"
 # include "../src/execution/execute.h"
@@ -24,7 +25,6 @@
 # include <readline/history.h>
 # include "../src/scan/scan.h"
 # include "lib/libft/libft.h"
-# include "../src/ast/ast.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>
