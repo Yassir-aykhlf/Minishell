@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/21 22:40:36 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/24 20:17:41 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -550,8 +550,6 @@ int	execute_recursive(t_ast *node)
 
 	status = 0;
 	expand_command(node);
-	if (node->type == NODE_COMMAND)
-		printf("cmd: %s\n", node->u_data.s_cmd.argv->arg);
 	if (node->type == NODE_COMMAND)
 		status = execute_command(node);
 	else if (node->type == NODE_PIPELINE)
