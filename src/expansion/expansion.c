@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/21 22:08:33 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/24 22:05:45 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ int	handle_field_splitting(t_expand *ex, const char *value, int var_start)
 {
 	int (i) = 1;
 	char *(tmp);
-	if (ex->mask[var_start] != 'N' || !contains_whitespace(value)
-		|| (ex->head && !strcmp((*(ex->head))->arg, "export")))
+	if (ex->mask[var_start] != 'N' || !contains_whitespace(value))
 		return (0);
+	//todo: exclude export from fild spliting
 	char **(words) = ft_split_whitespace(value);
 	if (words && words[0])
 	{
