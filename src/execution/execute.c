@@ -6,13 +6,26 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/25 16:25:26 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:38:39 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-#define EMPTY_AST 1
+int	*get_exit_status(void)
+{
+	static int exit_status = 0;
+
+	return (&exit_status);
+}
+
+void	set_exit_status(int status)
+{
+	int	*exit_status_ptr;
+
+	exit_status_ptr = get_exit_status();
+	*exit_status_ptr = status;
+}
 
 char	*get_path_env_value(void)
 {
@@ -650,6 +663,7 @@ int	execute_command(t_ast *cmd_node)
 		if (!argv)
 			return spit_error(EXIT_FAILURE, "get_argv", true);
 		status = execute_builtin(command_name, argv);
+		set_exit_status(status);
 		return status;
 	}
 	full_path = resolve_command_path(command_name);

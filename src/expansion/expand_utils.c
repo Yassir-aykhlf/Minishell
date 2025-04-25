@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 16:33:07 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:39:09 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ void	add_to_list(t_expand *ex)
 void	handle_exit_code(t_expand *ex)
 {
 	ex->pos++;
-	//char *(exit_code) = ft_itoa(get_exit_status());
-	//char *(tmp) = ft_strjoin(ex->word, exit_code);
-	//ex->word = tmp;
-	ex->word = ft_strdup("0");
+	char *(exit_code) = ft_itoa(get_exit_status());
+	char *(tmp) = ft_strjoin(ex->word, exit_code);
+	ex->word = tmp;
 }
 
 char	**ft_split_whitespace(const char *s)
