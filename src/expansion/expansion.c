@@ -6,11 +6,26 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/24 22:05:45 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 10:27:59 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+t_args	*add_expanded_nodes(t_args *expanded, t_args *next, t_args **args_head, t_args *prev)
+{
+	if (!expanded)
+		return (prev);
+	t_args *(last) = expanded;
+	while (last->next)
+		last = last->next;
+	last->next = next;
+	if (prev)
+		prev->next = expanded;
+	else
+		*args_head = expanded;
+	return (last);
+}
 
 void	expand_args_list(t_args **args_head)
 {
@@ -18,24 +33,11 @@ void	expand_args_list(t_args **args_head)
 	t_args *(prev) = NULL;
 	while (current)
 	{
-		t_args (*next) = current->next;
+		t_args *(next) = current->next;
 		if (current->arg && current->mask)
 		{
-			t_args (*expanded) = expand_token(current->arg, current->mask);
-			if (expanded)
-			{
-				t_args (*last) = expanded;
-				while (last->next)
-					last = last->next;
-				last->next = next;
-				if (prev)
-					prev->next = expanded;
-				else
-					*args_head = expanded;
-				prev = last;
-			}
-			else
-				prev = current;
+			t_args *(expanded) = expand_token(current->arg, current->mask);
+			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
 		else
 			prev = current;
