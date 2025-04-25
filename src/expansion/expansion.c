@@ -6,37 +6,24 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 10:27:59 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 11:24:30 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_args	*add_expanded_nodes(t_args *expanded, t_args *next, t_args **args_head, t_args *prev)
-{
-	if (!expanded)
-		return (prev);
-	t_args *(last) = expanded;
-	while (last->next)
-		last = last->next;
-	last->next = next;
-	if (prev)
-		prev->next = expanded;
-	else
-		*args_head = expanded;
-	return (last);
-}
-
 void	expand_args_list(t_args **args_head)
 {
 	t_args *(current) = *args_head;
 	t_args *(prev) = NULL;
+	int (field_sp) = is_field_split(*args_head);
 	while (current)
 	{
-		t_args *(next) = current->next;
+		t_args (*next) = current->next;
 		if (current->arg && current->mask)
 		{
-			t_args *(expanded) = expand_token(current->arg, current->mask);
+			t_args (*expanded) = expand_token(current->arg,
+				current->mask, field_sp);
 			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
 		else
@@ -53,7 +40,7 @@ void	expand_redirections(t_redir *redirects)
 	{
 		if (redir->file && redir->mask)
 		{
-			expanded = expand_token(redir->file, redir->mask);
+			expanded = expand_token(redir->file, redir->mask, 1);
 			redir->file = ft_strdup(expanded->arg);
 			redir->mask = ft_strdup(expanded->mask);
 		}
@@ -61,9 +48,9 @@ void	expand_redirections(t_redir *redirects)
 	}
 }
 
-t_args	*expand_token(char *token, char *mask)
+t_args	*expand_token(char *token, char *mask, int fs)
 {
-	t_expand *(ex) = init_exp_cntext(token, mask);
+	t_expand *(ex) = init_exp_cntext(token, mask, fs);
 	while (token[ex->pos])
 	{
 		if (token[ex->pos] == '$' && mask[ex->pos] != 'S')
@@ -83,9 +70,9 @@ int	handle_field_splitting(t_expand *ex, const char *value, int var_start)
 {
 	int (i) = 1;
 	char *(tmp);
-	if (ex->mask[var_start] != 'N' || !contains_whitespace(value))
+	if (ex->mask[var_start] != 'N'
+		|| !contains_whitespace(value) || ex->fs != 0)
 		return (0);
-	//todo: exclude export from fild spliting
 	char **(words) = ft_split_whitespace(value);
 	if (words && words[0])
 	{

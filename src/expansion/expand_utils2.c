@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/24 20:41:52 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 11:16:18 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ char	*get_var_value(char *name)
 	return (ft_strdup(""));
 }
 
-t_expand	*init_exp_cntext(char *token, char *mask)
+t_expand	*init_exp_cntext(char *token, char *mask, int fs)
 {
 	t_expand *(new) = ft_malloc(sizeof(t_expand));
 	new->head = ft_malloc(8);
 	*(new->head) = NULL;
 	new->pos = 0;
+	new->fs = fs;
 	new->token = token;
 	new->mask = mask;
 	new->word = ft_strdup("");

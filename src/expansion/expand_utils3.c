@@ -6,13 +6,13 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/24 20:28:08 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 11:22:28 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_sstat(t_expand *ex,int start)
+int	is_sstat(t_expand *ex, int start)
 {
 	return (ex->mask[ex->pos] == ex->mask[start]);
 }
@@ -23,4 +23,35 @@ int	is_alnumus(char c)
 		|| (c >= 'a' && c <= 'z')
 		|| (c >= '0' && c <= '9')
 		|| c == '_');
+}
+
+int	is_field_split(t_args *arg)
+{
+	char *(str) = arg->mask;
+	int (i) = 0;
+	if (ft_strcmp(arg->arg, "export"))
+		return (0);
+	while (str && str[i])
+	{
+		if (str[i] != 'N')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+t_args	*add_expanded_nodes(t_args *expanded, t_args *next,
+					t_args **args_head, t_args *prev)
+{
+	if (!expanded)
+		return (prev);
+	t_args *(last) = expanded;
+	while (last->next)
+		last = last->next;
+	last->next = next;
+	if (prev)
+		prev->next = expanded;
+	else
+		*args_head = expanded;
+	return (last);
 }
