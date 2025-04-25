@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 15:42:05 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 21:38:16 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_var_name(t_expand *ex)
 	int (start) = ex->pos;
 	while (ex->token[ex->pos]
 		&& is_sstat(ex, start)
-		&& is_alnumus(ex->token[ex->pos]))
+		&& is_valid_var_char(ex->token[ex->pos]))
 		ex->pos++;
 	if (ex->pos == start)
 	{

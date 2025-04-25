@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 15:26:06 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 21:38:11 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@ int	is_sstat(t_expand *ex, int start)
 	if (start)
 		return (ex->mask[ex->pos] == ex->mask[start - 1]);
 	return (ex->mask[ex->pos] == ex->mask[start]);
-}
-
-int	is_alnumus(char c)
-{
-	return ((c >= 'A' && c <= 'Z')
-		|| (c >= 'a' && c <= 'z')
-		|| (c >= '0' && c <= '9')
-		|| c == '_');
 }
 
 int	is_field_split(t_args *arg)

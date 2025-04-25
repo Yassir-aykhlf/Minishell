@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:09:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 14:40:29 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 21:38:06 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char		*append_char(char *str, char c);
 t_expand	*init_exp_cntext(char *token, char *mask, int fs);
 char		*get_var_value(char *name);
 char		*get_var_name(t_expand *ex);
-int			is_alnumus(char c);
 int			is_field_split(t_args *arg);
 int			is_sstat(t_expand *ex, int start);
 
