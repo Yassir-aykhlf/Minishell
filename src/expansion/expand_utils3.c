@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 11:22:28 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 15:26:06 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_sstat(t_expand *ex, int start)
 {
+	if (start)
+		return (ex->mask[ex->pos] == ex->mask[start - 1]);
 	return (ex->mask[ex->pos] == ex->mask[start]);
 }
 
