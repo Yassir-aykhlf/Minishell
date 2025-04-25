@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 11:16:18 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 15:42:05 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_var_value(char *name)
 	t_env *(env) = *env_list;
 	while (env)
 	{
-		if (strcmp(env->key, name) == 0)
+		if (ft_strcmp(env->key, name) == 0)
 			return (env->value);
 		env = env->next;
 	}
