@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/25 17:38:39 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 18:11:02 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -654,7 +654,6 @@ int	execute_command(t_ast *cmd_node)
 
 	expand_command(cmd_node);
 	command_name = cmd_node->u_data.s_cmd.argv->arg;
-	printf("command_name: %s\n", command_name);
 	if (!command_name)
 		return (spit_error(EXIT_FAILURE, "No command specified", false));
 	if (is_builtin(command_name))
@@ -698,8 +697,10 @@ void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int 
 	}
 	else
 	{
-		if (pipe_fds[0] != -1) close(pipe_fds[0]);
-		if (pipe_fds[1] != -1) close(pipe_fds[1]);
+		if (pipe_fds[0] != -1)
+			close(pipe_fds[0]);
+		if (pipe_fds[1] != -1)
+			close(pipe_fds[1]);
 	}
 	exit(execute_recursive(node->u_data.s_pipeline.commands[cmd_index]));
 }
@@ -879,6 +880,7 @@ int	execute_recursive(t_ast *node)
 		status = execute_subshell(node);
 	else
 		status = spit_error(EXIT_FAILURE, "Unknown AST node type", false);
+	set_exit_status(status);
 	return (status);
 }
 

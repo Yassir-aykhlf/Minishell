@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/25 16:19:51 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 18:05:57 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,6 @@ int	interpreter(const char *cmd)
 		return (-1);
 	tokens = ft_heredoc(tokens);
 	ast = ft_parse(&tokens);
-	if (ast && ast->type == NODE_PIPELINE)
-	{
-		printf("ast->type: %d\n", ast->type);
-	}
 	if (!ast || tokens)
 	{
 		if (tokens)

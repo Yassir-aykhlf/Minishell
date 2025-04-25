@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 11:11:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:53:12 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 # define EMPTY_AST 1
 
+int		*get_exit_status(void);
+void	set_exit_status(int status);
 int		ft_execute(t_ast *root);
 int		execute_command(t_ast *cmd);
 int		execute_pipeline(t_ast *node);
