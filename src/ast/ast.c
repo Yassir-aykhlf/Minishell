@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/18 16:07:03 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:23:58 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ t_ast	*parse_pipeline(t_token **tokens)
 			return (NULL);
 		add_command_to_pipeline(pipeline_node, cmd_node);
 	}
+	// todo: make it better
+	if (pipeline_node && pipeline_node->u_data.s_pipeline.commands[0] && pipeline_node->u_data.s_pipeline.count == 1)
+		return (pipeline_node->u_data.s_pipeline.commands[0]);
 	return (pipeline_node);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/24 22:04:34 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/25 16:33:07 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	add_to_list(t_expand *ex)
 void	handle_exit_code(t_expand *ex)
 {
 	ex->pos++;
-	//char *(exit_code) = ft_itoa(get_last_ext());
+	//char *(exit_code) = ft_itoa(get_exit_status());
 	//char *(tmp) = ft_strjoin(ex->word, exit_code);
 	//ex->word = tmp;
 	ex->word = ft_strdup("0");
