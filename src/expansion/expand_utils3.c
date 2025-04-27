@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 16:58:35 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 21:20:43 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	is_field_split(t_args *arg)
 	char *(str) = arg->mask;
 	int (i) = 0;
 	if (ft_strcmp(arg->arg, "export"))
+		return (0);
+	if (arg->next && ft_strchr(arg->next->arg, '=') != 0 && (ft_strchr(arg->next->arg, '=') > ft_strchr(arg->next->arg, '$')))
 		return (0);
 	while (str && str[i])
 	{

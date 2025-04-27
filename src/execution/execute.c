@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 18:04:22 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 21:26:06 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -681,8 +681,9 @@ int	execute_command(t_ast *cmd_node)
 	char	**argv;
 
 	expand_command(cmd_node);
-	//if (cmd_node->u_data.s_cmd.argv == NULL) we need this bro, case: > out
-	//	return(0);
+//	you need to handle redirections first, then command
+//	if (cmd_node->u_data.s_cmd.argv == NULL) we need this bro, case: > out
+//		return(0);
 	command_name = cmd_node->u_data.s_cmd.argv->arg;
 	if (!command_name)
 		return (spit_error(EXIT_FAILURE, "No command specified", false));
