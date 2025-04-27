@@ -1,0 +1,11 @@
+some tests need to work on
+
+1
+echo $ (issue found: you expand two times in echo)
+
+2
+echo "$HO""ME" (that one needs serious refactoring)
+other examples:
+echo "$DONTEXIST""Makefile"
+
+3

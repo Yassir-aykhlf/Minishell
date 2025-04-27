@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 15:30:00 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 18:04:22 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ int	builtin_echo(char **args)
 	i = 1;
 	while (args_to_print[i])
 	{
-		expanded_arg = expand_variable(args_to_print[i]);
+		expanded_arg = args_to_print[i];//expand_variable();
 		if (expanded_arg)
 			ft_putstr_fd(expanded_arg, STDOUT_FILENO);
 		else
@@ -681,6 +681,8 @@ int	execute_command(t_ast *cmd_node)
 	char	**argv;
 
 	expand_command(cmd_node);
+	//if (cmd_node->u_data.s_cmd.argv == NULL) we need this bro, case: > out
+	//	return(0);
 	command_name = cmd_node->u_data.s_cmd.argv->arg;
 	if (!command_name)
 		return (spit_error(EXIT_FAILURE, "No command specified", false));
