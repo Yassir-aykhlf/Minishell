@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   n_heredoc.c                                        :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/11 11:53:40 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/26 12:13:20 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*handle_heredoc(char *delim)
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 		return (NULL);
-	pid = fork();
+	pid = ft_fork();
 	if (pid < 0)
 	{
 		close(fd);
@@ -77,7 +77,7 @@ char	*handle_heredoc(char *delim)
 	if (pid == 0)
 		child_handle_heredoc(delim, fd);
 	close(fd);
-	waitpid(pid, &status, 0);
+	ft_waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		unlink(filename);

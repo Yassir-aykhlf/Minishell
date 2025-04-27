@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/21 21:48:23 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/26 10:13:54 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <readline/history.h>
 # include "../src/scan/scan.h"
 # include "lib/libft/libft.h"
+# include "../src/signal_handeling/signal_handeling.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdbool.h>

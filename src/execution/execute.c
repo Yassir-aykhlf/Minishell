@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/25 21:33:13 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/26 12:13:35 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -634,7 +634,7 @@ int wait_for_child(pid_t pid)
 {
 	int status;
 
-	if (waitpid(pid, &status, 0) == -1)
+	if (ft_waitpid(pid, &status, 0) == -1)
 		return (spit_error(EXIT_FAILURE, "waitpid", true));
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -671,7 +671,7 @@ int	execute_command(t_ast *cmd_node)
 	envp = env_to_array();
 	if (!envp)
 		return (spit_error(EXIT_FAILURE, "env_to_array", true));
-	pid = fork();
+	pid = ft_fork();
 	if (pid < 0)
 		return (spit_error(EXIT_FAILURE, "fork", true));
 	else if (pid == 0)
@@ -853,7 +853,7 @@ int execute_subshell(t_ast *node)
 	}
 	else
 	{
-		if (waitpid(pid, &status, 0) == -1)
+		if (ft_waitpid(pid, &status, 0) == -1)
 			return (spit_error(EXIT_FAILURE, "waitpid", true));
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));

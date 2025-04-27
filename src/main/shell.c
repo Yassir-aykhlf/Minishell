@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/25 21:29:40 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 09:07:57 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	interpreter(const char *cmd)
 	t_token			*tokens;
 	t_ast			*ast;
 	int				ret_status;
-	
+
 	status = ft_scan(cmd);
 	if (status != SCAN_SUCCESS)
 	{
@@ -72,6 +72,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_env_ll(envp);
+	setup_shell_signals();
 	while (1)
 	{
 		input = get_command();
