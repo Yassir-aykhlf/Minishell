@@ -6,10 +6,9 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/26 12:13:20 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 14:47:17 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -44,12 +43,13 @@ static int	child_handle_heredoc(char *delim, int fd)
 		input = readline("> ");
 		if (!input || ft_strcmp(input, delim) == 0)
 		{
-			//free(input);
+			if (!input)
+				printf("warning: here-document delimited by end-of-file (wanted `%s')\n", delim);
 			break ;
 		}
+		input = expand_heredoc(input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
-		//free(input);
 	}
 	close(fd);
 	exit(0);
@@ -67,7 +67,7 @@ char	*handle_heredoc(char *delim)
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 		return (NULL);
-	pid = ft_fork();
+	pid = fork();
 	if (pid < 0)
 	{
 		close(fd);
@@ -102,8 +102,6 @@ t_token	*ft_heredoc(t_token *tokens)
 			heredoc_file = handle_heredoc(temp->next->value);
 			if (!heredoc_file)
 				return (NULL);
-			temp->type = TOKEN_REDIRECT_IN;
-			temp->value = ft_strdup("<");
 			temp->next->value = heredoc_file;
 		}
 		temp = temp->next;

@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 09:07:57 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 10:15:19 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	interpreter(const char *cmd)
  	if (!tokens)
 		return (-1);
 	tokens = ft_heredoc(tokens);
+	if (!tokens)
+		return (130);
 	ast = ft_parse(&tokens);
 	if (!ast || tokens)
 	{
@@ -81,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		interpreter(input);
+		set_exit_status(interpreter(input));
 		free(input);
 	}
 	free_all();

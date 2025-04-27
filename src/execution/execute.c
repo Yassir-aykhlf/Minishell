@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 13:01:56 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/27 15:30:00 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*search_path(char *cmd)
 
 int	get_redirect_flags(t_token_type type)
 {
-	if (type == TOKEN_REDIRECT_IN)
+	if (type == TOKEN_REDIRECT_IN || type == TOKEN_HEREDOC)
 		return (O_RDONLY);
 	if (type == TOKEN_REDIRECT_OUT)
 		return (O_WRONLY | O_CREAT | O_TRUNC);
@@ -112,7 +112,7 @@ int	apply_redirection(t_redir *redir, int mode)
 	fd = open(redir->file, flags, mode);
 	if (fd == -1)
 		return (spit_error(EXIT_FAILURE, "open", true));
-	if (redir->type == TOKEN_REDIRECT_IN)
+	if (redir->type == TOKEN_REDIRECT_IN || redir->type == TOKEN_HEREDOC)
 		target_fd = STDIN_FILENO;
 	else
 		target_fd = STDOUT_FILENO;
@@ -121,6 +121,8 @@ int	apply_redirection(t_redir *redir, int mode)
 		close(fd);
 		return (spit_error(EXIT_FAILURE, "dup2", true));
 	}
+	if (redir->type == TOKEN_HEREDOC)
+		unlink(redir->file);
 	if (close(fd) == -1)
 		return (spit_error(EXIT_FAILURE, "close", true));
 	return (0);
@@ -906,7 +908,6 @@ int	execute_recursive(t_ast *node)
 		status = execute_subshell(node);
 	else
 		status = spit_error(EXIT_FAILURE, "Unknown AST node type", false);
-	set_exit_status(status);
 	return (status);
 }
 
