@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/26 12:13:35 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/27 13:01:56 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,16 +261,44 @@ void	print_echo_args(char **args)
 	}
 }
 
+char	*expand_variable(char *arg)
+{
+	char	*expanded_arg;
+	char	*var_name;
+	char	*var_value;
+
+	if (arg[0] == '$')
+	{
+		var_name = arg + 1;
+		var_value = get_env_value(var_name);
+		if (var_value)
+			return (ft_strdup(var_value));
+	}
+	return (NULL);
+}
+
 int	builtin_echo(char **args)
 {
-	int newline;
-	char **args_to_print;
+	int		i;
+	int		newline;
+	char	**args_to_print;
+	char	*expanded_arg;
 
 	args_to_print = handle_echo_newline_flag(args, &newline);
-	print_echo_args(args_to_print);
+	i = 1;
+	while (args_to_print[i])
+	{
+		expanded_arg = expand_variable(args_to_print[i]);
+		if (expanded_arg)
+			ft_putstr_fd(expanded_arg, STDOUT_FILENO);
+		else
+			ft_putstr_fd(args_to_print[i], STDOUT_FILENO);
+		if (args_to_print[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		i++;
+	}
 	if (newline)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-
 	return (0);
 }
 
@@ -603,8 +631,6 @@ char *resolve_command_path(char *command_name)
 	else
 	{
 		path = search_path((char *)command_name);
-		if (!path)
-			spit_error(127, command_name, false);
 	}
 	return (path);
 }
@@ -811,8 +837,8 @@ int	execute_pipeline(t_ast *node)
 
 int execute_logical(t_ast *node)
 {
-	int left_status;
-	int right_status;
+	int	left_status;
+	int	right_status;
 
 	if (!node || node->type != NODE_LOGICAL || !node->u_data.s_op.left)
 		return (spit_error(EXIT_FAILURE, "Invalid logical node", false));
@@ -838,8 +864,8 @@ int execute_logical(t_ast *node)
 
 int execute_subshell(t_ast *node)
 {
-	pid_t pid;
-	int status;
+	pid_t	pid;
+	int		status;
 
 	if (!node || node->type != NODE_SUBSHELL || !node->u_data.s_subshell.command)
 		return (spit_error(EXIT_FAILURE, "Invalid subshell node", false));
