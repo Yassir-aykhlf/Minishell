@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 10:15:19 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/28 09:07:59 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	interpreter(const char *cmd)
 	status = ft_scan(cmd);
 	if (status != SCAN_SUCCESS)
 	{
-		printf("Error: %s\n", translate_message(status));
+		printf("%s\n", translate_message(status));
 		return (-1);
 	}
 	tokens = ft_tokenize(cmd);
@@ -57,7 +57,7 @@ int	interpreter(const char *cmd)
 	if (!ast || tokens)
 	{
 		if (tokens)
-			write(2, "syntax error near unexpected token `newline'\n", 43);
+			write(2, "syntax error near unexpected token `newline'\n", 45);
 		else
 			write(2, "syntax error near unexpected token `;'\n", 39);
 		return (2);

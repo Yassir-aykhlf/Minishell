@@ -78,18 +78,6 @@ void	skip_operator(const char *input, int *i)
 		(*i)++;
 }
 
-/**
- * @brief Scans the input string for syntax errors.
- * 
- * This function scans the input string to check for syntax errors such as
- * unclosed quotes or invalid operator sequences.
- * 
- * @param input The input string to be scanned.
- * @return t_scan_status The status of the scan, which can be one of the following:
- * - SCAN_SUCCESS: The input string has no syntax errors.
- * - SCAN_UNCLOSED_QUOTE: There is an unclosed quote in the input string.
- * - SCAN_INVALID_OPERATOR: There is an invalid operator sequence in the input string.
- */
 t_scan_status	ft_scan(const char *input)
 {
 	bool	in_single;
