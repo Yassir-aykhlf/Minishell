@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 21:15:09 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/28 11:38:03 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	expand_args_list(t_args **args_head)
 		{
 			t_args (*expanded) = expand_token(current->arg,
 				current->mask, field_sp);
+			//printf("%p\n", expanded->arg);
 			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
 		else
@@ -61,7 +62,7 @@ t_args	*expand_token(char *token, char *mask, int fs)
 			ex->pos++;
 		}
 	}
-	if (ex->word && *(ex->word))
+	if (ex->word)
 		add_to_list(ex);
 	return (*(ex->head));
 }
