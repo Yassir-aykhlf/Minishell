@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 14:47:17 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/28 11:53:16 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ static void	heredoc_sigint_handler(int sig)
 }
 
 // Handle heredoc input in child process, writing to temp file
-static int	child_handle_heredoc(char *delim, int fd)
+static int	child_handle_heredoc(t_token *tokens, int fd)
 {
-	char	*input;
-
+	char *(input), *(delim) = tokens->value;
 	signal(SIGINT, heredoc_sigint_handler);
 	while (1)
 	{
@@ -44,10 +43,12 @@ static int	child_handle_heredoc(char *delim, int fd)
 		if (!input || ft_strcmp(input, delim) == 0)
 		{
 			if (!input)
-				printf("warning: here-document delimited by end-of-file (wanted `%s')\n", delim);
+				printf("warning: here-document delimited by end-of-file\
+(wanted `%s')\n", delim);
 			break ;
 		}
-		input = expand_heredoc(input);
+		if (to_expand(tokens->mask))
+			input = expand_heredoc(input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 	}
@@ -56,14 +57,11 @@ static int	child_handle_heredoc(char *delim, int fd)
 }
 
 // Create a temp file and handle heredoc input in a separate process
-char	*handle_heredoc(char *delim)
+char	*handle_heredoc(t_token *tokens)
 {
-	char	*filename;
-	pid_t	pid;
-	int		fd;
-	int		status;
-
-	filename = generate_temp_filename();
+	pid_t (pid);
+	int (fd), (status);
+	char *(filename) = generate_temp_filename();
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 		return (NULL);
@@ -75,7 +73,7 @@ char	*handle_heredoc(char *delim)
 		return (NULL);
 	}
 	if (pid == 0)
-		child_handle_heredoc(delim, fd);
+		child_handle_heredoc(tokens, fd);
 	close(fd);
 	ft_waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
@@ -99,7 +97,7 @@ t_token	*ft_heredoc(t_token *tokens)
 		{
 			if (!temp->next || temp->next->type != TOKEN_WORD)
 				return (NULL);
-			heredoc_file = handle_heredoc(temp->next->value);
+			heredoc_file = handle_heredoc(temp->next);
 			if (!heredoc_file)
 				return (NULL);
 			temp->next->value = heredoc_file;

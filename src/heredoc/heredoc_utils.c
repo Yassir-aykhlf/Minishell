@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:46:59 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 15:27:33 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/28 11:50:26 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,17 @@ char	*expand_heredoc(char *input)
 			result = append_char(result, input[i++]);
 	}
 	return (result);
+}
+
+int	to_expand(char *mask)
+{
+	int	i;
+
+	i = 0;
+	if (!mask)
+		return (0);
+	while (mask[i])
+		if (mask[i++] != 'N')
+			return (0);
+	return (1);
 }

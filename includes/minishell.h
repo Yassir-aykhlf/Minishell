@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 20:30:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/28 11:48:38 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	print_env(void);
 char	*get_command(void);
 char	*search_path(char *cmd);
 int		interpreter(const char *cmd);
-t_token	*ft_heredoc(t_token *tokens);
-char	*handle_heredoc(char *delim);
 t_ast	*ft_parse(t_token **tokens);
 
 #endif
