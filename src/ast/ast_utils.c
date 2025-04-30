@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:34:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/17 20:05:58 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 09:51:29 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	add_redirect(t_ast *node, t_token_type type, char *file, char *mask)
+void	add_redirect(t_ast *node, t_token_type type, char *file, t_mask *mask)
 {
 	t_redir	*new_redir;
 	t_redir	*current;
@@ -22,7 +22,7 @@ void	add_redirect(t_ast *node, t_token_type type, char *file, char *mask)
 	new_redir = ft_malloc(sizeof(t_redir));
 	new_redir->type = type;
 	new_redir->file = ft_strdup(file);
-	new_redir->mask = ft_strdup(mask);
+	new_redir->mask = mask;
 	new_redir->next = NULL;
 	if (!node->u_data.s_cmd.redirects)
 		node->u_data.s_cmd.redirects = new_redir;
@@ -35,14 +35,14 @@ void	add_redirect(t_ast *node, t_token_type type, char *file, char *mask)
 	}
 }
 
-void	add_argument(t_ast *cmd_node, char *arg, char *mask)
+void	add_argument(t_ast *cmd_node, char *arg, t_mask *mask)
 {
 	t_args	*new_arg;
 	t_args	*current;
 
 	new_arg = ft_malloc(sizeof(t_args));
 	new_arg->arg = ft_strdup(arg);
-	new_arg->mask = ft_strdup(mask);
+	new_arg->mask = mask;
 	new_arg->next = NULL;
 	if (!cmd_node->u_data.s_cmd.argv)
 		cmd_node->u_data.s_cmd.argv = new_arg;

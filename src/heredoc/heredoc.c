@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 18:48:38 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 21:19:41 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	child_handle_heredoc(t_token *tokens, int fd)
  (wanted `%s')\n", delim);
 			break ;
 		}
-		if (to_expand(tokens->mask))
+		if (to_expand(tokens->mask->mask))
 			input = expand_heredoc(input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);

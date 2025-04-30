@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/30 18:47:48 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 21:19:24 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../src/ast/ast.h"
+# include "lib/libft/libft.h"
 # include "../src/tokenization/tokenize.h"
+# include "../src/ast/ast.h"
 # include "../src/expansion/expansion.h"
 # include "../src/execution/execute.h"
 # include "../src/heredoc/heredoc.h"
@@ -24,7 +25,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../src/scan/scan.h"
-# include "lib/libft/libft.h"
 # include "../src/signal_handeling/signal_handeling.h"
 # include <sys/types.h>
 # include <sys/wait.h>

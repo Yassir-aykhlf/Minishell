@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 20:31:39 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 17:20:49 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
-	char			*mask;
+	t_mask			*mask;
 	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_args
 {
 	char			*arg;
-	char			*mask;
+	t_mask			*mask;
 	struct s_args	*next;
 }	t_args;
 
@@ -93,23 +93,10 @@ t_ast	*create_subshell_node(void);
 
 // ast utils functions
 
-void	add_redirect(t_ast *cmd_node, t_token_type type, char *file, char *mask);
-void	add_argument(t_ast *cmd_node, char *arg, char *mask);
+void	add_redirect(t_ast *cmd_node, t_token_type type, char *file, t_mask *mask);
+void	add_argument(t_ast *cmd_node, char *arg, t_mask *mask);
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node);
 int		is_redirect(t_token *token);
 int		is_cmd_finished(t_token *token);
-
-// print functions
-
-void	print_ast_recursive(t_ast *node, int level, int is_last);
-char	*ft_strcat(char *dest, const char *src);
-char	*ft_realloc(char *ptr, size_t size);
-char	*ft_strcpy(char *dst, const char *src);
-void	print_indent(int level, int is_last);
-void	print_command_node(t_ast *node, int level, int is_last);
-void	print_pipeline_node(t_ast *node, int level, int is_last);
-void	print_logical_node(t_ast *node, int level, int is_last);
-void	print_subshell_node(t_ast *node, int level, int is_last);
-void	print_ast(t_ast *root);
 
 #endif

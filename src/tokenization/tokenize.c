@@ -3,66 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 17:01:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/30 11:12:24 by yaykhlf          ###   ########.fr       */
+/*   Created: 2025/04/30 20:20:36 by arajma            #+#    #+#             */
+/*   Updated: 2025/04/30 21:32:49 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_token	*create_token(t_token_type type, char *value, char *mask)
+char	*extract_quoted_string(const char *input, int *pos, char quote,
+		t_mask **mask)
 {
-	t_token	*token;
+	size_t	*segments;
+	size_t	len;
 
-	token = ft_malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->type = type;
-	token->value = value;
-	token->mask = mask;
-	token->next = NULL;
-	return (token);
-}
-
-void	add_token(t_token **head, t_token *new_token)
-{
-	t_token	*current;
-
-	current = *head;
-	if (!head || !new_token)
-		return ;
-	if (!*head)
-	{
-		*head = new_token;
-		return ;
-	}
-	while (current->next)
-		current = current->next;
-	current->next = new_token;
-}
-
-char	*extract_quoted_string(const char *input, int *pos, char quote, char **mask)
-{
-	int		start;
-	int		end;
-	char	*str;
-	char	*local_mask;
-
-	start = *pos + 1;
-	end = start;
+	char *(str), *(mask_str);
+	int (start) = *pos + 1;
+	int (end) = start;
 	while (input[end] && input[end] != quote)
 		end++;
-	str = ft_strndup(input + start, end - start);
-	local_mask = ft_calloc(sizeof(char), end - start + 1);
-	if (!str || !local_mask)
-		return (NULL);
-	if (quote == '\'')
-		ft_memset(local_mask, 'S', end - start);
-	else
-		ft_memset(local_mask, 'D', end - start);
-	*mask = local_mask;
+	len = end - start;
+	str = ft_malloc(len + 1);
+	ft_strlcpy(str, input + start, len + 1);
+	mask_str = ft_malloc(len + 1);
+	segments = ft_calloc(sizeof(size_t), len);
+	ft_memset(mask_str, get_quote(quote), len);
+	mask_str[len] = '\0';
+	*mask = create_mask(mask_str, segments, len);
 	if (input[end] == quote)
 		*pos = end + 1;
 	else
@@ -70,127 +38,98 @@ char	*extract_quoted_string(const char *input, int *pos, char quote, char **mask
 	return (str);
 }
 
-void	add_operator_token(t_token **tokens, t_token_type type, const char *value, int *pos)
-{
-	char	*mask;
-
-	mask = ft_calloc(ft_strlen(value) + 1, sizeof(char));
-	if (mask)
-		ft_memset(mask, 'N', ft_strlen(value));
-	add_token(tokens, create_token(type, ft_strdup(value), mask));
-	*pos += ft_strlen(value);
-}
-
 void	process_operator(const char *input, int *pos, t_token **tokens)
 {
 	int	i;
-	int	num_operators;
 
 	i = 0;
-	num_operators = (int)(sizeof(s_operators) / sizeof(s_operators[0]));
-	while (i < num_operators)
+	while (i < (int)(sizeof(s_operators) / sizeof(s_operators[0])))
 	{
 		if (ft_strncmp(input + *pos, s_operators[i].symbol,
-				ft_strlen(s_operators[i].symbol)) == 0)
+				strlen(s_operators[i].symbol)) == 0)
 		{
+			add_operator_token(tokens, s_operators[i].type,
+				s_operators[i].symbol, pos);
+			return ;
 			add_operator_token(tokens, s_operators[i].type,
 				s_operators[i].symbol, pos);
 			return ;
 		}
 		i++;
+		i++;
 	}
 }
 
-char	*process_word_segment(const char *input, int *pos, int len, char **segment_mask)
+char	*process_word_segment(const char *input, int *pos, int len,
+		t_mask **segment_mask)
 {
-	int		start;
-	char	quote;
-	char	*segment = NULL;
-
+	int (start);
+	size_t(segment_len);
+	char *(segment);
 	if (input[*pos] == '\'' || input[*pos] == '\"')
-	{
-		quote = input[*pos];
-		segment = extract_quoted_string(input, pos, quote, segment_mask);
-	}
-	else
-	{
-		start = *pos;
-		while (*pos < len && !is_whitespace(input[*pos]) && !ft_strchr("<>|&()'\"", input[*pos]))
-			(*pos)++;
-		segment = ft_strndup(input + start, *pos - start);
-		*segment_mask = ft_calloc(*pos - start + 1, sizeof(char));
-		if (*segment_mask)
-			ft_memset(*segment_mask, 'N', *pos - start);
-	}
+		return (extract_quoted_string(input, pos, input[*pos], segment_mask));
+	start = *pos;
+	while (*pos < len && !is_whitespace(input[*pos]) && !ft_strchr("<>|&()'\"",
+			input[*pos]))
+		(*pos)++;
+	segment_len = *pos - start;
+	segment = ft_malloc(segment_len + 1);
+	ft_strlcpy(segment, input + start, segment_len + 1);
+	char *(mask_str) = ft_malloc(segment_len + 1);
+	size_t *(segments) = ft_calloc(segment_len, sizeof(size_t));
+	ft_memset(mask_str, 'N', segment_len);
+	mask_str[segment_len] = '\0';
+	*segment_mask = create_mask(mask_str, segments, segment_len);
 	return (segment);
 }
 
-void	skip_whitespace(const char *input, int *pos)
+void	tokenizer_loop(const char *input, t_tokenizer_context *t)
 {
-	while (input[*pos] && is_whitespace(input[*pos]))
-		(*pos)++;
-}
-
-void	print_tokens(t_token *tokens)
-{
-	t_token	*current = tokens;
-
-	while (current)
+	while (t->pos < t->len && !is_whitespace(input[t->pos])
+		&& !ft_strchr("<>|&()", input[t->pos]))
 	{
-		printf("Token: %s, Mask: %s\n", current->value, current->mask);
-		current = current->next;
+		t->segment_mask = NULL;
+		t->segment = process_word_segment(input, &t->pos, t->len,
+				&t->segment_mask);
+		if (t->segment)
+		{
+			if (t->word_buff == NULL)
+			{
+				t->word_buff = t->segment;
+				t->mask_buff = t->segment_mask;
+			}
+			else
+			{
+				t->temp_word = t->word_buff;
+				t->temp_mask = t->mask_buff;
+				t->word_buff = ft_strjoin(t->temp_word, t->segment);
+				t->mask_buff = merge_masks(t->temp_mask, t->segment_mask);
+			}
+		}
 	}
 }
 
 t_token	*ft_tokenize(const char *input)
 {
-	int		pos;
-	int		len;
-	char	*word_buff;
-	char	*mask_buff;
-	char	*segment;
-	char	*segment_mask;
-	char	*temp_word;
-	char	*temp_mask;
-	t_token	*tokens;
+	t_tokenizer_context	*t;
 
-	pos = 0;
-	len = ft_strlen(input);
-	tokens = NULL;
-	while (pos < len)
+	t = init_tokenizer_context(input);
+	while (t->pos < t->len)
 	{
-		skip_whitespace(input, &pos);
-		if (pos >= len)
-			break;
-		if (ft_strchr("<>|&()", input[pos]))
+		skip_whitespace(input, &t->pos);
+		if (t->pos >= t->len)
+			break ;
+		if (ft_strchr("<>|&()", input[t->pos]))
 		{
-			process_operator(input, &pos, &tokens);
-			continue;
+			process_operator(input, &t->pos, &t->tokens);
+			continue ;
 		}
-		word_buff = NULL;
-		mask_buff = NULL;
-		while (pos < len && !is_whitespace(input[pos]) && !ft_strchr("<>|&()", input[pos]))
-		{
-			segment_mask = NULL;
-			segment = process_word_segment(input, &pos, len, &segment_mask);
-			if (segment)
-			{
-				if (word_buff == NULL)
-				{
-					word_buff = segment;
-					mask_buff = segment_mask;
-				}
-				else
-				{
-					temp_word = word_buff;
-					temp_mask = mask_buff;
-					word_buff = ft_strjoin(word_buff, segment);
-					mask_buff = ft_strjoin(mask_buff, segment_mask);
-				}
-			}
-		}
-		if (word_buff)
-			add_token(&tokens, create_token(TOKEN_WORD, word_buff, mask_buff));
+		t->word_buff = NULL;
+		t->mask_buff = NULL;
+		tokenizer_loop(input, t);
+		if (t->word_buff)
+			add_token(&t->tokens, create_token(TOKEN_WORD, t->word_buff,
+					t->mask_buff));
 	}
-	return (tokens);
+	return (t->tokens);
 }

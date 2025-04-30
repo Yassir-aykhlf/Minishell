@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/28 11:38:03 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:12:32 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	expand_args_list(t_args **args_head)
 		{
 			t_args (*expanded) = expand_token(current->arg,
 				current->mask, field_sp);
-			//printf("%p\n", expanded->arg);
 			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
 		else
@@ -43,18 +42,18 @@ void	expand_redirections(t_redir *redirects)
 		{
 			expanded = expand_token(redir->file, redir->mask, 1);
 			redir->file = ft_strdup(expanded->arg);
-			redir->mask = ft_strdup(expanded->mask);
+			redir->mask = expanded->mask;
 		}
 		redir = redir->next;
 	}
 }
 
-t_args	*expand_token(char *token, char *mask, int fs)
+t_args	*expand_token(char *token, t_mask *mask, int fs)
 {
 	t_expand *(ex) = init_exp_cntext(token, mask, fs);
 	while (token[ex->pos])
 	{
-		if (token[ex->pos] == '$' && mask[ex->pos] != 'S')
+		if (token[ex->pos] == '$' && mask->mask[ex->pos] != 'S')
 			handle_var(ex);
 		else
 		{
@@ -71,7 +70,7 @@ int	handle_field_splitting(t_expand *ex, const char *value, int var_start)
 {
 	int (i) = 1;
 	char *(tmp);
-	if (ex->mask[var_start] != 'N'
+	if (ex->mask->mask[var_start] != 'N'
 		|| !contains_whitespace(value) || ex->fs != 0)
 		return (0);
 	char **(words) = ft_split_whitespace(value);

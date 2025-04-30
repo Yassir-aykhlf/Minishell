@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:54:15 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 09:06:43 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 15:54:51 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	setup_shell_signals(void)
 	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
 	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = 0;
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }

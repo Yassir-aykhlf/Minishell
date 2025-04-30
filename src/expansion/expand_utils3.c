@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 21:20:43 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 11:42:42 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	is_sstat(t_expand *ex, int start)
 {
 	if (start)
-		return (ex->mask[ex->pos] == ex->mask[start - 1]);
-	return (ex->mask[ex->pos] == ex->mask[start]);
+		return (ex->mask->mask[ex->pos] == ex->mask->mask[start - 1]);
+	return (ex->mask->mask[ex->pos] == ex->mask->mask[start]);
 }
 
 int	is_field_split(t_args *arg)
 {
-	char *(str) = arg->mask;
+	char *(str) = arg->mask->mask;
 	int (i) = 0;
 	if (ft_strcmp(arg->arg, "export"))
 		return (0);

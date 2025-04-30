@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/27 17:30:20 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:16:58 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ char	*get_var_name(t_expand *ex)
 	int (start) = ex->pos;
 	while (ex->token[ex->pos]
 		&& is_sstat(ex, start)
+		&& ex->mask->seg[start - 1] == ex->mask->seg[ex->pos]
 		&& is_valid_var_char(ex->token[ex->pos]))
 		ex->pos++;
 	if (ex->pos == start)
 	{
-		if(is_sstat(ex, start) || (start != 0 && ex->mask[start - 1] == 'D'))
+		if(is_sstat(ex, start) || (start != 0 && ex->mask->mask[start - 1] == 'D'))
 			ex->word = ft_strjoin(ex->word, "$");
 		return (NULL);
 	}
@@ -45,10 +46,10 @@ char	*get_var_value(char *name)
 	return (ft_strdup(""));
 }
 
-t_expand	*init_exp_cntext(char *token, char *mask, int fs)
+t_expand	*init_exp_cntext(char *token, t_mask *mask, int fs)
 {
 	t_expand *(new) = ft_malloc(sizeof(t_expand));
-	new->head = ft_malloc(8);
+	new->head = ft_malloc(sizeof(t_args *));
 	*(new->head) = NULL;
 	new->pos = 0;
 	new->fs = fs;
