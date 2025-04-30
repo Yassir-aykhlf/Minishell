@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/28 09:07:59 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 18:49:21 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ char	*last_token(t_token *tokens)
 	return (current->value);
 }
 
+void	syntax_print(char *token)
+{
+	if (ft_strcmp(token, ";") == 0)
+		write(2, "syntax error near unexpected token `;'\n", 39);
+	else
+	{
+		write(2, "syntax error near unexpected token `", 36);
+		write(2, token, ft_strlen(token));
+		write(2, "'\n", 2);
+	}
+}
+
 int	interpreter(const char *cmd)
 {
 	t_scan_status	status;
@@ -45,22 +57,22 @@ int	interpreter(const char *cmd)
 	if (status != SCAN_SUCCESS)
 	{
 		printf("%s\n", translate_message(status));
-		return (-1);
+		return (SYNTAX_ERROR);
 	}
 	tokens = ft_tokenize(cmd);
  	if (!tokens)
-		return (-1);
+		return (SYNTAX_ERROR);
 	tokens = ft_heredoc(tokens);
 	if (!tokens)
-		return (130);
+		return (SIGINT_EXIT);
 	ast = ft_parse(&tokens);
 	if (!ast || tokens)
 	{
 		if (tokens)
-			write(2, "syntax error near unexpected token `newline'\n", 45);
+			syntax_print(tokens->value);
 		else
-			write(2, "syntax error near unexpected token `;'\n", 39);
-		return (2);
+			syntax_print(";");
+		return (SYNTAX_ERROR);
 	}
 	ret_status = ft_execute(ast);
 	return (ret_status);
@@ -87,5 +99,5 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 	}
 	free_all();
-	return (0);
+	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/28 11:53:16 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 18:48:38 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	heredoc_sigint_handler(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
-	exit(130);
+	exit(SIGINT_EXIT);
 }
 
 // Handle heredoc input in child process, writing to temp file
@@ -44,7 +44,7 @@ static int	child_handle_heredoc(t_token *tokens, int fd)
 		{
 			if (!input)
 				printf("warning: here-document delimited by end-of-file\
-(wanted `%s')\n", delim);
+ (wanted `%s')\n", delim);
 			break ;
 		}
 		if (to_expand(tokens->mask))
@@ -53,7 +53,7 @@ static int	child_handle_heredoc(t_token *tokens, int fd)
 		write(fd, "\n", 1);
 	}
 	close(fd);
-	exit(0);
+	exit(SUCCESS);
 }
 
 // Create a temp file and handle heredoc input in a separate process
@@ -76,7 +76,7 @@ char	*handle_heredoc(t_token *tokens)
 		child_handle_heredoc(tokens, fd);
 	close(fd);
 	ft_waitpid(pid, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	if (WIFEXITED(status) && WEXITSTATUS(status) == SIGINT_EXIT)
 	{
 		unlink(filename);
 		return (NULL);
@@ -84,7 +84,7 @@ char	*handle_heredoc(t_token *tokens)
 	return (filename);
 }
 
-// Process all heredocs in the token list
+// iterates over tokens and processes every TOKEN_HEREDOC node.
 t_token	*ft_heredoc(t_token *tokens)
 {
 	t_token	*temp;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/28 11:48:38 by arajma           ###   ########.fr       */
+/*   Updated: 2025/04/30 18:47:48 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+
+#define SIGINT_EXIT 130
+#define SYNTAX_ERROR 2
+#define SUCCESS 0
+#define ERROR 1
 
 void	print_env(void);
 char	*get_command(void);

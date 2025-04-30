@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 17:01:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/21 17:56:59 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 11:12:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ char	*extract_quoted_string(const char *input, int *pos, char quote, char **mask
 
 void	add_operator_token(t_token **tokens, t_token_type type, const char *value, int *pos)
 {
-	char *mask;
+	char	*mask;
+
 	mask = ft_calloc(ft_strlen(value) + 1, sizeof(char));
 	if (mask)
 		ft_memset(mask, 'N', ft_strlen(value));
@@ -82,13 +83,21 @@ void	add_operator_token(t_token **tokens, t_token_type type, const char *value, 
 
 void	process_operator(const char *input, int *pos, t_token **tokens)
 {
-	for (int i = 0; i < (int)(sizeof(s_operators) / sizeof(s_operators[0])); i++)
+	int	i;
+	int	num_operators;
+
+	i = 0;
+	num_operators = (int)(sizeof(s_operators) / sizeof(s_operators[0]));
+	while (i < num_operators)
 	{
-		if (strncmp(input + *pos, s_operators[i].symbol, ft_strlen(s_operators[i].symbol)) == 0)
+		if (ft_strncmp(input + *pos, s_operators[i].symbol,
+				ft_strlen(s_operators[i].symbol)) == 0)
 		{
-			add_operator_token(tokens, s_operators[i].type, s_operators[i].symbol, pos);
-			return;
+			add_operator_token(tokens, s_operators[i].type,
+				s_operators[i].symbol, pos);
+			return ;
 		}
+		i++;
 	}
 }
 
@@ -113,7 +122,7 @@ char	*process_word_segment(const char *input, int *pos, int len, char **segment_
 		if (*segment_mask)
 			ft_memset(*segment_mask, 'N', *pos - start);
 	}
-	return segment;
+	return (segment);
 }
 
 void	skip_whitespace(const char *input, int *pos)
@@ -137,8 +146,8 @@ t_token	*ft_tokenize(const char *input)
 {
 	int		pos;
 	int		len;
-	char	*word_buff = NULL;
-	char	*mask_buff = NULL;
+	char	*word_buff;
+	char	*mask_buff;
 	char	*segment;
 	char	*segment_mask;
 	char	*temp_word;
@@ -160,7 +169,8 @@ t_token	*ft_tokenize(const char *input)
 		}
 		word_buff = NULL;
 		mask_buff = NULL;
-		while (pos < len && !is_whitespace(input[pos]) && !ft_strchr("<>|&()", input[pos])) {
+		while (pos < len && !is_whitespace(input[pos]) && !ft_strchr("<>|&()", input[pos]))
+		{
 			segment_mask = NULL;
 			segment = process_word_segment(input, &pos, len, &segment_mask);
 			if (segment)
