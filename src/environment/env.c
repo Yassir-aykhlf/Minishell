@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/28 10:09:23 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/04/30 22:07:08 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*get_env_value(char *key)
 	current = *env_list;
 	while (current)
 	{
-		if (strcmp(current->key, key) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 			return (current->value);
 		current = current->next;
 	}
