@@ -4,18 +4,11 @@ some tests need to work on
 echo $ (issue found: you expand two times in echo) Fixed
 
 2
-echo "$HO""ME"; echo "$HOME"
+echo "$HO""ME"; echo "$HOME" Fixed
 token1: echo mask: NNNN seg: 0000 
 token2: $HOME mask: DDDDD seg: 00011
 
 
-(that one needs serious refactoring)
-other examples:
-echo "$DONTEXIST""Makefile"
-
 3
-
-
-ls "d"lh'JSG'"HJ"
-token 1: seg0 ls mask NN
-token 2: seg0 d mask D-> seg 1 lh mask NN-> seg 2 JSG mask SSS-> seg 3 HJ mask DD 
+redirections don't work
+ls > out
