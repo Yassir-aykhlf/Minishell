@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 20:20:36 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 21:32:49 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:46:19 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	process_operator(const char *input, int *pos, t_token **tokens)
 				s_operators[i].symbol, pos);
 			return ;
 		}
-		i++;
 		i++;
 	}
 }

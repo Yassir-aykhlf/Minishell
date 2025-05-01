@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/30 21:31:45 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:47:06 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,27 @@ void	syntax_print(char *token)
 	}
 }
 
+void print_tk(t_token *tokens)
+{
+	char *op[] = {"TOKEN_WORD",
+	"TOKEN_PIPE",
+	"TOKEN_REDIRECT_IN",
+	"TOKEN_REDIRECT_OUT",
+	"TOKEN_APPEND",
+	"TOKEN_HEREDOC",
+	"TOKEN_AND",
+	"TOKEN_OR",
+	"TOKEN_PAREN_OPEN",
+	"TOKEN_PAREN_CLOSE"};
+
+	while (tokens)
+	{
+		printf("%s \t", tokens->value);
+		printf("%s \n\n", op[tokens->type]);
+		tokens = tokens->next;
+	}
+}
+
 int	interpreter(const char *cmd)
 {
 	t_scan_status	status;
@@ -62,6 +83,7 @@ int	interpreter(const char *cmd)
 	tokens = ft_tokenize(cmd);
  	if (!tokens)
 		return (SYNTAX_ERROR);
+	//print_tk(tokens);
 	tokens = ft_heredoc(tokens);
 	if (!tokens)
 		return (SIGINT_EXIT);
