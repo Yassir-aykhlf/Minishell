@@ -6,7 +6,7 @@
 /*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 13:16:58 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:01:55 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*get_var_name(t_expand *ex)
 		ex->pos++;
 	if (ex->pos == start)
 	{
-		if(is_sstat(ex, start) || (start != 0 && ex->mask->mask[start - 1] == 'D'))
+		if (is_sstat(ex, start)
+			|| (start != 0 && ex->mask->mask[start - 1] == 'D'))
 			ex->word = ft_strjoin(ex->word, "$");
 		return (NULL);
 	}
@@ -34,8 +35,7 @@ char	*get_var_value(char *name)
 {
 	t_env **(env_list) = get_env_list();
 	t_env *(env) = *env_list;
-
-	if (name && (name[0] <= '9' && name[0]>='0'))
+	if (name && (name[0] <= '9' && name[0] >= '0'))
 		return (ft_strdup(name + 1));
 	while (env)
 	{
