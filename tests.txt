@@ -10,5 +10,123 @@ token2: $HOME mask: DDDDD seg: 00011
 
 
 3
-redirections don't work
-ls > out
+redirections alone or multiple redirections don't work
+> out or ls > out1 > out2
+
+/////////////////
+make: Nothing to be done for 'all'.
+Enigma$ ls -la
+total 136
+drwxr-xr-x  6 arajma 4221    163 May  1 16:47 .
+drwxr-xr-x  5 arajma 4221     67 Apr 28 11:28 ..
+-rwxr-xr-x  1 arajma 4221 109904 May  1 16:47 Enigma
+drwxr-xr-x  8 arajma 4221   4096 May  1 16:48 .git
+-rw-r--r--  1 arajma 4221   6831 Apr 28 11:28 .gitignore
+drwxr-xr-x  3 arajma 4221     36 May  1 13:09 includes
+Enigma$ ls
+Enigma  includes  Makefile  readline.supp  README.md  src  tests.txt
+Enigma$ ls | > test | ls
+Enigma  includes  Makefile  readline.supp  README.md  src  tests.txt
+Enigma$ ls > s > /dev/stdout
+Unknown redirection typeEnigma$ ^C
+Enigma$ echo $?
+1
+Enigma$ sajdkf
+Enigma$ echo $?
+127
+Enigma$ echo < sss 
+
+Enigma$ ls
+Enigma$ cat << s << v << ss
+> ls 
+> cat 
+> s
+> v
+> ss
+Unknown redirection typeEnigma$ bash
+groups: cannot find name for group ID 4221
+arajma@c4r9p8:~/Desktop/Minishell$ cat << s << v << ss
+> sdkfj
+> dfkjsdf
+> sdfjksdf
+> s
+> v
+> ss
+arajma@c4r9p8:~/Desktop/Minishell$ 
+exit
+Enigma$ bash
+groups: cannot find name for group ID 4221
+arajma@c4r9p8:~/Desktop/Minishell$ cat << s << v << ss
+> kdh
+> s
+> v
+> djahfgs
+> ss
+djahfgs
+arajma@c4r9p8:~/Desktop/Minishell$ cat << s << v << ss | wc -l
+kdh
+s
+Enigma$ unset PATH
+Enigma$ ls
+Enigma$ /bin/ls
+Enigma  includes  Makefile  readline.supp  README.md  s  src  tests.txt
+Enigma$ ls
+Enigma$ echo $?
+127
+Enigma$ pwd
+Enigma$ ls
+Enigma  includes  Makefile  readline.supp  README.md  s  src  tests.txt
+Enigma$ exit fg 54
+exit: fg: numeric argument required
+Enigma$ exit 56 54
+exit
+~/Desktop/Minishell main*                                                                                                                                                    10s 06:26:03 PM
+❯ echo $?
+56
+~/Desktop/Minishell main*                                                                                                                                                        06:26:09 PM
+❯ bash
+arajma@c4r9p8:~/Desktop/Minishell$ exit 56 54
+exit
+bash: exit: too many arguments
+arajma@c4r9p8:~/Desktop/Minishell$ echo $/
+$/
+arajma@c4r9p8:~/Desktop/Minishell$ exit 56 54
+exit
+bash: exit: too many arguments
+arajma@c4r9p8:~/Desktop/Minishell$ echo $?
+1
+arajma@c4r9p8:~/Desktop/Minishell$ exit fd 5
+exit
+bash: exit: fd: numeric argument required
+~/Desktop/Minishell main*                                                                                                                                                    20s 06:26:39 PM
+❯ echo $?
+2
+////////////////
+❯ ./Enigma 
+Enigma$ echo hello > s
+hello
+Enigma$ ls
+Enigma  includes  Makefile  readline.supp  README.md  s  src  tests.txt
+Enigma$ ls > s
+Enigma$ ls
+Enigma  includes  Makefile  readline.supp  README.md  s  src  tests.txt
+Enigma$ echo hello > s
+hello
+Enigma$ cat s
+Enigma
+includes
+Makefile
+readline.supp
+README.md
+s
+src
+tests.txt
+Enigma$ 
+////////////////
+
+///////////////
+Enigma$ exit | cat
+exit
+Enigma$ 
+exit
+///////////////

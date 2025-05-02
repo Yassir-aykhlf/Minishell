@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/28 10:10:42 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/01 18:31:42 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -654,8 +654,8 @@ int	execute_command(t_ast *cmd_node)
 
 	expand_command(cmd_node);
 //	you need to handle redirections first, then command
-//	if (cmd_node->u_data.s_cmd.argv == NULL) we need this bro, case: > out
-//		return(0);
+	if (cmd_node->u_data.s_cmd.argv == NULL)// we need this bro, case: > out
+		return(0);
 	command_name = cmd_node->u_data.s_cmd.argv->arg;
 	if (!command_name)
 		return (spit_error(EXIT_FAILURE, "No command specified", false));
