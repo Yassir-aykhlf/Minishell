@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 11:50:12 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 21:19:41 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:58:46 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// Generate a unique temporary filename
 char	*generate_temp_filename(void)
 {
 	static int	counter = 0;
@@ -24,7 +23,6 @@ char	*generate_temp_filename(void)
 	return (filename);
 }
 
-// Handle SIGINT in heredoc child process
 static void	heredoc_sigint_handler(int sig)
 {
 	(void)sig;
@@ -32,7 +30,6 @@ static void	heredoc_sigint_handler(int sig)
 	exit(SIGINT_EXIT);
 }
 
-// Handle heredoc input in child process, writing to temp file
 static int	child_handle_heredoc(t_token *tokens, int fd)
 {
 	char *(input), *(delim) = tokens->value;
@@ -56,15 +53,15 @@ static int	child_handle_heredoc(t_token *tokens, int fd)
 	exit(SUCCESS);
 }
 
-// Create a temp file and handle heredoc input in a separate process
 char	*handle_heredoc(t_token *tokens)
 {
-	pid_t (pid);
-	int (fd), (status);
-	char *(filename) = generate_temp_filename();
+	pid_t	pid;
+	char	*filename;
+	int		fd;
+	int		status;
+
+	filename = generate_temp_filename();
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (fd < 0)
-		return (NULL);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -84,7 +81,6 @@ char	*handle_heredoc(t_token *tokens)
 	return (filename);
 }
 
-// iterates over tokens and processes every TOKEN_HEREDOC node.
 t_token	*ft_heredoc(t_token *tokens)
 {
 	t_token	*temp;

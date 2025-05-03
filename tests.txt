@@ -1,6 +1,3 @@
-Test  19: ❌ echo $ 
-mini output = ()
-bash output = ($)
 Test  40: ❌ cd $PWD hi 
 mini exit code = 0
 bash exit code = 1
@@ -27,6 +24,9 @@ bash exit code = 1
 mini error = ()
 bash error = ( too many arguments)
 Test  52: ❌  
+mini exit code = 2
+bash exit code = 0
+Test 132: ❌  
 mini exit code = 2
 bash exit code = 0
 Test 133: ❌ $PWD 

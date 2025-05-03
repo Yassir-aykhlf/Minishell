@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 10:12:32 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:51:34 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 void	expand_args_list(t_args **args_head)
 {
-	t_args *(current) = *args_head;
-	t_args *(prev) = NULL;
-	int (field_sp) = is_field_split(*args_head);
+	t_args	*expanded;
+	t_args	*current;
+	t_args	*prev;
+	t_args	*next;
+	int		field_sp;
+
+	current = *args_head;
+	prev = NULL;
+	field_sp = is_field_split(*args_head);
 	while (current)
 	{
-		t_args (*next) = current->next;
+		next = current->next;
 		if (current->arg && current->mask)
 		{
-			t_args (*expanded) = expand_token(current->arg,
+			expanded = expand_token(current->arg,
 				current->mask, field_sp);
 			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
@@ -34,8 +40,10 @@ void	expand_args_list(t_args **args_head)
 
 void	expand_redirections(t_redir *redirects)
 {
-	t_args *(expanded);
-	t_redir *(redir) = redirects;
+	t_args	*expanded;
+	t_redir	*redir;
+
+	redir = redirects;
 	while (redir)
 	{
 		if (redir->file && redir->mask)
@@ -50,7 +58,9 @@ void	expand_redirections(t_redir *redirects)
 
 t_args	*expand_token(char *token, t_mask *mask, int fs)
 {
-	t_expand *(ex) = init_exp_cntext(token, mask, fs);
+	t_expand	*ex;
+
+	ex = init_exp_cntext(token, mask, fs);
 	while (token[ex->pos])
 	{
 		if (token[ex->pos] == '$' && mask->mask[ex->pos] != 'S')
@@ -68,12 +78,15 @@ t_args	*expand_token(char *token, t_mask *mask, int fs)
 
 int	handle_field_splitting(t_expand *ex, const char *value, int var_start)
 {
-	int (i) = 1;
-	char *(tmp);
+	int		i;
+	char	*tmp;
+	char	**words;
+
+	i = 1;
 	if (ex->mask->mask[var_start] != 'N'
 		|| !contains_whitespace(value) || ex->fs != 0)
 		return (0);
-	char **(words) = ft_split_whitespace(value);
+	words = ft_split_whitespace(value);
 	if (words && words[0])
 	{
 		tmp = ft_strjoin(ex->word, words[0]);
@@ -90,17 +103,21 @@ int	handle_field_splitting(t_expand *ex, const char *value, int var_start)
 
 void	handle_var(t_expand *ex)
 {
-	char *(tmp);
-	int (var_start) = ex->pos++;
+	char	*tmp;
+	char	*name;
+	char	*value;
+	int		var_start;
+
+	var_start = ex->pos++;
 	if (ex->token[ex->pos] == '?')
 	{
 		handle_exit_code(ex);
 		return ;
 	}
-	char *(name) = get_var_name(ex);
+	name = get_var_name(ex);
 	if (!name)
 		return ;
-	char *(value) = get_var_value(name);
+	value = get_var_value(name);
 	if (!handle_field_splitting(ex, value, var_start))
 	{
 		tmp = ft_strjoin(ex->word, value);

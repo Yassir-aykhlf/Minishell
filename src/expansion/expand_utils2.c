@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 14:22:42 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:45:45 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ char	*get_var_name(t_expand *ex)
 
 char	*get_var_value(char *name)
 {
-	t_env **(env_list) = get_env_list();
-	t_env *(env) = *env_list;
+	t_env	**env_list;
+	t_env	*env;
+
+	env_list = get_env_list();
+	env = *env_list;
 	if (name && (name[0] <= '9' && name[0] >= '0'))
 		return (ft_strdup(name + 1));
 	while (env)
@@ -47,7 +50,9 @@ char	*get_var_value(char *name)
 
 t_expand	*init_exp_cntext(char *token, t_mask *mask, int fs)
 {
-	t_expand *(new) = ft_malloc(sizeof(t_expand));
+	t_expand	*new;
+
+	new = ft_malloc(sizeof(t_expand));
 	new->head = ft_malloc(sizeof(t_args *));
 	*(new->head) = NULL;
 	new->pos = 0;

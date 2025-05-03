@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:09:33 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 10:11:17 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:51:43 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ typedef struct s_expand
 	char	*token;
 	char	*word;
 }	t_expand;
-
-/* Functions declarations */
 
 void		expand_command(t_ast *cmd);
 void		expand_args_list(t_args **args_head);

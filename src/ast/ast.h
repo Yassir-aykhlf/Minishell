@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 17:20:49 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 17:13:06 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,24 +76,17 @@ typedef struct s_ast
 	}	u_data;
 }	t_ast;
 
-// main function to parse input
-
 t_ast	*parse_subshell(t_token **tokens);
 t_ast	*parse_pipeline(t_token **tokens);
 t_ast	*parse_logical_expr(t_token **tokens);
 t_ast	*ft_parse(t_token **tokens);
-
-// init and some utils
-
 t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right);
 t_ast	*handle_redirections(t_ast *node, t_token **tokens);
 t_ast	*create_pipeline_node(void);
 t_ast	*create_command_node(void);
 t_ast	*create_subshell_node(void);
-
-// ast utils functions
-
-void	add_redirect(t_ast *cmd_node, t_token_type type, char *file, t_mask *mask);
+void	add_redirect(t_ast *cmd_node, t_token_type type, char *file,
+			t_mask *mask);
 void	add_argument(t_ast *cmd_node, char *arg, t_mask *mask);
 void	add_command_to_pipeline(t_ast *pipeline_node, t_ast *cmd_node);
 int		is_redirect(t_token *token);

@@ -6,12 +6,12 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:24 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/19 10:50:03 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:16:38 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVIRONMENT_H
-# define ENVIRONMENT_H
+#ifndef ENV_H
+# define ENV_H
 
 typedef struct s_env
 {
@@ -29,5 +29,6 @@ char	**env_to_array(void);
 t_env	*create_env_node(char *key, char *value);
 void	link_env_node(t_env **head, t_env *node);
 void	parse_env_var(const char *var);
+void	print_env(void);
 
 #endif

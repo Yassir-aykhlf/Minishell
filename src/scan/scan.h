@@ -13,9 +13,9 @@
 #ifndef SCAN_H
 # define SCAN_H
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
+# include <stdbool.h>
+# include <string.h>
+# include <stdio.h>
 
 typedef enum e_scan_status
 {
@@ -32,5 +32,7 @@ const char		*translate_message(t_scan_status status);
 void			skip_operator(const char *input, int *i);
 t_scan_status	ft_scan(const char *input);
 bool			is_operator_char(char c);
+bool			check_dual_operator_sequence(const char *input, int pos,
+					char op);
 
 #endif

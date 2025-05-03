@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/30 22:07:08 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:15:06 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,48 +86,4 @@ void	unset_env_var(char *key)
 			current->next = current->next->next;
 		current = current->next;
 	}
-}
-
-void	print_env(void)
-{
-	t_env	**env_list;
-	t_env	*current;
-	int		i;
-
-	i = 0;
-	env_list = get_env_list();
-	current = *env_list;
-	while (current)
-	{
-		i++;
-		if (current->value)
-			printf("%s=%s\n", current->key, current->value);
-		else
-			printf("%s\n", current->key);
-		current = current->next;
-	}
-	return ;
-}
-
-char	**env_to_array(void)
-{
-	t_env	**env_list;
-	t_env	*current;
-	char	**env;
-	int		size;
-	int		i;
-
-	i = 0;
-	env_list = get_env_list();
-	size = env_listsize(*env_list);
-	env = ft_malloc((size + 1) * sizeof(char *));
-	current = *env_list;
-	while (current)
-	{
-		env[i] = ft_strjoin_three(current->key, "=", current->value);
-		current = current->next;
-		i++;
-	}
-	env[i] = NULL;
-	return (env);
 }

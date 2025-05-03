@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:04:56 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/25 16:23:58 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:12:31 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ t_ast	*parse_subshell(t_token **tokens)
 
 t_ast	*parse_simple_cmd(t_token **tokens)
 {
-	t_ast *(node) = create_command_node();
+	t_ast	*node;
+
+	node = create_command_node();
 	while (*tokens && !is_cmd_finished(*tokens))
 	{
 		t_token (*cur) = *tokens;
@@ -55,9 +57,11 @@ t_ast	*parse_simple_cmd(t_token **tokens)
 
 t_ast	*parse_cmd_redir(t_token **tokens)
 {
+	t_ast	*node;
+
 	if (*tokens && (*tokens)->type == TOKEN_PAREN_OPEN)
 	{
-		t_ast (*node) = parse_subshell(tokens);
+		node = parse_subshell(tokens);
 		if (!node)
 			return (NULL);
 		return (node);
@@ -88,7 +92,8 @@ t_ast	*parse_pipeline(t_token **tokens)
 		add_command_to_pipeline(pipeline_node, cmd_node);
 	}
 	// todo: make it better
-	if (pipeline_node && pipeline_node->u_data.s_pipeline.commands[0] && pipeline_node->u_data.s_pipeline.count == 1)
+	if (pipeline_node && pipeline_node->u_data.s_pipeline.commands[0]
+		&& pipeline_node->u_data.s_pipeline.count == 1)
 		return (pipeline_node->u_data.s_pipeline.commands[0]);
 	return (pipeline_node);
 }

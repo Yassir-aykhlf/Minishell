@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ast_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:32:17 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/17 18:45:19 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 14:57:59 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Helper function to create a new subshell node */
 t_ast	*create_subshell_node(void)
 {
 	t_ast	*node;
@@ -23,7 +22,6 @@ t_ast	*create_subshell_node(void)
 	return (node);
 }
 
-/* Helper function to create a new command node */
 t_ast	*create_command_node(void)
 {
 	t_ast	*node;
@@ -35,7 +33,6 @@ t_ast	*create_command_node(void)
 	return (node);
 }
 
-/* Helper function to create a new pipeline node */
 t_ast	*create_pipeline_node(void)
 {
 	t_ast	*node;
@@ -47,7 +44,6 @@ t_ast	*create_pipeline_node(void)
 	return (node);
 }
 
-/* Helper function to create a new logical node */
 t_ast	*create_logical_node(t_logical_op op, t_ast *left, t_ast *right)
 {
 	t_ast	*node;

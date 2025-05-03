@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:46:59 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/28 11:50:26 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:56:07 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	get_var_name_hd(char *str, char **var_name)
 {
-	int (i) = 0;
+	int		i;
+
+	i = 0;
 	if (!str || !str[0])
 		return (0);
 	if (str[0] == '?')
@@ -41,7 +43,7 @@ char	*get_var_value_hd(char *var_name)
 
 char	*expand_heredoc(char *input)
 {
-	int (var_len), (i) = 0;
+	int	(var_len), (i) = 0;
 	char *(var_value), *(var_name), *(result) = ft_strdup("");
 	while (input[i])
 	{

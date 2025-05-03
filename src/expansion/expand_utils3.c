@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 14:23:39 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:46:30 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ int	is_sstat(t_expand *ex, int start)
 
 int	is_field_split(t_args *arg)
 {
-	char *(str) = arg->mask->mask;
-	int (i) = 0;
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = arg->mask->mask;
 	if (ft_strcmp(arg->arg, "export"))
 		return (0);
 	if (arg->next && ((ft_strchr(arg->next->arg, '=')
