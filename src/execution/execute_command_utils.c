@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:06:49 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:09:01 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:18:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*search_path(char *cmd)
 	char	*path_env_value;
 	char	**paths;
 	char	*executable_path;
-	int	i;
+	int		i;
 
 	path_env_value = get_path_env_value();
 	if (!path_env_value)
@@ -74,9 +74,9 @@ char	*search_path(char *cmd)
 	return (executable_path);
 }
 
-char *resolve_command_path(char *command_name)
+char	*resolve_command_path(char *command_name)
 {
-	char *path;
+	char	*path;
 
 	if (!command_name || !command_name[0])
 		return (NULL);

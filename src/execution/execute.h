@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:22:01 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:00:18 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	parse_and_set_export_var(char *arg);
 int		parse_exit_status(char *arg, int *status);
 int		builtin_exit(char **args);
 
-void	handle_parent_pipes(int cmd_index, int *prev_pipe_read, int pipe_fds[2], int pipeline_count);
-void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int pipe_fds[2]);
+void	handle_parent_pipes(int cmd_index, int *prev_pipe_read,
+			int pipe_fds[2], int pipeline_count);
+void	execute_pipeline_child(t_ast *node, int cmd_index,
+			int prev_pipe_read, int pipe_fds[2]);
 int		wait_for_pipeline_children(int count, pid_t last_pid);
 int		execute_pipeline(t_ast *node);
 

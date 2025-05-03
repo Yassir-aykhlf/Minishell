@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:30:59 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:34:25 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:05:13 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 bool	is_valid_var_char(char c)
 {
-	return ((c >= 'a' && c <= 'z') ||
-			(c >= 'A' && c <= 'Z') ||
-			(c >= '0' && c <= '9') ||
-			c == '_');
+	return ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9')
+		|| c == '_');
 }
 
 int	is_valid_identifier(char *key, char *full_arg)
 {
 	int	j;
 
-	if (!((key[0] >= 'a' && key[0] <= 'z') ||
-		(key[0] >= 'A' && key[0] <= 'Z') || key[0] == '_'))
+	if (!((key[0] >= 'a' && key[0] <= 'z')
+			|| (key[0] >= 'A' && key[0] <= 'Z')
+			|| key[0] == '_'))
 	{
 		ft_putstr_fd("export: `", STDERR_FILENO);
 		ft_putstr_fd(full_arg, STDERR_FILENO);
@@ -63,13 +64,14 @@ int	validate_export(char **args)
 		if (!args[i][0])
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		equals_pos = ft_strchr(args[i], '=');
 		if (equals_pos)
 		{
 			key = ft_strndup(args[i], equals_pos - args[i]);
-			if (!key) return (spit_error(EXIT_FAILURE, "ft_strndup", true));
+			if (!key)
+				return (spit_error(EXIT_FAILURE, "ft_strndup", true));
 		}
 		else
 			key = args[i];
@@ -88,7 +90,7 @@ void	builtin_export_print(char **env)
 	(void)env;
 	env_list_head = get_env_list();
 	if (!env_list_head)
-		return;
+		return ;
 	current = *env_list_head;
 	while (current)
 	{
@@ -102,7 +104,7 @@ void	builtin_export_print(char **env)
 
 int	builtin_export(char **args, char **env)
 {
-	int i;
+	int	i;
 
 	(void)env;
 	if (validate_export(args) != 0)

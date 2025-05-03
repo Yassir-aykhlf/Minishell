@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:35:29 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:35:37 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:10:42 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parse_and_set_export_var(char *arg)
 		if (!key)
 		{
 			spit_error(EXIT_FAILURE, "ft_strndup", true);
-			return;
+			return ;
 		}
 		value = equals_pos + 1;
 		set_env_var(key, value);

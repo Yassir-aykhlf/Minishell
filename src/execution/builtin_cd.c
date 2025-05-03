@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:02 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:23:28 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 18:56:43 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ int	change_directory_and_update_env(char *target_dir, char *current_dir)
 		return (0);
 	}
 	set_env_var("PWD", new_pwd);
-	free(new_pwd); 
+	free(new_pwd);
 	return (0);
 }
 
 char	*determine_cd_target_dir(char *arg)
 {
-	char *target_dir;
+	char	*target_dir;
 
 	if (!arg || ft_strcmp(arg, "~") == 0)
 	{
 		target_dir = get_env_value("HOME");
 		if (!target_dir)
 			ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
-		return target_dir;
+		return (target_dir);
 	}
 	else if (ft_strcmp(arg, "-") == 0)
 	{
@@ -54,7 +54,7 @@ char	*determine_cd_target_dir(char *arg)
 			ft_putstr_fd(target_dir, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
-		return target_dir;
+		return (target_dir);
 	}
 	else
 		return (arg);

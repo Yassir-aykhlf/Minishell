@@ -6,15 +6,15 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:54:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:09:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:14:57 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int wait_for_child(pid_t pid)
+int	wait_for_child(pid_t pid)
 {
-	int status;
+	int	status;
 
 	if (ft_waitpid(pid, &status, 0) == -1)
 		return (spit_error(EXIT_FAILURE, "waitpid", true));
@@ -108,7 +108,7 @@ int	execute_command(t_ast *cmd_node)
 	pid_t	pid;
 	char	**envp;
 	char	*command_name;
-	
+
 	expand_command(cmd_node);
 	if (cmd_node->u_data.s_cmd.argv == NULL)
 		return (handle_pure_redirections(cmd_node));
@@ -119,7 +119,7 @@ int	execute_command(t_ast *cmd_node)
 		return (handle_builtin_command(command_name, cmd_node));
 	full_path = resolve_command_path(command_name);
 	if (!full_path)
-		return(spit_error(127, command_name, true));
+		return (spit_error(127, command_name, true));
 	envp = env_to_array();
 	if (!envp)
 		return (spit_error(EXIT_FAILURE, "env_to_array", true));

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:46:59 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 16:56:07 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:16:47 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_var_value_hd(char *var_name)
 
 char	*expand_heredoc(char *input)
 {
-	int	(var_len), (i) = 0;
+	int (var_len), (i) = 0;
 	char *(var_value), *(var_name), *(result) = ft_strdup("");
 	while (input[i])
 	{

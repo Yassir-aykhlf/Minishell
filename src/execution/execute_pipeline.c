@@ -6,13 +6,14 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:42:53 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:46:52 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:13:29 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	handle_parent_pipes(int cmd_index, int *prev_pipe_read, int pipe_fds[2], int pipeline_count)
+void	handle_parent_pipes(int cmd_index, int *prev_pipe_read,
+		int pipe_fds[2], int pipeline_count)
 {
 	if (*prev_pipe_read != -1)
 		close(*prev_pipe_read);
@@ -29,10 +30,12 @@ void	handle_parent_pipes(int cmd_index, int *prev_pipe_read, int pipe_fds[2], in
 	}
 }
 
-void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int pipe_fds[2])
+void	execute_pipeline_child(t_ast *node, int cmd_index,
+		int prev_pipe_read, int pipe_fds[2])
 {
-	int status = 0;
-	
+	int	status;
+
+	status = 0;
 	if (prev_pipe_read != -1)
 	{
 		if (dup2(prev_pipe_read, STDIN_FILENO) == -1)
@@ -57,12 +60,12 @@ void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int 
 	exit(status);
 }
 
-int wait_for_pipeline_children(int count, pid_t last_pid)
+int	wait_for_pipeline_children(int count, pid_t last_pid)
 {
-	int i;
-	int status;
-	int last_status;
-	pid_t waited_pid;
+	int		i;
+	int		status;
+	int		last_status;
+	pid_t	waited_pid;
 
 	i = 0;
 	last_status = 0;
@@ -92,9 +95,11 @@ int	execute_pipeline(t_ast *node)
 	pid_t	pid;
 	int		i;
 	int		pipeline_count;
-	pid_t	last_pid = -1;
+	pid_t	last_pid;
 
-	if (!node || node->type != NODE_PIPELINE || !node->u_data.s_pipeline.commands)
+	last_pid = -1;
+	if (!node || node->type != NODE_PIPELINE
+		|| !node->u_data.s_pipeline.commands)
 		return (spit_error(EXIT_FAILURE, "Invalid pipeline node", false));
 	pipeline_count = node->u_data.s_pipeline.count;
 	if (pipeline_count <= 0)

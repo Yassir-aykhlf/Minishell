@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:25:50 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/03/19 13:53:47 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:09:23 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_allocation
 	struct s_allocation	*next;
 }	t_alloc;
 
-t_alloc	**get_alloc_list(void);
+t_alloc			**get_alloc_list(void);
 void			free_all(void);
 void			*ft_malloc(size_t size);
 

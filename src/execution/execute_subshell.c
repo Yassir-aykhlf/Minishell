@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:53:13 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:53:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:14:17 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	execute_subshell(t_ast *node)
 	pid_t	pid;
 	int		status;
 
-	if (!node || node->type != NODE_SUBSHELL || !node->u_data.s_subshell.command)
+	if (!node || node->type != NODE_SUBSHELL
+		|| !node->u_data.s_subshell.command)
 		return (spit_error(EXIT_FAILURE, "Invalid subshell node", false));
 	pid = fork();
 	if (pid < 0)

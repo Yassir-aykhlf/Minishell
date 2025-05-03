@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:15:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:19:58 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:18:17 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 bool	is_child_process(void)
 {
-	static pid_t original_pid = 0;
+	static pid_t	original_pid = 0;
 
 	if (original_pid == 0)
 		original_pid = getpid();
-	return getpid() != original_pid;
+	return (getpid() != original_pid);
 }
 
 void	fill_argv_from_list(char **argv, t_args *args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (args)
@@ -36,7 +36,7 @@ void	fill_argv_from_list(char **argv, t_args *args)
 
 char	**get_argv(t_args *args)
 {
-	int	arg_count;
+	int		arg_count;
 	char	**argv;
 
 	arg_count = count_args(args);

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:19:30 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:19:45 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:17:16 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	*get_exit_status(void)
 {
-	static int exit_status = 0;
+	static int	exit_status = 0;
 
 	return (&exit_status);
 }

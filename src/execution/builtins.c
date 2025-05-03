@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:02 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:28:41 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 18:55:15 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	builtin_env(char **env)
 
 int	builtin_unset(char **args, char **env)
 {
-	int i;
+	int	i;
 
 	(void)env;
 	if (!args[1])
@@ -72,7 +72,7 @@ int	is_builtin(char *cmd)
 int	execute_builtin(char *cmd, char **args)
 {
 	char	**env;
-	
+
 	env = env_to_array();
 	if (!ft_strcmp(cmd, "echo"))
 		return (builtin_echo(args));

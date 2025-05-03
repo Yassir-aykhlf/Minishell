@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 16:59:05 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:16:06 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	interpreter(const char *cmd)
 		return (SYNTAX_ERROR);
 	}
 	tokens = ft_tokenize(cmd);
- 	if (!tokens)
+	if (!tokens)
 		return (SYNTAX_ERROR);
 	tokens = ft_heredoc(tokens);
 	if (!tokens)

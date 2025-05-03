@@ -6,13 +6,13 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:51:15 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:52:20 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:13:56 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int execute_logical(t_ast *node)
+int	execute_logical(t_ast *node)
 {
 	int	left_status;
 	int	right_status;

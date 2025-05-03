@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:19:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 18:55:35 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	execute_recursive(t_ast *node)
 {
-	int status;
+	int	status;
 
 	if (!node)
 		return (EMPTY_AST);
@@ -32,7 +32,7 @@ int	execute_recursive(t_ast *node)
 	return (status);
 }
 
-int ft_execute(t_ast *root)
+int	ft_execute(t_ast *root)
 {
 	if (!root)
 		return (EMPTY_AST);

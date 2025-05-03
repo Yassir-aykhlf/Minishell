@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 16:51:34 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:17:07 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	expand_args_list(t_args **args_head)
 		if (current->arg && current->mask)
 		{
 			expanded = expand_token(current->arg,
-				current->mask, field_sp);
+					current->mask, field_sp);
 			prev = add_expanded_nodes(expanded, next, args_head, prev);
 		}
 		else

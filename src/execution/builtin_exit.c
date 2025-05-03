@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:38:10 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:40:04 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:05:25 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	parse_exit_status(char *arg, int *status)
 {
 	if (arg)
 	{
-		if (ft_isdigit((unsigned char)arg[0]) ||
-			(arg[0] == '-' && ft_isdigit((unsigned char)arg[1])))
+		if (ft_isdigit((unsigned char)arg[0])
+			|| (arg[0] == '-' && ft_isdigit((unsigned char)arg[1])))
 		{
 			*status = ft_atoi(arg);
 		}

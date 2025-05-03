@@ -6,13 +6,13 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:25:50 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:27:00 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 18:57:33 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char **handle_echo_newline_flag(char **args, int *newline)
+char	**handle_echo_newline_flag(char **args, int *newline)
 {
 	*newline = 1;
 	if (args[1] && ft_strcmp(args[1], "-n") == 0)
@@ -25,7 +25,7 @@ char **handle_echo_newline_flag(char **args, int *newline)
 
 void	print_echo_args(char **args)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (args[i])
@@ -39,8 +39,8 @@ void	print_echo_args(char **args)
 
 int	builtin_echo(char **args)
 {
-	int newline;
-	char **args_to_print;
+	int		newline;
+	char	**args_to_print;
 
 	args_to_print = handle_echo_newline_flag(args, &newline);
 	print_echo_args(args_to_print);

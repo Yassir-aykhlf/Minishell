@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:56:40 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:09:45 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:18:31 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	get_redir_count(t_redir *redirects)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (redirects)
@@ -54,24 +54,20 @@ int	apply_redirection(t_redir *redir, int mode)
 	flags = get_redirect_flags(redir->type);
 	if (flags == -1)
 		return (spit_error(EXIT_FAILURE, "Unknown redirection type", false));
-	
 	fd = open(redir->file, flags, mode);
 	if (fd == -1)
 		return (spit_error(EXIT_FAILURE, "open", true));
-	
 	target_fd = get_target_fd(redir->type);
 	if (target_fd == -1)
-		return (spit_error(EXIT_FAILURE, "Invalid target file descriptor", false));
-	
+		return (spit_error(EXIT_FAILURE,
+				"Invalid target file descriptor", false));
 	if (dup2(fd, target_fd) == -1)
 	{
 		close(fd);
 		return (spit_error(EXIT_FAILURE, "dup2", true));
 	}
-	
 	if (redir->type == TOKEN_HEREDOC)
 		unlink(redir->file);
-	
 	close(fd);
 	return (0);
 }
