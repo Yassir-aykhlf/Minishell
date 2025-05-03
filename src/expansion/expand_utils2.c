@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/01 11:01:55 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 13:48:18 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 char	*get_var_name(t_expand *ex)
 {
-	char *(tmp);
-	int (start) = ex->pos;
+	int	start;
+	
+	start = ex->pos;
 	while (ex->token[ex->pos]
 		&& is_sstat(ex, start)
 		&& ex->mask->seg[start - 1] == ex->mask->seg[ex->pos]

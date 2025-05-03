@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 21:06:48 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 21:16:30 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 13:43:35 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ size_t	find_max_segment_id(const t_mask *mask, size_t length)
 
 size_t	*create_merged_segments(const t_mask *mask1, const t_mask *mask2)
 {
-	int (i) = 0;
+	size_t (i) = 0;
 	size_t (mask1_len) = ft_strlen(mask1->mask);
 	size_t (mask2_len) = ft_strlen(mask2->mask);
 	size_t (max_seg_id);

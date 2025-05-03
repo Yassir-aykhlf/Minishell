@@ -1,26 +1,34 @@
-NAME = Enigma
+NAME = minishell
 CC = cc
-CFLAGS = -g3 -lreadline #-Wall -Wextra -Werror
-HEADER = includes/minishell.h
-SRC =	src/main/shell.c src/scan/*.c src/ast/*.c \
-		src/memory/*.c src/tokenization/*.c src/utils/*.c \
-		src/heredoc/*.c src/execution/execute.c \
-		src/environment/*.c src/expansion/*.c src/signal_handeling/*.c
-LIBFT = $(LIBFT_PATH)/libft.a
+CFLAGS = -g3 -lreadline -Wall -Wextra -Werror
+
 LIBFT_PATH = includes/lib/libft
+LIBFT = $(LIBFT_PATH)/libft.a
+
+SRC = $(wildcard src/main/*.c) \
+      $(wildcard src/scan/*.c) \
+      $(wildcard src/ast/*.c) \
+      $(wildcard src/memory/*.c) \
+      $(wildcard src/tokenization/*.c) \
+      $(wildcard src/utils/*.c) \
+      $(wildcard src/heredoc/*.c) \
+      $(wildcard src/execution/*.c) \
+      $(wildcard src/environment/*.c) \
+      $(wildcard src/expansion/*.c) \
+      $(wildcard src/signal_handeling/*.c)
+
+INCLUDES = -I includes -I src
 
 all: $(NAME)
 
-$(NAME): $(SRC) $(LIBFT) $(HEADER)
-	$(CC) $(SRC) $(CFLAGS) $(LIBFT) -o $(NAME)
+$(NAME): $(SRC) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC) $(INCLUDES) $(LIBFT)
+	@echo "\033[0;32mMinishell compiled successfully\033[0m"
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
 
-bonus:
-
 clean:
-	rm -f $(SRC:.c=.o)
 	make -C $(LIBFT_PATH) clean
 fclean: clean
 	rm -f $(NAME)

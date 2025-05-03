@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/01 18:31:42 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 13:47:25 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,15 @@ int	get_redirect_flags(t_token_type type)
 	return (-1);
 }
 
+int	get_target_fd(t_token_type type)
+{
+	if (type == TOKEN_REDIRECT_IN || type == TOKEN_HEREDOC)
+		return (STDIN_FILENO);
+	if (type == TOKEN_REDIRECT_OUT || type == TOKEN_APPEND)
+		return (STDOUT_FILENO);
+	return (-1);
+}
+
 int	apply_redirection(t_redir *redir, int mode)
 {
 	int	fd;
@@ -109,38 +118,41 @@ int	apply_redirection(t_redir *redir, int mode)
 	flags = get_redirect_flags(redir->type);
 	if (flags == -1)
 		return (spit_error(EXIT_FAILURE, "Unknown redirection type", false));
+	
 	fd = open(redir->file, flags, mode);
 	if (fd == -1)
 		return (spit_error(EXIT_FAILURE, "open", true));
-	if (redir->type == TOKEN_REDIRECT_IN || redir->type == TOKEN_HEREDOC)
-		target_fd = STDIN_FILENO;
-	else
-		target_fd = STDOUT_FILENO;
+	
+	target_fd = get_target_fd(redir->type);
+	if (target_fd == -1)
+		return (spit_error(EXIT_FAILURE, "Invalid target file descriptor", false));
+	
 	if (dup2(fd, target_fd) == -1)
 	{
 		close(fd);
 		return (spit_error(EXIT_FAILURE, "dup2", true));
 	}
+	
 	if (redir->type == TOKEN_HEREDOC)
 		unlink(redir->file);
-	if (close(fd) == -1)
-		return (spit_error(EXIT_FAILURE, "close", true));
+	
+	close(fd);
 	return (0);
 }
 
-int	redirect(t_redir *redirects, size_t count)
+int	redirect(t_redir *redirects)
 {
-	size_t	i;
 	int		mode;
 	int		status;
+	t_redir	*current;
 
-	i = 0;
 	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	status = 0;
-	while (i < count && status == 0)
+	current = redirects;
+	while (current && status == 0)
 	{
-		status = apply_redirection(&redirects[i], mode);
-		i++;
+		status = apply_redirection(current, mode);
+		current = current->next;
 	}
 	return (status);
 }
@@ -293,8 +305,10 @@ char	*determine_cd_target_dir(char *arg)
 		if (!target_dir)
 			ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
 		else
+		{
 			ft_putstr_fd(target_dir, STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
+		}
 		return target_dir;
 	}
 	else
@@ -618,7 +632,7 @@ static int execute_in_child(char *full_path, t_ast *cmd_node, char **envp)
 	redir_count = get_redir_count(cmd_node->u_data.s_cmd.redirects);
 	if (redir_count > 0)
 	{
-		redir_status = redirect(cmd_node->u_data.s_cmd.redirects, redir_count);
+		redir_status = redirect(cmd_node->u_data.s_cmd.redirects);
 		if (redir_status != 0)
 			exit(redir_status);
 	}
@@ -643,34 +657,80 @@ int wait_for_child(pid_t pid)
 	return (EXIT_FAILURE);
 }
 
+int	handle_pure_redirections(t_ast *cmd_node)
+{
+	int		redir_count;
+	int		redir_status;
+	pid_t	pid;
+
+	redir_count = get_redir_count(cmd_node->u_data.s_cmd.redirects);
+	if (redir_count > 0)
+	{
+		pid = ft_fork();
+		if (pid < 0)
+			return (spit_error(EXIT_FAILURE, "fork", true));
+		else if (pid == 0)
+		{
+			redir_status = redirect(cmd_node->u_data.s_cmd.redirects);
+			if (redir_status != 0)
+				exit(redir_status);
+			exit(0);
+		}
+		return (wait_for_child(pid));
+	}
+	return (0);
+}
+
+int	handle_builtin_command(char *command_name, t_ast *cmd_node)
+{
+	int		status;
+	char	**argv;
+	int		redir_count;
+	int		redir_status;
+	pid_t	pid;
+
+	argv = get_argv(cmd_node->u_data.s_cmd.argv);
+	if (!argv)
+		return (spit_error(EXIT_FAILURE, "get_argv", true));
+	redir_count = get_redir_count(cmd_node->u_data.s_cmd.redirects);
+	if (redir_count > 0)
+	{
+		pid = ft_fork();
+		if (pid < 0)
+			return (spit_error(EXIT_FAILURE, "fork", true));
+		else if (pid == 0)
+		{
+			redir_status = redirect(cmd_node->u_data.s_cmd.redirects);
+			if (redir_status != 0)
+				exit(redir_status);
+			status = execute_builtin(command_name, argv);
+			exit(status);
+		}
+		return (wait_for_child(pid));
+	}
+	status = execute_builtin(command_name, argv);
+	set_exit_status(status);
+	return (status);
+}
+
 int	execute_command(t_ast *cmd_node)
 {
 	char	*full_path;
 	pid_t	pid;
 	char	**envp;
 	char	*command_name;
-	int		status;
-	char	**argv;
-
+	
 	expand_command(cmd_node);
-//	you need to handle redirections first, then command
-	if (cmd_node->u_data.s_cmd.argv == NULL)// we need this bro, case: > out
-		return(0);
+	if (cmd_node->u_data.s_cmd.argv == NULL)
+		return (handle_pure_redirections(cmd_node));
 	command_name = cmd_node->u_data.s_cmd.argv->arg;
 	if (!command_name)
 		return (spit_error(EXIT_FAILURE, "No command specified", false));
 	if (is_builtin(command_name))
-	{
-		argv = get_argv(cmd_node->u_data.s_cmd.argv);
-		if (!argv)
-			return spit_error(EXIT_FAILURE, "get_argv", true);
-		status = execute_builtin(command_name, argv);
-		set_exit_status(status);
-		return status;
-	}
+		return (handle_builtin_command(command_name, cmd_node));
 	full_path = resolve_command_path(command_name);
 	if (!full_path)
-		return (127);
+		return(spit_error(127, command_name, true));
 	envp = env_to_array();
 	if (!envp)
 		return (spit_error(EXIT_FAILURE, "env_to_array", true));
@@ -685,6 +745,8 @@ int	execute_command(t_ast *cmd_node)
 
 void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int pipe_fds[2])
 {
+	int status = 0;
+	
 	if (prev_pipe_read != -1)
 	{
 		if (dup2(prev_pipe_read, STDIN_FILENO) == -1)
@@ -705,7 +767,8 @@ void	execute_pipeline_child(t_ast *node, int cmd_index, int prev_pipe_read, int 
 		if (pipe_fds[1] != -1)
 			close(pipe_fds[1]);
 	}
-	exit(execute_recursive(node->u_data.s_pipeline.commands[cmd_index]));
+	status = execute_recursive(node->u_data.s_pipeline.commands[cmd_index]);
+	exit(status);
 }
 
 void	handle_parent_pipes(int cmd_index, int *prev_pipe_read, int pipe_fds[2], int pipeline_count)

@@ -6,11 +6,11 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/01 16:54:52 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 13:43:02 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 char	*get_command(void)
 {
@@ -36,8 +36,8 @@ char	*last_token(t_token *tokens)
 
 void	syntax_print(char *token)
 {
-	if (ft_strcmp(token, ";") == 0)
-		write(2, "syntax error near unexpected token `;'\n", 39);
+	if (ft_strcmp(token, "syntax error") == 0)
+		write(2, "syntax error.\n", 14);
 	else
 	{
 		write(2, "syntax error near unexpected token `", 36);
@@ -83,7 +83,7 @@ int	interpreter(const char *cmd)
 	tokens = ft_tokenize(cmd);
  	if (!tokens)
 		return (SYNTAX_ERROR);
-	//print_tk(tokens);
+	// print_tk(tokens);
 	tokens = ft_heredoc(tokens);
 	if (!tokens)
 		return (SIGINT_EXIT);
@@ -93,7 +93,7 @@ int	interpreter(const char *cmd)
 		if (tokens)
 			syntax_print(tokens->value);
 		else
-			syntax_print(";");
+			syntax_print("syntax error");
 		return (SYNTAX_ERROR);
 	}
 	ret_status = ft_execute(ast);
@@ -103,7 +103,6 @@ int	interpreter(const char *cmd)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
-	char	**env;
 
 	(void)argc;
 	(void)argv;

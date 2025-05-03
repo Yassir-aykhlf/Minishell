@@ -20,6 +20,7 @@
 typedef enum e_scan_status
 {
 	SCAN_SUCCESS,
+	SCAN_UNCLOSED_PAREN,
 	SCAN_UNCLOSED_QUOTE,
 	SCAN_INVALID_OPERATOR
 }	t_scan_status;

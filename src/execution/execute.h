@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/27 20:31:34 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 13:54:04 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		ft_execute(t_ast *root);
 int		execute_command(t_ast *cmd);
 int		execute_pipeline(t_ast *node);
 int		execute_recursive(t_ast *node);
-int		redirect(t_redir *redirects, size_t count);
+int		redirect(t_redir *redirects);
 char	*search_path(char *cmd);
 
 int		execute_child_process(t_ast *node, int i, int prev_pipe_read, int pipe_fds[2]);

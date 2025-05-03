@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:21:12 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/04/30 22:02:44 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 13:58:47 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	free_all(void)
 	while (current)
 	{
 		next = current->next;
-		printf("freeing %p\n", current->ptr);
-		printf("freeing %p\n", current);
 		free(current->ptr);
 		free(current);
 		current = next;

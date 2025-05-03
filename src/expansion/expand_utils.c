@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 11:18:06 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/03 13:53:32 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void	expand_command(t_ast *cmd)
 
 void	add_to_list(t_expand *ex)
 {
-	int (i) = 0;
-	t_args *(temp), *(new_arg) = ft_malloc(sizeof(t_args));
+	t_args	*temp;
+	t_args	*new_arg;
+	
+	temp = ft_malloc(sizeof(t_args));
+	new_arg = ft_malloc(sizeof(t_args));
 	new_arg->arg = ft_strdup(ex->word);
 	new_arg->mask = ft_calloc(sizeof(t_mask), 1);
 	new_arg->next = NULL;
