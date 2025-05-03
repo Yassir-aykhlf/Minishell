@@ -6,11 +6,24 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:06:49 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 19:18:53 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 21:29:06 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	wait_for_child(pid_t pid)
+{
+	int	status;
+
+	if (ft_waitpid(pid, &status, 0) == -1)
+		return (spit_error(EXIT_FAILURE, "waitpid", true));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (EXIT_FAILURE);
+}
 
 char	*get_path_env_value(void)
 {

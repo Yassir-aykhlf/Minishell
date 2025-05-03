@@ -6,19 +6,11 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:30:59 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 19:05:13 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 20:20:13 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-bool	is_valid_var_char(char c)
-{
-	return ((c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z')
-		|| (c >= '0' && c <= '9')
-		|| c == '_');
-}
 
 int	is_valid_identifier(char *key, char *full_arg)
 {
@@ -48,38 +40,48 @@ int	is_valid_identifier(char *key, char *full_arg)
 	return (0);
 }
 
-int	validate_export(char **args)
+static int	validate_single_export_arg(char *arg)
 {
-	int		i;
 	char	*key;
 	char	*equals_pos;
 	int		status;
 
+	if (!arg || !arg[0])
+		return (0);
+	equals_pos = ft_strchr(arg, '=');
+	if (equals_pos)
+	{
+		key = ft_strndup(arg, equals_pos - arg);
+		if (!key)
+			return (spit_error(EXIT_FAILURE, "ft_strndup", true));
+		status = is_valid_identifier(key, arg);
+	}
+	else
+	{
+		key = arg;
+		status = is_valid_identifier(key, arg);
+	}
+	return (status);
+}
+
+int	validate_export(char **args)
+{
+	int		i;
+	int		overall_status;
+	int		arg_status;
+
 	if (!args)
 		return (EXIT_FAILURE);
 	i = 1;
-	status = 0;
+	overall_status = 0;
 	while (args[i])
 	{
-		if (!args[i][0])
-		{
-			i++;
-			continue ;
-		}
-		equals_pos = ft_strchr(args[i], '=');
-		if (equals_pos)
-		{
-			key = ft_strndup(args[i], equals_pos - args[i]);
-			if (!key)
-				return (spit_error(EXIT_FAILURE, "ft_strndup", true));
-		}
-		else
-			key = args[i];
-		if (is_valid_identifier(key, args[i]) != 0)
-			status = EXIT_FAILURE;
+		arg_status = validate_single_export_arg(args[i]);
+		if (arg_status != 0)
+			overall_status = EXIT_FAILURE;
 		i++;
 	}
-	return (status);
+	return (overall_status);
 }
 
 void	builtin_export_print(char **env)

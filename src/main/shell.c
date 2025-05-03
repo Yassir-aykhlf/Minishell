@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 19:16:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 19:35:11 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,8 @@ int	interpreter(const char *cmd)
 	if (!tokens)
 		return (SIGINT_EXIT);
 	ast = ft_parse(&tokens);
-	if (!ast || tokens)
-	{
-		if (tokens)
-			syntax_print(tokens->value);
-		else
-			syntax_print("syntax error");
+	if (syntax_error(ast, tokens))
 		return (SYNTAX_ERROR);
-	}
 	ret_status = ft_execute(ast);
 	return (ret_status);
 }

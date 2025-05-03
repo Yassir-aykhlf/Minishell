@@ -6,24 +6,11 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:54:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 19:14:57 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 21:28:52 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	wait_for_child(pid_t pid)
-{
-	int	status;
-
-	if (ft_waitpid(pid, &status, 0) == -1)
-		return (spit_error(EXIT_FAILURE, "waitpid", true));
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_FAILURE);
-}
 
 int	handle_pure_redirections(t_ast *cmd_node)
 {
@@ -49,33 +36,38 @@ int	handle_pure_redirections(t_ast *cmd_node)
 	return (0);
 }
 
+int	exec_builtin_with_redirect(char *command_name, t_ast *cmd_node, char **argv)
+{
+	pid_t	pid;
+	int		redir_status;
+	int		status;
+
+	pid = ft_fork();
+	if (pid < 0)
+		return (spit_error(EXIT_FAILURE, "fork", true));
+	else if (pid == 0)
+	{
+		redir_status = redirect(cmd_node->u_data.s_cmd.redirects);
+		if (redir_status != 0)
+			exit(redir_status);
+		status = execute_builtin(command_name, argv);
+		exit(status);
+	}
+	return (wait_for_child(pid));
+}
+
 int	handle_builtin_command(char *command_name, t_ast *cmd_node)
 {
 	int		status;
 	char	**argv;
 	int		redir_count;
-	int		redir_status;
-	pid_t	pid;
 
 	argv = get_argv(cmd_node->u_data.s_cmd.argv);
 	if (!argv)
 		return (spit_error(EXIT_FAILURE, "get_argv", true));
 	redir_count = get_redir_count(cmd_node->u_data.s_cmd.redirects);
 	if (redir_count > 0)
-	{
-		pid = ft_fork();
-		if (pid < 0)
-			return (spit_error(EXIT_FAILURE, "fork", true));
-		else if (pid == 0)
-		{
-			redir_status = redirect(cmd_node->u_data.s_cmd.redirects);
-			if (redir_status != 0)
-				exit(redir_status);
-			status = execute_builtin(command_name, argv);
-			exit(status);
-		}
-		return (wait_for_child(pid));
-	}
+		return (exec_builtin_with_redirect(command_name, cmd_node, argv));
 	status = execute_builtin(command_name, argv);
 	set_exit_status(status);
 	return (status);

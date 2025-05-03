@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:11:07 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 21:07:47 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,8 @@ char	*get_command(void);
 char	*search_path(char *cmd);
 int		interpreter(const char *cmd);
 t_ast	*ft_parse(t_token **tokens);
+int		syntax_error(t_ast *ast, t_token *tokens);
+void	syntax_print(char *token);
+bool	is_valid_var_char(char c);
 
 #endif
