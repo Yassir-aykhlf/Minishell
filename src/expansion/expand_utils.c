@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 13:53:32 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 14:23:52 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	add_to_list(t_expand *ex)
 {
 	t_args	*temp;
 	t_args	*new_arg;
-	
+
 	temp = ft_malloc(sizeof(t_args));
 	new_arg = ft_malloc(sizeof(t_args));
 	new_arg->arg = ft_strdup(ex->word);

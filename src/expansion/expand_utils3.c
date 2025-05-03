@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 20:25:53 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 13:49:54 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 14:23:39 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	is_field_split(t_args *arg)
 	if (ft_strcmp(arg->arg, "export"))
 		return (0);
 	if (arg->next && ((ft_strchr(arg->next->arg, '=')
-				&& (ft_strchr(arg->next->arg, '=') > ft_strchr(arg->next->arg, '$')))
+				&& (ft_strchr(arg->next->arg, '=')
+					> ft_strchr(arg->next->arg, '$')))
 			|| (!ft_strchr(arg->next->arg, '=')
 				&& ft_strchr(arg->next->arg, '$'))))
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 13:48:18 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/03 14:22:42 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_var_name(t_expand *ex)
 {
 	int	start;
-	
+
 	start = ex->pos;
 	while (ex->token[ex->pos]
 		&& is_sstat(ex, start)
@@ -24,9 +24,7 @@ char	*get_var_name(t_expand *ex)
 		ex->pos++;
 	if (ex->pos == start)
 	{
-		if (is_sstat(ex, start)
-			|| (start != 0 && ex->mask->mask[start - 1] == 'D'))
-			ex->word = ft_strjoin(ex->word, "$");
+		ex->word = ft_strjoin(ex->word, "$");
 		return (NULL);
 	}
 	return (ft_strndup(ex->token + start, ex->pos - start));
