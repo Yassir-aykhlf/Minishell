@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   singnal_handeling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:54:15 by arajma            #+#    #+#             */
-/*   Updated: 2025/04/30 15:54:51 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:42:00 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	sigint_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	set_exit_status(130);
 }
 
 void	setup_shell_signals(void)
@@ -49,9 +50,28 @@ void	setup_shell_signals(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
+static void	handle_terminated_signals(int *status)
+{
+	int	sig;
+
+	if (WIFSIGNALED(*status))
+	{
+		sig = WTERMSIG(*status);
+		if (sig == SIGINT)
+		{
+			printf("\n");
+			*status = 128 + sig;
+		}
+		else if (sig == SIGQUIT)
+		{
+			write(2, "Quit (core dumped)\n", 19);
+			*status = 128 + sig;
+		}
+	}
+}
+
 pid_t	ft_waitpid(pid_t pid, int *status, int options)
 {
-	int					sig;
 	pid_t				result;
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
@@ -65,13 +85,7 @@ pid_t	ft_waitpid(pid_t pid, int *status, int options)
 	result = waitpid(pid, status, options);
 	sigaction(SIGINT, &old_int, NULL);
 	sigaction(SIGQUIT, &old_quit, NULL);
-	if (result > 0 && WIFSIGNALED(*status))
-	{
-		sig = WTERMSIG(*status);
-		if (sig == SIGINT)
-			printf("\n");
-		else if (sig == SIGQUIT)
-			printf("Quit (core dumped)\n");
-	}
+	if (result > 0)
+		handle_terminated_signals(status);
 	return (result);
 }

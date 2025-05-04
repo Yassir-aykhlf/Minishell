@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:02 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:56:43 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 08:39:53 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,14 @@ int	builtin_cd(char **args, char **env)
 	char	*current_dir;
 	char	*target_arg;
 	int		status;
+	int		arg_count;
 
 	(void)env;
+	arg_count = 0;
+	while (args[arg_count])
+		arg_count++;
+	if (arg_count > 2)
+		return (spit_error(1, "cd: too many arguments\n", false));
 	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 		return (spit_error(1, "getcwd before cd", true));

@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:54:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 21:28:52 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:36:37 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,28 +97,20 @@ int	execute_in_child(char *full_path, t_ast *cmd_node, char **envp)
 int	execute_command(t_ast *cmd_node)
 {
 	char	*full_path;
-	pid_t	pid;
-	char	**envp;
 	char	*command_name;
+	int		path_status;
 
 	expand_command(cmd_node);
 	if (cmd_node->u_data.s_cmd.argv == NULL)
 		return (handle_pure_redirections(cmd_node));
-	command_name = cmd_node->u_data.s_cmd.argv->arg;
-	if (!command_name)
-		return (spit_error(EXIT_FAILURE, "No command specified", false));
+	handle_empty_arg(cmd_node);
+	command_name = get_command_name(cmd_node);
+	if (!command_name || !command_name[0])
+		return (0);
 	if (is_builtin(command_name))
 		return (handle_builtin_command(command_name, cmd_node));
-	full_path = resolve_command_path(command_name);
-	if (!full_path)
-		return (spit_error(127, command_name, true));
-	envp = env_to_array();
-	if (!envp)
-		return (spit_error(EXIT_FAILURE, "env_to_array", true));
-	pid = ft_fork();
-	if (pid < 0)
-		return (spit_error(EXIT_FAILURE, "fork", true));
-	else if (pid == 0)
-		execute_in_child(full_path, cmd_node, envp);
-	return (wait_for_child(pid));
+	path_status = check_command_path(command_name, &full_path);
+	if (path_status != 0)
+		return (path_status);
+	return (launch_external_command(full_path, cmd_node));
 }

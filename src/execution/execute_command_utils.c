@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:06:49 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 21:29:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:38:00 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,10 @@ char	*resolve_command_path(char *command_name)
 	{
 		path = ft_strdup(command_name);
 		if (!path)
-			spit_error(EXIT_FAILURE, "ft_strdup", true);
-		else if (access(path, X_OK) != 0)
-		{
-			spit_error(127, command_name, true);
-			path = NULL;
-		}
+			return (spit_error(EXIT_FAILURE, "ft_strdup", true), NULL);
+		return (check_path_validity(path));
 	}
 	else
-	{
 		path = search_path((char *)command_name);
-	}
 	return (path);
 }

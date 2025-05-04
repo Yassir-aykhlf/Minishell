@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:15:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 19:18:17 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:22:44 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ int	count_args(t_args *args)
 		args = args->next;
 	}
 	return (count);
+}
+
+char	*cat(char *s1, char *s2)
+{
+	char	*result;
+
+	result = ft_strjoin(s1, s2);
+	return (result);
 }

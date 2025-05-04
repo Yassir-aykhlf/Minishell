@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:16:20 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 16:45:45 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 09:23:58 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ char	*get_var_value(char *name)
 	while (env)
 	{
 		if (ft_strcmp(env->key, name) == 0)
-			return (env->value);
+		{
+			if (env->value)
+				return (ft_strdup(env->value));
+			else
+				return (ft_strdup(""));
+		}
 		env = env->next;
 	}
 	return (ft_strdup(""));

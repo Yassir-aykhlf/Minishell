@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 21:28:30 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:35:27 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		get_target_fd(t_token_type type);
 int		get_redirect_flags(t_token_type type);
 int		apply_redirection(t_redir *redir, int mode);
 int		redirect(t_redir *redirects);
+char	*cat(char *s1, char *s2);
 int		wait_for_child(pid_t pid);
 int		handle_pure_redirections(t_ast *cmd_node);
 int		handle_builtin_command(char *command_name, t_ast *cmd_node);
@@ -83,5 +84,13 @@ char	**get_argv(t_args *args);
 int		count_args(t_args *args);
 int		exec_builtin_with_redirect(char *command_name,
 			t_ast *cmd_node, char **argv);
+char	*handle_not_found_error(char *path);
+char	*handle_directory_error(char *path);
+char	*handle_permission_error(char *path);
+char	*check_path_validity(char *path);
+void	handle_empty_arg(t_ast *cmd_node);
+char	*get_command_name(t_ast *cmd_node);
+int		check_command_path(char *command_name, char **full_path);
+int		launch_external_command(char *full_path, t_ast *cmd_node);
 
 #endif

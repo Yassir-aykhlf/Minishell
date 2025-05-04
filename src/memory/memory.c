@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 15:21:12 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 13:58:47 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 09:48:35 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,32 @@ void	*ft_malloc(size_t size)
 	new_alloc->next = *alloc_list_ptr;
 	*alloc_list_ptr = new_alloc;
 	return (new_alloc->ptr);
+}
+
+void	ft_free(void *ptr)
+{
+	t_alloc	**alloc_list_ptr;
+	t_alloc	*current;
+	t_alloc	*prev;
+
+	if (!ptr)
+		return ;
+	alloc_list_ptr = get_alloc_list();
+	current = *alloc_list_ptr;
+	prev = NULL;
+	while (current)
+	{
+		if (current->ptr == ptr)
+		{
+			if (prev)
+				prev->next = current->next;
+			else
+				*alloc_list_ptr = current->next;
+			free(current->ptr);
+			free(current);
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
 }
