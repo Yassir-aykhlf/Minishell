@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:30:59 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 20:20:13 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 14:38:24 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,6 @@ int	is_valid_identifier(char *key, char *full_arg)
 		j++;
 	}
 	return (0);
-}
-
-static int	validate_single_export_arg(char *arg)
-{
-	char	*key;
-	char	*equals_pos;
-	int		status;
-
-	if (!arg || !arg[0])
-		return (0);
-	equals_pos = ft_strchr(arg, '=');
-	if (equals_pos)
-	{
-		key = ft_strndup(arg, equals_pos - arg);
-		if (!key)
-			return (spit_error(EXIT_FAILURE, "ft_strndup", true));
-		status = is_valid_identifier(key, arg);
-	}
-	else
-	{
-		key = arg;
-		status = is_valid_identifier(key, arg);
-	}
-	return (status);
 }
 
 int	validate_export(char **args)

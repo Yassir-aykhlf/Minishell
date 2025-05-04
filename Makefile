@@ -15,13 +15,13 @@ UTILS_SRC = src/utils/utils.c src/utils/more_utils.c
 HEREDOC_SRC = src/heredoc/heredoc.c src/heredoc/heredoc_utils.c
 EXECUTION_SRC = src/execution/builtin_cd.c src/execution/builtin_echo.c \
                 src/execution/builtin_exit.c src/execution/builtin_export.c \
-                src/execution/builtin_export_helper.c src/execution/builtins.c \
+                src/execution/builtin_export_helper.c src/execution/builtin_export_utils.c \
                 src/execution/execute.c src/execution/execute_command.c \
                 src/execution/execute_command_helpers.c src/execution/execute_command_utils.c \
                 src/execution/execute_command_utils_utils.c src/execution/execute_logical.c \
                 src/execution/execute_pipeline.c src/execution/execute_subshell.c \
                 src/execution/execution_utils.c src/execution/exit_status.c \
-                src/execution/redirection.c
+                src/execution/redirection.c src/execution/builtins.c
 ENVIRONMENT_SRC = src/environment/env.c src/environment/env_utils.c
 EXPANSION_SRC = src/expansion/expansion.c src/expansion/expand_utils.c \
                 src/expansion/expand_utils2.c src/expansion/expand_utils3.c

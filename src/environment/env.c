@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 14:02:28 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 17:15:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 14:37:16 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	set_env_var(char *key, char *value)
 {
 	t_env	**env_list;
 	t_env	*current;
+	t_env	*new_node;
 
 	env_list = get_env_list();
 	current = *env_list;
@@ -68,7 +69,14 @@ void	set_env_var(char *key, char *value)
 		}
 		current = current->next;
 	}
-	link_env_node(env_list, create_env_node(key, value));
+	if (key && ft_strlen(key) > 0)
+	{
+		if (value)
+			new_node = create_env_node(ft_strdup(key), ft_strdup(value));
+		else
+			new_node = create_env_node(ft_strdup(key), NULL);
+		link_env_node(env_list, new_node);
+	}
 }
 
 void	unset_env_var(char *key)

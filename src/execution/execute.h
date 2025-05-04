@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 10:35:27 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 14:39:33 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,8 @@ void	handle_empty_arg(t_ast *cmd_node);
 char	*get_command_name(t_ast *cmd_node);
 int		check_command_path(char *command_name, char **full_path);
 int		launch_external_command(char *full_path, t_ast *cmd_node);
+int		validate_export_append(char *arg, char *append_pos);
+int		validate_export_equals(char *arg, char *equals_pos);
+int		validate_single_export_arg(char *arg);
 
 #endif

@@ -25,10 +25,6 @@ Enigma$
 	>> Should execute ls -la.
 
 - []
-	export a Z
-	>> Every var should be created as an empty export variable
-	
-- []
 	export var+=Some
 	>> var should be searched for, if found then join it with `Some`, else create it and store `Some in it`
 	
