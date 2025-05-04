@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:08:31 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/04 14:18:05 by arajma           ###   ########.fr       */
+/*   Updated: 2025/05/04 18:13:56 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,10 @@ void	handle_var(t_expand *ex)
 	if (!name)
 		return ;
 	value = get_var_value(name);
+	if ((!value || !value[0])
+		&& ex->word && ex->word[0] == '\0'
+		&& ex->token[ex->pos] == '\0')
+		set_var_expansion_flag(1);
 	if (!handle_field_splitting(ex, value, var_start))
 	{
 		tmp = ft_strjoin(ex->word, value);

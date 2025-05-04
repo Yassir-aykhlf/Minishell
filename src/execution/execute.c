@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 15:31:18 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 18:11:19 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	execute_recursive(t_ast *node)
 
 	if (!node)
 		return (EMPTY_AST);
+	if (node->type == NODE_EMPTY_COMMAND)
+		return (127);
 	status = 0;
 	if (node->type == NODE_COMMAND)
 		status = execute_command(node);

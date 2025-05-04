@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:24:08 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 20:19:16 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 18:20:35 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,14 @@ bool	is_valid_var_char(char c)
 		|| (c >= 'A' && c <= 'Z')
 		|| (c >= '0' && c <= '9')
 		|| c == '_');
+}
+
+char	*last_token(t_token *tokens)
+{
+	t_token	*current;
+
+	current = tokens;
+	while (current->next)
+		current = current->next;
+	return (current->value);
 }

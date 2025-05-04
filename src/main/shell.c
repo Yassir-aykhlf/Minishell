@@ -6,44 +6,54 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 15:28:36 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 18:38:43 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_command(void)
+static int	handle_empty_first_command(t_ast *ast)
 {
-	char	*cmd;
+	char	*first_command;
 
-	cmd = readline("\033[92mEnigma\033[94m$ \033[0m");
-	if (!cmd)
-		return (NULL);
-	if (*cmd)
-		add_history(cmd);
-	return (cmd);
-}
-
-char	*last_token(t_token *tokens)
-{
-	t_token	*current;
-
-	current = tokens;
-	while (current->next)
-		current = current->next;
-	return (current->value);
-}
-
-void	syntax_print(char *token)
-{
-	if (ft_strcmp(token, "syntax error") == 0)
-		write(2, "syntax error.\n", 14);
-	else
+	if (ast && ast->type == NODE_COMMAND && ast->u_data.s_cmd.argv)
 	{
-		write(2, "syntax error near unexpected token `", 36);
-		write(2, token, ft_strlen(token));
-		write(2, "'\n", 2);
+		first_command = get_command_name(ast);
+		if (first_command && first_command[0] == '\0')
+		{
+			ast->type = NODE_EMPTY_COMMAND;
+			return (spit_error(127, "command not found\n", 0));
+		}
 	}
+	return (-1);
+}
+
+static t_token	*process_tokens(const char *cmd, t_scan_status status)
+{
+	t_token	*tokens;
+
+	if (status != SCAN_SUCCESS)
+	{
+		printf("%s\n", translate_message(status));
+		return (NULL);
+	}
+	tokens = ft_tokenize(cmd);
+	if (!tokens)
+		return (NULL);
+	tokens = ft_heredoc(tokens);
+	return (tokens);
+}
+
+static t_ast	*build_ast(t_token *tokens)
+{
+	t_ast	*ast;
+
+	if (!tokens)
+		return (NULL);
+	ast = ft_parse(&tokens);
+	if (syntax_error(ast, tokens))
+		return (NULL);
+	return (ast);
 }
 
 int	interpreter(const char *cmd)
@@ -52,22 +62,22 @@ int	interpreter(const char *cmd)
 	t_token			*tokens;
 	t_ast			*ast;
 	int				ret_status;
+	int				empty_cmd_status;
 
 	status = ft_scan(cmd);
-	if (status != SCAN_SUCCESS)
-	{
-		printf("%s\n", translate_message(status));
+	tokens = process_tokens(cmd, status);
+	if (!tokens && status != SCAN_SUCCESS)
 		return (SYNTAX_ERROR);
-	}
-	tokens = ft_tokenize(cmd);
-	if (!tokens)
+	if (!tokens && status == SCAN_SUCCESS)
 		return (0);
-	tokens = ft_heredoc(tokens);
 	if (!tokens)
 		return (SIGINT_EXIT);
-	ast = ft_parse(&tokens);
-	if (syntax_error(ast, tokens))
+	ast = build_ast(tokens);
+	if (!ast)
 		return (SYNTAX_ERROR);
+	empty_cmd_status = handle_empty_first_command(ast);
+	if (empty_cmd_status >= 0)
+		return (empty_cmd_status);
 	ret_status = ft_execute(ast);
 	return (ret_status);
 }

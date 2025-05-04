@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:42 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 14:39:33 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 17:49:05 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ char	*search_path(char *cmd);
 char	*resolve_command_path(char *command_name);
 int		*get_exit_status(void);
 void	set_exit_status(int status);
+int		*get_var_expansion_flag(void);
+void	set_var_expansion_flag(int flag);
 bool	is_child_process(void);
 void	fill_argv_from_list(char **argv, t_args *args);
 char	**get_argv(t_args *args);

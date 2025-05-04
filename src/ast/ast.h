@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 04:36:41 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 17:13:06 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 18:11:33 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ typedef enum e_ast_type
 	NODE_LOGICAL,
 	NODE_PIPELINE,
 	NODE_COMMAND,
-	NODE_SUBSHELL
+	NODE_SUBSHELL,
+	NODE_EMPTY_COMMAND
 }	t_ast_type;
 
 typedef struct s_redir
