@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:02 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:55:15 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 15:24:20 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ int	builtin_pwd(void)
 {
 	char	*pwd;
 
-	pwd = getcwd(NULL, 0);
+	pwd = get_env_value("PWD");
 	if (!pwd)
 		return (spit_error(EXIT_FAILURE, "getcwd", true));
 	ft_putstr_fd(pwd, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
-	free(pwd);
 	return (0);
 }
 
