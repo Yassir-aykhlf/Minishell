@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:54:25 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 10:36:37 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 12:13:03 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ int	execute_command(t_ast *cmd_node)
 		return (handle_pure_redirections(cmd_node));
 	handle_empty_arg(cmd_node);
 	command_name = get_command_name(cmd_node);
-	if (!command_name || !command_name[0])
+	if (!command_name)
 		return (0);
+	if (!command_name[0])
+		return (spit_error(127, "command not found\n", 0));
 	if (is_builtin(command_name))
 		return (handle_builtin_command(command_name, cmd_node));
 	path_status = check_command_path(command_name, &full_path);

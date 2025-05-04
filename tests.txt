@@ -1,85 +1,44 @@
-Test  40: ❌ cd $PWD hi 
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( too many arguments)
-Test  44: ❌ exit +100 
-mini exit code = 2
-bash exit code = 100
-mini error = ( numeric argument required)
-bash error = ()
-Test  45: ❌ exit "+100" 
-mini exit code = 2
-bash exit code = 100
-mini error = ( numeric argument required)
-bash error = ()
-Test  46: ❌ exit +"100" 
-mini exit code = 2
-bash exit code = 100
-mini error = ( numeric argument required)
-bash error = ()
-Test  51: ❌ exit 42 world 
-mini exit code = 42
-bash exit code = 1
-mini error = ()
-bash error = ( too many arguments)
-Test  52: ❌  
-mini exit code = 2
-bash exit code = 0
-Test 132: ❌  
-mini exit code = 2
-bash exit code = 0
-Test 133: ❌ $PWD 
-mini exit code = 1
-bash exit code = 126
-mini error = ( Permission denied)
-bash error = ( Is a directory)
-Test 134: ❌ $EMPTY 
-mini exit code = 127
-bash exit code = 0
-mini error = (Inappropriate ioctl for device)
-bash error = ()
-Test 135: ❌ $EMPTY echo hi 
-mini output = ()
-bash output = (hi)
-mini exit code = 127
-bash exit code = 0
-mini error = (Inappropriate ioctl for device)
-bash error = ()
-Test 136: ❌ ./test_files/invalid_permission 
-mini exit code = 127
-bash exit code = 126
-mini error = ( Permission denied Invalid argument)
-bash error = ( Permission denied)
-Test 137: ✅⚠️  ./missing.out 
-mini error = ( No such file or directory Invalid argument)
-bash error = ( No such file or directory)
-Test 138: ✅⚠️  missing.out 
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 139: ✅⚠️  "aaa" 
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 140: ✅⚠️  test_files 
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 141: ❌ ./test_files 
-mini exit code = 1
-bash exit code = 126
-mini error = ( Permission denied)
-bash error = ( Is a directory)
-Test 142: ✅⚠️  /test_files 
-mini error = ( No such file or directory Invalid argument)
-bash error = ( No such file or directory)
-Test 143: ✅⚠️  minishell.h 
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 144: ✅⚠️  $ 
-mini error = (Inappropriate ioctl for device)
-bash error = ( command not found)
-Test 145: ✅⚠️  $? 
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 146: ✅⚠️  README.md 
-mini error = ( No such file or directory)
-bash error = ( command not found)
+Enigma$ mkdir c
+Enigma$ cd c
+Enigma$ ls
+Enigma$ rm -rf ../c
+Enigma$ pwd
+getcwd: No such file or directory
+Enigma$ ls
+Enigma$ pwd
+getcwd: No such file or directory
+Enigma$ 
+
+
+
+- []
+	export x="ls			-la"
+	$x
+	```
+		USER_ZDOTDIR=/home/yaykhlf
+		x=ls                    -la
+		Enigma$ $x
+		ls: cannot access '': No such file or directory
+		Enigma$ echo $x
+		ls -la 
+	```
+	>> Should execute ls -la.
+
+- []
+	export a Z
+	>> Every var should be created as an empty export variable
+	
+- []
+	export var+=Some
+	>> var should be searched for, if found then join it with `Some`, else create it and store `Some in it`
+	
+- []
+	export var
+	>> if var does not exist, create it with no value. else do nothing.
+	
+- []
+	exit [code]
+	if code is not present, yank the latest status code available and use it as a shell exit code.
+	
+- []
+	pwd on a deleted dir

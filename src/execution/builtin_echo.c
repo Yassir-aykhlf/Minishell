@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:25:50 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:57:33 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 13:43:52 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,22 @@
 
 char	**handle_echo_newline_flag(char **args, int *newline)
 {
+	int	i;
+	int	j;
+
 	*newline = 1;
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
+	i = 1;
+	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
+		j = 2;
+		while (args[i][j] == 'n')
+			j++;
+		if (args[i][j] != '\0')
+			break;
 		*newline = 0;
-		return (args + 1);
+		i++;
 	}
-	return (args);
+	return (args + i - 1);
 }
 
 void	print_echo_args(char **args)

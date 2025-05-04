@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:50:39 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/03 18:55:35 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 13:48:12 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	execute_recursive(t_ast *node)
 		status = execute_subshell(node);
 	else
 		status = spit_error(EXIT_FAILURE, "Unknown AST node type", false);
+	set_exit_status(status);
 	return (status);
 }
 
