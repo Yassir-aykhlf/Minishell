@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:14:09 by arajma            #+#    #+#             */
-/*   Updated: 2025/05/03 15:04:02 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 14:17:18 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_to_list(t_expand *ex)
 			temp = temp->next;
 		temp->next = new_arg;
 	}
-	ex->word = ft_strdup("");
+	ex->word = NULL;
 }
 
 void	handle_exit_code(t_expand *ex)
