@@ -9,8 +9,6 @@ Enigma$ pwd
 getcwd: No such file or directory
 Enigma$ 
 
-
-
 - []
 	export x="ls			-la"
 	$x
@@ -23,14 +21,6 @@ Enigma$
 		ls -la 
 	```
 	>> Should execute ls -la.
-
-- []
-	export var+=Some
-	>> var should be searched for, if found then join it with `Some`, else create it and store `Some in it`
-	
-- []
-	export var
-	>> if var does not exist, create it with no value. else do nothing.
 	
 - []
 	exit [code]
