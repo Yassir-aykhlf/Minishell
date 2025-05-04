@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:25:50 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 13:43:52 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 14:00:52 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**handle_echo_newline_flag(char **args, int *newline)
 		while (args[i][j] == 'n')
 			j++;
 		if (args[i][j] != '\0')
-			break;
+			break ;
 		*newline = 0;
 		i++;
 	}
