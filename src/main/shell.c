@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 09:06:13 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 15:01:22 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,5 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 	}
 	free_all();
-	return (SUCCESS);
+	return (*get_exit_status());
 }

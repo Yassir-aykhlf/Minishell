@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:38:10 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 12:04:50 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/04 15:04:55 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_exit_status(char *arg, int *status)
 {
 	if (!arg)
 	{
-		*status = 0;
+		*status = *get_exit_status();
 		return (0);
 	}
 	if (is_valid_number(arg))
