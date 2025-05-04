@@ -10,8 +10,4 @@ getcwd: No such file or directory
 Enigma$ 
 
 - []
-	exit [code]
-	if code is not present, yank the latest status code available and use it as a shell exit code.
-	
-- []
 	pwd on a deleted dir
