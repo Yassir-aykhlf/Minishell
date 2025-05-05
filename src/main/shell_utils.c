@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:38:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/05 14:58:04 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/05 15:06:46 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*get_hostname(void)
 	int		i;
 	int		j;
 
-	session_manager = get_env_value("SESSION_MANAGER");
+	session_manager = getenv("SESSION_MANAGER");
 	if (!session_manager)
 		return (ft_strdup("unknown"));
 	i = 0;
@@ -75,7 +75,7 @@ char	*get_command(void)
 	char	*prompt;
 	char	*hostname;
 
-	user = get_env_value("USER");
+	user = getenv("USER");
 	if (!user)
 		user = "user";
 	hostname = get_hostname();
