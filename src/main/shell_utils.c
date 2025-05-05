@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:38:14 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/05 15:06:46 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/05 15:16:29 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,23 @@ static char	*get_hostname(void)
 	return (hostname);
 }
 
+static int	is_path_in_home(const char *cwd, const char *home)
+{
+	size_t	home_len;
+
+	if (!cwd || !home)
+		return (0);
+	home_len = ft_strlen(home);
+	return (ft_strncmp(cwd, home, home_len) == 0
+		&& (cwd[home_len] == '/' || cwd[home_len] == '\0'));
+}
+
 char	*tilde_implementation(void)
 {
 	char	*home;
 	char	*cwd;
 	char	*result;
+	size_t	home_len;
 
 	cwd = get_env_value("PWD");
 	if (cwd == NULL)
@@ -54,13 +66,13 @@ char	*tilde_implementation(void)
 	home = get_env_value("HOME");
 	if (!home)
 		return (ft_strdup("unknown"));
-	if (ft_strncmp(cwd, home, ft_strlen(home)) == 0
-		&& (cwd[ft_strlen(home)] == '/' || cwd[ft_strlen(home)] == '\0'))
+	if (is_path_in_home(cwd, home))
 	{
-		if (cwd[ft_strlen(home)] == '\0')
+		home_len = ft_strlen(home);
+		if (cwd[home_len] == '\0')
 			result = ft_strdup("~");
 		else
-			result = ft_strjoin_three("~", "/", cwd + ft_strlen(home) + 1);
+			result = ft_strjoin_three("~", "/", cwd + home_len + 1);
 	}
 	else
 		result = ft_strdup(cwd);
