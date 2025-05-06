@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arajma <arajma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:34:16 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 18:35:49 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:27:07 by arajma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	wait_for_pipeline_children(int count, pid_t last_pid)
 	last_status = 0;
 	while (i < count)
 	{
-		waited_pid = wait(&status);
+		waited_pid = ft_waitpid(-1, &status, 0);
 		if (waited_pid == -1)
 			spit_error(EXIT_FAILURE, "wait", true);
 		else if (waited_pid == last_pid)
