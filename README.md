@@ -1,60 +1,144 @@
-# Minishell To-Do List
+# Minishell
 
-## Phase 1: Core Infrastructure
+A robust UNIX shell implementation with built-in command execution, pipeline handling, and variable expansion.
 
-### Environment Variable System
-1. Create a proper environment variable management system ✅
-2. Enhance the tokenizer to handle `$VAR` expansion
-3. Implement special variable handling for `$?` (last exit status)
+## Overview
 
-### Command Execution Fundamentals
-4. Update `search_path` function to handle cases when PATH is unset
-5. Implement tracking and returning of command exit status
-6. Improve error reporting for command execution failures
+Minishell is a simplified shell implementation inspired by bash. It provides a command-line interface where users can execute commands, use pipes for command chaining, leverage redirections, and utilize environment variables - all with proper error handling and signal management.
 
-### Signal Handling
-7. Add signal handlers for Ctrl-C (SIGINT) to interrupt current process
-8. Implement handling for Ctrl-D (EOF) to exit shell
-9. Add signal handler for Ctrl-\ (SIGQUIT) with appropriate behavior
-10. Ensure proper signal behavior in interactive mode
+## Features
 
-## Phase 2: Core Command Execution
+### Command Execution
+- Run both built-in commands and external executables
 
-### Builtin Commands
-11. Implement `echo` with `-n` option support ✅
-12. Implement `pwd` without options ✅
-13. Implement `env` without options ✅
-14. Implement `exit` without options ✅
-15. Implement `cd` with support for relative and absolute paths ✅
-16. Implement `export` without options ✅
-17. Implement `unset` without options ✅
+### Built-in Commands
+- `echo`: Display text with `-n` flag support
+- `cd`: Change directory with path or relative navigation
+- `pwd`: Print working directory
+- `export`: Set environment variables
+- `unset`: Remove environment variables
+- `env`: Display environment variables
+- `exit`: Exit the shell with status code
 
-### Pipeline and Redirection
-18. Finish the `execute_pipeline` function to properly connect commands with pipes ✅
-19. Add proper pipe creation and management for connecting command outputs to inputs ✅
-20. Improve the `redirect` function with better error handling 
-21. Enhance the `handle_heredoc` implementation with robust error handling
-22. Add support for multiple redirections in a single command
+### Shell Operators
+- **Pipes** (`|`): Connect command outputs to inputs
+- **Redirections**:
+  - Input redirection (`<`)
+  - Output redirection (`>`)
+  - Append output (`>>`)
+  - Heredoc (`<<`)
+- **Logical operators**:
+  - AND (`&&`)
+  - OR (`||`)
 
-## Phase 3: Advanced Command Execution
+### Advanced Features
+- Environment variable expansion (`$VAR`)
+- Signal handling (Ctrl+C, Ctrl+D, Ctrl+\)
+- Subshell execution with parentheses
+- Command history navigation
+- Custom memory management
 
-### Command Flow Control
-23. Complete the execution flow for logical operators (&&, ||) in the `execute_recursive` function
-24. Implement the `execute_subshell` function to handle commands in parentheses
-25. Implement command grouping execution
+## Installation
 
-### Quoting and Parsing
-26. Enhance the tokenizer to properly handle single quotes (prevent all interpretation)
-27. Improve handling of double quotes (prevent interpretation except for `$`)
-28. Fix quote processing for variable expansion inside quotes
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/minishell.git
 
-## Phase 4: Enhancements and Refinements
+# Navigate to the project directory
+cd minishell
 
-### Additional Features
-31. Add wildcard expansion support for `*` patterns
-32. Add standard error messages for various error conditions
+# Compile the project
+make
+```
 
-### Memory Management
-34. Ensure all allocated memory is properly tracked and freed
+## Usage
 
----------------------------------------------------------------------------------------------------
+```bash
+# Launch the shell
+./minishell
+```
+
+Once running, you can use the shell like any standard UNIX shell:
+
+```bash
+# Simple command
+echo Hello, World!
+
+# Command with pipes
+ls -la | grep "\.c$" | wc -l
+
+# Environment variable usage
+echo $HOME
+
+# Redirections
+echo test > file.txt
+cat < file.txt
+
+# Heredoc
+cat << EOF
+This is a multi-line
+heredoc input
+EOF
+
+# Logical operators
+cd /tmp && echo "Changed directory successfully"
+cd /nonexistentdir || echo "Directory change failed"
+```
+
+## Implementation
+
+The project implementation follows these key steps:
+
+1. **Tokenization**: Parse input into tokens (commands, arguments, operators)
+2. **Parsing**: Create an Abstract Syntax Tree (AST) from tokens
+3. **Expansion**: Handle environment variable expansion
+4. **Execution**: Execute commands according to the parsed structure
+5. **Memory Management**: Custom memory allocation and deallocation
+
+## Project Structure
+
+```
+minishell/
+├── includes/
+│   ├── minishell.h
+│   └── structures.h
+├── src/
+│   ├── builtins/
+│   │   ├── cd.c
+│   │   ├── echo.c
+│   │   ├── env.c
+│   │   ├── exit.c
+│   │   ├── export.c
+│   │   └── pwd.c
+│   ├── execution/
+│   │   ├── executor.c
+│   │   ├── pipeline.c
+│   │   └── redirections.c
+│   ├── parser/
+│   │   ├── lexer.c
+│   │   ├── parser.c
+│   │   └── tokens.c
+│   ├── utils/
+│   │   ├── env_utils.c
+│   │   ├── error_handling.c
+│   │   └── memory_management.c
+│   └── main.c
+├── Makefile
+└── README.md
+```
+
+## Dependencies
+
+- GCC Compiler
+- GNU Make
+- Standard C Library
+
+## Contributors
+
+- [Yassir Aykhlf](https://github.com/Yassir-aykhlf)
+- [Amine Rajma](https://github.com/st-ameen)
+
+## Acknowledgements
+
+- Inspired by the Bash shell
+- Developed as part of the 42 School curriculum
