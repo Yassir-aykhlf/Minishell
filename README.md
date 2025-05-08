@@ -95,38 +95,6 @@ The project implementation follows these key steps:
 4. **Execution**: Execute commands according to the parsed structure
 5. **Memory Management**: Custom memory allocation and deallocation
 
-## Project Structure
-
-```
-minishell/
-├── includes/
-│   ├── minishell.h
-│   └── structures.h
-├── src/
-│   ├── builtins/
-│   │   ├── cd.c
-│   │   ├── echo.c
-│   │   ├── env.c
-│   │   ├── exit.c
-│   │   ├── export.c
-│   │   └── pwd.c
-│   ├── execution/
-│   │   ├── executor.c
-│   │   ├── pipeline.c
-│   │   └── redirections.c
-│   ├── parser/
-│   │   ├── lexer.c
-│   │   ├── parser.c
-│   │   └── tokens.c
-│   ├── utils/
-│   │   ├── env_utils.c
-│   │   ├── error_handling.c
-│   │   └── memory_management.c
-│   └── main.c
-├── Makefile
-└── README.md
-```
-
 ## Dependencies
 
 - GCC Compiler
@@ -137,6 +105,14 @@ minishell/
 
 - [Yassir Aykhlf](https://github.com/Yassir-aykhlf)
 - [Amine Rajma](https://github.com/st-ameen)
+
+## Contributing
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m "Add some feature"`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a pull request.
 
 ## Acknowledgements
 
