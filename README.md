@@ -42,7 +42,7 @@ Minishell is a simplified shell implementation inspired by bash. It provides a c
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/minishell.git
+git clone https://github.com/Yassir-aykhlf/minishell.git
 
 # Navigate to the project directory
 cd minishell
