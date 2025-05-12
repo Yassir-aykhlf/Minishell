@@ -10,33 +10,60 @@ Minishell is a simplified shell implementation inspired by bash. It provides a c
 
 ### Command Execution
 - Run both built-in commands and external executables
+- Accurate exit status reporting
 
 ### Built-in Commands
 - `echo`: Display text with `-n` flag support
 - `cd`: Change directory with path or relative navigation
 - `pwd`: Print working directory
-- `export`: Set environment variables
+- `export`: Set or display environment variables
 - `unset`: Remove environment variables
 - `env`: Display environment variables
-- `exit`: Exit the shell with status code
+- `exit`: Exit the shell with a specified status code
 
 ### Shell Operators
-- **Pipes** (`|`): Connect command outputs to inputs
+- **Pipes** (`|`): Connect command outputs to inputs, enabling complex command chains.
 - **Redirections**:
-  - Input redirection (`<`)
-  - Output redirection (`>`)
-  - Append output (`>>`)
-  - Heredoc (`<<`)
+  - Input redirection (`<`): Read input from a file.
+  - Output redirection (`>`): Write output to a file, overwriting existing content.
+  - Append output (`>>`): Append output to a file.
+  - Heredoc (`<<`): Provide multi-line input to a command, with optional delimiter quoting to control expansion.
 - **Logical operators**:
-  - AND (`&&`)
-  - OR (`||`)
+  - AND (`&&`): Execute the next command only if the previous one succeeds.
+  - OR (`||`): Execute the next command only if the previous one fails.
 
 ### Advanced Features
-- Environment variable expansion (`$VAR`)
-- Signal handling (Ctrl+C, Ctrl+D, Ctrl+\)
-- Subshell execution with parentheses
-- Command history navigation
-- Custom memory management
+- **Environment Variable Expansion**:
+    - Environment variable expansion (`$VAR` or `${VAR}`).
+    - Special variable `$?` for the exit status of the last command.
+- **Signal Handling**:
+    - `Ctrl+C` (SIGINT): Interrupts the current foreground process or displays a new prompt if no process is running.
+    - `Ctrl+D` (EOF): Exits the shell if the input line is empty.
+    - `Ctrl+\` (SIGQUIT): Ignored by the shell to prevent accidental termination.
+- **Subshell Execution**: Execute commands in a subshell environment using parentheses `(...)`.
+- **Command History**: Navigate through previously entered commands using arrow keys.
+- **Custom Memory Management**: Utilizes a custom memory allocator for efficient resource handling and memory leak prevention.
+- **Robust Error Handling**: Provides informative error messages for syntax errors, command not found, permission issues, etc.
+
+## Project Structure
+
+The project is organized into the following main directories:
+- `includes/`: Contains all header files, including `minishell.h` and library headers.
+- `lib/`: Contains external libraries like `libft` and `get_next_line`.
+- `src/`: Contains the source code for Minishell, categorized into subdirectories:
+    - `ast/`: Abstract Syntax Tree construction and manipulation.
+    - `environment/`: Environment variable management.
+    - `execution/`: Command execution logic, including builtins and external commands.
+    - `expansion/`: Variable and token expansion.
+    - `heredoc/`: Heredoc processing.
+    - `main/`: Main shell loop and initialization.
+    - `memory/`: Custom memory management utilities.
+    - `scan/`: Input scanning and validation.
+    - `signal_handeling/`: Signal handling logic.
+    - `tokenization/`: Input string tokenization.
+    - `utils/`: Utility functions used across the project.
+- `Makefile`: Defines build rules for compiling the project.
+- `README.md`: This file.
 
 ## Installation
 
@@ -89,11 +116,20 @@ cd /nonexistentdir || echo "Directory change failed"
 
 The project implementation follows these key steps:
 
-1. **Tokenization**: Parse input into tokens (commands, arguments, operators)
-2. **Parsing**: Create an Abstract Syntax Tree (AST) from tokens
-3. **Expansion**: Handle environment variable expansion
-4. **Execution**: Execute commands according to the parsed structure
-5. **Memory Management**: Custom memory allocation and deallocation
+1.  **Input Reading & History**: Uses `readline` to read user input and manage command history.
+2.  **Scanning**: Validates the input for unclosed quotes or unexpected characters.
+3.  **Tokenization**: Parses the input string into a list of tokens (commands, arguments, operators, redirections). Each token is identified by its type and value, and a character mask is generated to handle quoting for expansion.
+4.  **Parsing (AST Construction)**: Builds an Abstract Syntax Tree (AST) from the token list. The AST represents the command structure, including pipelines, logical operations, subshells, and redirections.
+5.  **Expansion**: Traverses the AST to perform variable expansion (`$VAR`, `$?`) and removes quotes. Field splitting is handled for unquoted expansions.
+6.  **Heredoc Processing**: Handles `<<` heredoc redirections by reading input until the delimiter is found, expanding variables within the heredoc.
+7.  **Execution**: Traverses the AST to execute commands.
+    - Handles built-in commands directly.
+    - Executes external commands by forking a child process and using `execve`.
+    - Manages pipes and redirections by manipulating file descriptors.
+    - Implements logical operators (`&&`, `||`) based on the exit status of commands.
+    - Executes subshells in a separate child process.
+8.  **Signal Handling**: Manages signals like SIGINT and SIGQUIT appropriately during command execution and while waiting for input.
+9.  **Memory Management**: Employs a custom memory allocation wrapper to track allocations and facilitate easy cleanup, preventing memory leaks.
 
 ## Dependencies
 
