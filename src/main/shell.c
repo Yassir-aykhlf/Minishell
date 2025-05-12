@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:04:18 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 18:38:43 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/12 20:41:21 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handle_empty_first_command(t_ast *ast)
 		if (first_command && first_command[0] == '\0')
 		{
 			ast->type = NODE_EMPTY_COMMAND;
-			return (spit_error(127, "command not found\n", 0));
+			return (spit_error(CMD_NOT_FOUND, "command not found\n", 0));
 		}
 	}
 	return (-1);
@@ -69,7 +69,7 @@ int	interpreter(const char *cmd)
 	if (!tokens && status != SCAN_SUCCESS)
 		return (SYNTAX_ERROR);
 	if (!tokens && status == SCAN_SUCCESS)
-		return (0);
+		return (SIGINT_EXIT);
 	if (!tokens)
 		return (SIGINT_EXIT);
 	ast = build_ast(tokens);

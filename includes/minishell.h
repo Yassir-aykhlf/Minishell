@@ -6,7 +6,7 @@
 /*   By: yaykhlf <yaykhlf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:05:43 by yaykhlf           #+#    #+#             */
-/*   Updated: 2025/05/04 18:20:57 by yaykhlf          ###   ########.fr       */
+/*   Updated: 2025/05/12 20:30:11 by yaykhlf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 
+# define CMD_NOT_FOUND 127
 # define SIGINT_EXIT 130
 # define SYNTAX_ERROR 2
 # define SUCCESS 0
