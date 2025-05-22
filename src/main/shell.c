@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	handle_empty_first_command(t_ast *ast)
+static int	handle_empty_command(t_ast *ast)
 {
 	char	*first_command;
 
@@ -75,7 +75,7 @@ int	interpreter(const char *cmd)
 	ast = build_ast(tokens);
 	if (!ast)
 		return (SYNTAX_ERROR);
-	empty_cmd_status = handle_empty_first_command(ast);
+	empty_cmd_status = handle_empty_command(ast);
 	if (empty_cmd_status >= 0)
 		return (empty_cmd_status);
 	ret_status = ft_execute(ast);

@@ -1,16 +1,16 @@
 # Minishell
 
-A robust UNIX shell implementation with built-in command execution, pipeline handling, and variable expansion.
+A UNIX shell implementation with command execution, pipeline handling, and variable expansion.
 
 ## Overview
 
-Minishell is a simplified shell implementation inspired by bash. It provides a command-line interface where users can execute commands, use pipes for command chaining, leverage redirections, and utilize environment variables - all with proper error handling and signal management.
+Minishell is a minimalistic shell implementation based on bash. It provides a command-line interface where users can execute commands, use pipes for command chaining, use redirections, and utilize environment variables, all with proper error handling and signal management.
 
 ## Features
 
 ### Command Execution
 - Run both built-in commands and external executables
-- Accurate exit status reporting
+- Accurate **exit status** reporting
 
 ### Built-in Commands
 - `echo`: Display text with `-n` flag support
@@ -22,7 +22,7 @@ Minishell is a simplified shell implementation inspired by bash. It provides a c
 - `exit`: Exit the shell with a specified status code
 
 ### Shell Operators
-- **Pipes** (`|`): Connect command outputs to inputs, enabling complex command chains.
+- **Pipes** (`|`): Connect command outputs to inputs, allowing complex command chains.
 - **Redirections**:
   - Input redirection (`<`): Read input from a file.
   - Output redirection (`>`): Write output to a file, overwriting existing content.
@@ -34,8 +34,8 @@ Minishell is a simplified shell implementation inspired by bash. It provides a c
 
 ### Advanced Features
 - **Environment Variable Expansion**:
-    - Environment variable expansion (`$VAR` or `${VAR}`).
-    - Special variable `$?` for the exit status of the last command.
+    - Environment variable expansion.
+    - Special variable `$?` to display the exit status of the last command.
 - **Signal Handling**:
     - `Ctrl+C` (SIGINT): Interrupts the current foreground process or displays a new prompt if no process is running.
     - `Ctrl+D` (EOF): Exits the shell if the input line is empty.
@@ -48,15 +48,15 @@ Minishell is a simplified shell implementation inspired by bash. It provides a c
 ## Project Structure
 
 The project is organized into the following main directories:
-- `includes/`: Contains all header files, including `minishell.h` and library headers.
-- `lib/`: Contains external libraries like `libft` and `get_next_line`.
+- `includes/`: Contains header files, including `minishell.h` and library headers.
+- `lib/`: Contains external libraries like `libft`.
 - `src/`: Contains the source code for Minishell, categorized into subdirectories:
+    - `main/`: Main shell loop and initialization.
     - `ast/`: Abstract Syntax Tree construction and manipulation.
     - `environment/`: Environment variable management.
     - `execution/`: Command execution logic, including builtins and external commands.
     - `expansion/`: Variable and token expansion.
     - `heredoc/`: Heredoc processing.
-    - `main/`: Main shell loop and initialization.
     - `memory/`: Custom memory management utilities.
     - `scan/`: Input scanning and validation.
     - `signal_handeling/`: Signal handling logic.
@@ -69,7 +69,7 @@ The project is organized into the following main directories:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Yassir-aykhlf/minishell.git
+git clone https://github.com/Yassir-aykhlf/minishell.git minishell
 
 # Navigate to the project directory
 cd minishell
@@ -117,14 +117,14 @@ cd /nonexistentdir || echo "Directory change failed"
 The project implementation follows these key steps:
 
 1.  **Input Reading & History**: Uses `readline` to read user input and manage command history.
-2.  **Scanning**: Validates the input for unclosed quotes or unexpected characters.
-3.  **Tokenization**: Parses the input string into a list of tokens (commands, arguments, operators, redirections). Each token is identified by its type and value, and a character mask is generated to handle quoting for expansion.
-4.  **Parsing (AST Construction)**: Builds an Abstract Syntax Tree (AST) from the token list. The AST represents the command structure, including pipelines, logical operations, subshells, and redirections.
+2.  **Scanning**: Validates the input for early syntax errors handling.
+3.  **Tokenization**: Parses the input string into a list of tokens (commands, arguments, operators, redirections, etc). Each token is identified by its type and value, and a character mask is generated to handle quoting for expansion.
+4.  **Parsing (AST Construction)**: Builds an Abstract Syntax Tree (AST) data structure from the token list. The AST represents the command structure, including pipelines, logical operations, subshells, and redirections.
 5.  **Expansion**: Traverses the AST to perform variable expansion (`$VAR`, `$?`) and removes quotes. Field splitting is handled for unquoted expansions.
 6.  **Heredoc Processing**: Handles `<<` heredoc redirections by reading input until the delimiter is found, expanding variables within the heredoc.
 7.  **Execution**: Traverses the AST to execute commands.
     - Handles built-in commands directly.
-    - Executes external commands by forking a child process and using `execve`.
+    - Executes external commands by forking a child process and using the `execve` syscall.
     - Manages pipes and redirections by manipulating file descriptors.
     - Implements logical operators (`&&`, `||`) based on the exit status of commands.
     - Executes subshells in a separate child process.
@@ -137,13 +137,13 @@ The project implementation follows these key steps:
 - GNU Make
 - Standard C Library
 
-## Contributors
+## Creators
 
 - [Yassir Aykhlf](https://github.com/Yassir-aykhlf)
 - [Amine Rajma](https://github.com/st-ameen)
 
 ## Contributing
-Contributions are welcome! Please follow these steps:
+Contributions are very welcome! Please follow these steps:
 1. Fork the repository.
 2. Create a feature branch (`git checkout -b feature-name`).
 3. Commit your changes (`git commit -m "Add some feature"`).
@@ -152,5 +152,5 @@ Contributions are welcome! Please follow these steps:
 
 ## Acknowledgements
 
-- Inspired by the Bash shell
-- Developed as part of the 42 School curriculum
+- Inspired by the [Bash](https://github.com/gitGNU/gnu_bash) shell
+- Developed as part of the [42 School](https://www.42network.org) curriculum
